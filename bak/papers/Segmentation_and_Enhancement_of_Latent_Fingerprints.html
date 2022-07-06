@@ -94,7 +94,7 @@
 <meta property="og:image" content="http://ganyuo.github.io/images/paper/Segmentation_and_Enhancement_of_Latent_Fingerprints/fig_8.png">
 <meta property="og:image" content="http://ganyuo.github.io/images/paper/Segmentation_and_Enhancement_of_Latent_Fingerprints/fig_9.png">
 <meta property="article:published_time" content="2021-01-27T06:00:00.000Z">
-<meta property="article:modified_time" content="2022-07-06T10:19:49.040Z">
+<meta property="article:modified_time" content="2022-07-06T10:31:01.662Z">
 <meta property="article:author" content="ganyuo">
 <meta property="article:tag" content="论文">
 <meta property="article:tag" content="指纹识别">
@@ -392,7 +392,7 @@
       <div class="post-body">
         
         
-          <p><a href="https://ganyuo.github.io/documnets/papers/Segmentation_and_Enhancement_of_Latent_Fingerprints.pdf">论文原文下载链接</a></p>
+          <p><a href="/documnets/papers/Segmentation_and_Enhancement_of_Latent_Fingerprints.pdf">论文原文下载链接</a></p>
 <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>&emsp;&emsp;潜在指纹(或简称“潜指纹”或“指印”)指的是某人在不小心触摸或手握过的物品表面上留下的指纹，通常出现在犯罪现场。与在参与模式下获得的滚动和平面指纹(或样本指纹)相比，潜在指纹的脊线结构通常质量较差，包含背景噪声和非线性失真(见图1)。由于这些因素的影响，潜指纹识别(潜指纹对样本匹配)的准确性远远低于样本指纹(样本对样本匹配)的准确性。作为一个例子，在上NIST评估，在10,000个平面指纹的后台数据库上，表现最好的自动指纹识别系统(AFIS)取得了99.4%的1级鉴定率；用1114个潜指纹在包含100,000个样本指纹后台数据库上，表现最好的商业潜指纹匹配器只能达到63.4%的1级鉴定率。图2显示了滚动到滚动指纹匹配和潜指纹到滚动指纹匹配的示例。在这些例子中，滚动指纹的特征是由AFIS自动提取的，而潜在指纹的特征是人工标记的。</p>
 <p>&emsp;&emsp;如何自动提取潜指纹特征，特别是质量较差的潜指纹特征，是潜指纹特征识别中一个具有挑战性的问题。鉴于自动特征提取的难度，目前的做法是对潜在指纹的各种特征(如感兴趣区域(ROI)、奇异点和细节)进行手工标记。然而，潜指纹检测中的人为因素问题引起了对重复性和可靠性的关注。例如，一个特定的特征类型(例如，细节点)的标记，由不同的潜指纹检测员，甚至是同一个检测员在不同的时间，可能会给出不同的结果。NIST的一项研究表明，潜指纹匹配器的准确性受潜指纹检查标记的精度影响很大，特别是当潜指纹图像本身不能用于匹配时。影响人工标记性能的因素之一是，因为繁重的案件工作，潜指纹检测员经常在极端的时间压力下工作。研究表明，在指纹比对时间有限的情况下，潜指纹检测员更有可能在潜指纹和它的配对滚动指纹之间做出不确定的匹配决定。基于潜指纹匹配引起的身份错误中，最臭名昭著的案件之一是布兰登·梅菲尔德案件。无罪项目也报告了其他错误识别的案例。FBI下一代识别(NGI)的发展重点之一是支持lights-out功能的潜指纹识别(lights-out识别指的是一种自动识别系统，在这种系统中，查询指纹图像作为输入，输出由一个简短的候选列表组成)。这种lights-out功能的一个重要组成部分是开发一个全自动的潜指纹特征提取模块。为了(i)增加潜指纹匹配系统的吞吐量，(ii)提高潜指纹特征提取的可重复性，(iii)增加潜指纹提取的特征与AFIS(自动指纹识别系统)中参考指纹提取的特征之间的兼容性，这是非常可取的。</p>
 <p>&emsp;&emsp;一个AFIS，无论是用于滚动/平面指印匹配还是潜指纹匹配，通常包含许多模块，包括感兴趣区域(ROI)分割(将指纹从背景中分离出来)、增强、特征提取和匹配。分割，特别是潜指纹的分割，是至关重要的，可以避免提取特征(如，细节点)在嘈杂的背景中的影响。增强脊线和谷线结构，去除前景区域的噪声是提取准确特征的关键。基于Gabor滤波的指纹增强能自适应地提高脊谷结构的清晰度；滤波器是根据局部脊线的方向和频率进行调整的。因此，对于潜指纹增强，获得良好的脊线方向和频率场估计是至关重要的。</p>
