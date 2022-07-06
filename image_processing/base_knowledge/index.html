@@ -1,0 +1,1748 @@
+<!DOCTYPE html>
+
+
+
+
+<html class="theme-next pisces" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="https://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" type="text/css" />
+
+
+
+  
+
+<link href="https://cdn.bootcss.com/social-share.js/1.0.9/css/share.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=1.0.0" rel="stylesheet" type="text/css" />
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/ganyuo.png?v=1.0.0">
+
+
+
+
+
+
+  <meta name="keywords" content="图像处理," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一些关于数字图像处理的基本知识">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数字图像基础">
+<meta property="og:url" content="http://ganyuo.github.io/image_processing/base_knowledge/index.html">
+<meta property="og:site_name" content="ganyuo">
+<meta property="og:description" content="一些关于数字图像处理的基本知识">
+<meta property="article:published_time" content="2020-02-18T12:44:55.000Z">
+<meta property="article:modified_time" content="2022-06-28T08:07:56.166Z">
+<meta property="article:author" content="ganyuo">
+<meta property="article:tag" content="图像处理">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '1.0.0',
+    sidebar: {"position":"right","display":"always","offset":52,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    since: '2/1/2020 00:00:00',
+    onlineAPI: '',
+    site: {
+      title: 'ganyuo',
+      subtitle: '',
+      author: 'ganyuo'
+    },
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    leancloud: {
+      enable: false,
+      appID: '',
+      appKey: ''
+    },
+    favicon: {
+      visibilitychange: true,
+      narmal: 'images/ganyuo.png',
+      hidden: 'images/failure.ico',
+      show_text: '(/≧▽≦/)欢迎回来！',
+      hide_text: '(T﹏T)不要走嘛...'
+    },
+	load_to_main: false,
+	img_mirror: {
+      enable: false,
+      prefix: 'https://cdn.jsdelivr.net/gh/ganyuo/ganyuo.github.io/'
+	}
+  };
+</script>
+
+
+
+  
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/2.1.3/jquery.min.js"></script>
+
+
+
+
+  <link rel="canonical" href="http://ganyuo.github.io/image_processing/base_knowledge/"/>
+
+
+
+<script type="text/javascript">
+	/* 自动跳转到主要内容部分（主页除外） */
+	const custom_fun = {
+		load_to_main: function () {
+			var pathname = window.location.pathname;
+			var pre_pathname = sessionStorage.getItem("pre_pathname");
+			var cur_st = $(document).scrollTop();
+			if (pathname != "/" && cur_st < 10 && pathname != pre_pathname) {
+				$('html, body').animate({
+					scrollTop: $("#main").offset().top - 50
+				}, 500);
+			}
+			sessionStorage.setItem("pre_pathname", pathname);
+		},
+
+		use_img_mirror: function(prefix) {
+			var imgs = document.getElementsByTagName("img");
+			for(var i = 0; i < imgs.length; i++) {
+				img_src = imgs[i].src;
+				ind = img_src.indexOf("images");
+				if(ind >= 0) {
+					imgs[i].src = prefix + img_src.substring(ind);
+				}
+			}
+		}
+	}
+
+	$(function () {
+		if (window.CONFIG.load_to_main) {
+			custom_fun.load_to_main();
+		}
+		if (window.CONFIG.img_mirror.enable) {
+			custom_fun.use_img_mirror(window.CONFIG.img_mirror.prefix);
+		}
+	})
+</script>
+
+
+
+  <title>数字图像基础 | ganyuo</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="ganyuo" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-后宫">
+          <a href="/friends/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-mars"></i> <br />
+            
+            后宫
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-留言板">
+          <a href="/message/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-pencil"></i> <br />
+            
+            留言板
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-rocket"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+	<a href="https://github.com/ganyuo" target="_blank" rel="noopener" class="github-corner" aria-label="View source on GitHub">
+	<svg width="100" height="100" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 4;" aria-hidden="true">
+		<path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+		<path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+		<path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+	</svg>
+</a>
+<style>
+.github-corner:hover .octo-arm{
+	animation:octocat-wave 560ms ease-in-out
+}
+@keyframes octocat-wave{
+	0%,100%{transform:rotate(0)}
+	20%,60%{transform:rotate(-25deg)}
+	40%,80%{transform:rotate(10deg)}
+}
+@media (max-width:500px){
+	.github-corner:hover .octo-arm{
+		animation:none
+	}
+	.github-corner .octo-arm{
+		animation:octocat-wave 560ms ease-in-out
+	}
+}
+</style>
+
+
+
+<div class="site-brand-wrapper" >
+  <div class="site-meta ">
+    
+
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+</div>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-date">
+			<div class="post-month">02月</div>
+			<div class="post-day">18</div>
+	</div>
+  
+  <div class="post-badge">
+    
+      <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+        <a href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" itemprop="url" rel="index">
+          <span itemprop="name">图像处理</span>
+        </a>
+      </span>
+    
+  </div>
+  
+
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://ganyuo.github.io/image_processing/base_knowledge/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ganyuo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/ganyuo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ganyuo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <p class="post-title" itemprop="name headline">数字图像基础</p>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-18T20:44:55+08:00">
+                2020-02-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">•</span>
+            <span class="page-pv">本文总阅读数 <i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3.2k
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>一些关于数字图像处理的基本知识</p>
+<a id="more"></a>
+
+
+<h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><p><strong>单色光</strong>：没有颜色的光，单色光的唯一属性是强度。<br><strong>灰度级</strong>：单色光的强度，从黑到白的单色光的度量值范围。<br><strong>灰度图像</strong>：用单色光来表示的图像。</p>
+<p>一幅图像可以用一个矩阵来表示，矩阵中某个元素表示图像在该点的像素，可以是灰度值或RGB值等。<br><strong>空间域</strong>：一幅数字图像的坐标张成的实平面部分。<br><strong>像素</strong>：图像矩阵中的元素，也可以称之为图像单元或图像元素。</p>
+<p><strong>噪声</strong>：存在于图像数据中的不必要的或多余的干扰信息。<br><strong>对比度</strong>：图像中最高和最低灰度级间的灰度差。<br><strong>饱和度</strong>：指图像色彩的纯净程度。</p>
+<p><strong>空间分辨率</strong>：用来度量图像中可辨别的最小细节，，通常用单位距离的线对数或单位距离的点数（像素数）来衡量。<br><strong>dpi</strong>：每英寸点数，通常作为单位距离点数的单位。<br><strong>灰度分辨率</strong>：指灰度级中可分辨的最小变化，用于量化灰度的比特数。例如，通常说一幅被量化为256级的图像有8比特的灰度分辨率。</p>
+<h1 id="像素间的基本关系"><a href="#像素间的基本关系" class="headerlink" title="像素间的基本关系"></a>像素间的基本关系</h1><h2 id="相邻像素"><a href="#相邻像素" class="headerlink" title="相邻像素"></a>相邻像素</h2><p>&emsp;&emsp;<strong>4邻域</strong>：与像素相邻的四个水平和垂直的相邻像素，坐标为$(x,y)$的像素的4邻域坐标为$(x+1,y)、(x-1,y)、(x,y+1)、(x,y-1)$，像素点p的4邻域可以用$N_4(p)$表示。<br>&emsp;&emsp;<strong>D邻域</strong>：与像素相邻的四个对角相邻像素，坐标为$(x,y)$的像素的D邻域坐标为$(x-1,y-1)、(x-1,y+1)、(x+1,y-1)、(x+1,y+1)$，像素点p的4邻域可以用$N_D(p)$表示。<br>&emsp;&emsp;<strong>8邻域</strong>：由像素的4邻域和D邻域组成。像素点p的8邻域可以用$N_8(p)$表示。<br>&emsp;&emsp;位于图像边界的像素点的4邻域、D邻域和8邻域会落入图像的外部。</p>
+<h2 id="邻接性"><a href="#邻接性" class="headerlink" title="邻接性"></a>邻接性</h2><p>&emsp;&emsp;令$V$是定义邻接的灰度值集合，假设像素$p$和$q$的像素值在集合$V$中，像素$p$和$q$的4邻接、8邻接和m邻接定义如下<br>&emsp;&emsp;<strong>4邻接</strong>：如果$q$在$p$的4邻域中，则$p$和$q$是4邻接的。<br>&emsp;&emsp;<strong>8邻接</strong>：如果$q$在$p$的8邻域中，则$p$和$q$是8邻接的。<br>&emsp;&emsp;<strong>m邻接</strong>：如果像素$p$和$q$满足以下两个条件之一，则$p$和$q$是m邻接的。<br>&emsp;&emsp;&emsp;&emsp; 1. $q$在$p$的4邻域中。<br>&emsp;&emsp;&emsp;&emsp; 2. $q$在$p$的D邻域中，且$p$和$q$的4邻域交集中没有没有来自$V$中数值的像素。<br>&emsp;&emsp;m邻接也叫混合邻接，m邻接是8邻接的改进，目的是消除8邻接带来的对角相邻像素之间可能产生的多余的斜向路径。</p>
+<h2 id="连通性"><a href="#连通性" class="headerlink" title="连通性"></a>连通性</h2><p>&emsp;&emsp;<strong>通路</strong>：像素$p$到像素$q$之间的通路是由不同像素组成的一个序列，序列中左右相邻的两个像素之间都是邻接的。可根据不同的邻接类型（4邻接、8邻接、m邻接）定义不同的通路类型（4通路、8通路、m通路），其中8通路可能不唯一。<br>&emsp;&emsp;<strong>连通</strong>：令$S$是图像中的一个像素子集（图像中像素点组成的集合）。如果两个像素$p$和$q$之间存在一条完全由$S$中的像素构成的通路（像素$p$和$q$均在$S$中），那么称像素$p$和$q$在$S$中连通。<br>&emsp;&emsp;<strong>连通分量</strong>：对于$S$中的任意一个像素$p$，在$S$中与像素$p$连通的像素构成的像素集合称为$S$的连通分量。<br>&emsp;&emsp;<strong>连通集</strong>：如果$S$仅有一个连通分量，即$S$中的所有像素互相都连通，则$S$称为连通集。</p>
+<h2 id="区域和边界"><a href="#区域和边界" class="headerlink" title="区域和边界"></a>区域和边界</h2><p>&emsp;&emsp;<strong>区域</strong>：令$R$是图像中的一个像素子集，如果$R$是一个连通集，则称$R$为图像的一个区域。<br>&emsp;&emsp;<strong>邻接区域</strong>：两个区域$R_i$和$R_j$，如果将他们合并后能够形成一个连通集，则称区域$R_i$和$R_j$为邻接区域。不邻接的区域称为不邻接区域。<br>&emsp;&emsp;<strong>边界</strong>：区域$R$的边界（也叫边框或者轮廓）是区域$R$中与$R$的补集邻接的像素点组成的集合。<br>&emsp;&emsp;假设一幅图像中含有$K$个不邻接的区域$R_k,k=1,2,…,K$，且这些区域都不接触图像的边界。令$Ru$表示这$K$个区域的并集，$(Ru)c$表示$Ru$的补集，那么$Ru$称中的所有像素点为图像的前景，$(Ru)c$中的所有像素点为图像的背景。<br>&emsp;&emsp;上述边界的定义有时称为区域的<strong>内边界</strong>，即边界像素是在区域内部。与内边界相区分的是<strong>外边界</strong>，即边界像素在背景区域内。</p>
+<h2 id="距离度量"><a href="#距离度量" class="headerlink" title="距离度量"></a>距离度量</h2><p>&emsp;&emsp;设像素点$p$的坐标为$(x_p,y_p)$，$q$的坐标为$(x_q,y_q)$，则$p$和$q$之间的三种距离定义如下。<br>&emsp;&emsp;<strong>欧式距离</strong>：用$D_e(p,q)$来表示。<br>$$D_e(p,q) = \sqrt{(x_p - x_q)^2 + (y_p - y_q)^2}$$</p>
+<p>&emsp;&emsp;在欧式距离度量下，到像素点$(x,y)$的距离小于等于某一特定值$r$的像素都在以$(x,y)$为中心、半径为$r$的圆形区域内。</p>
+<p>&emsp;&emsp;<strong>城市距离</strong>：用$D_4(p,q)$来表示。<br>$$D_4(p,q) = |x_p - x_q| + |y_p - y_q|$$</p>
+<p>&emsp;&emsp;在城市距离度量下，到像素点$(x,y)$的距离小于等于某一特定值$r$的像素形成一个以$(x,y)$为中心的菱形区域。</p>
+<p>&emsp;&emsp;<strong>棋盘距离</strong>：用$D_8(p,q)$来表示。<br>$$D_8(p,q) = max(|x_p - x_q|,|y_p - y_q|)$$</p>
+<p>&emsp;&emsp;在棋盘距离度量下，到像素点$(x,y)$的距离小于等于某一特定值$r$的像素形成一个以$(x,y)$为中心的方形区域。</p>
+<h1 id="数学基础"><a href="#数学基础" class="headerlink" title="数学基础"></a>数学基础</h1><h2 id="阵列与矩阵操作"><a href="#阵列与矩阵操作" class="headerlink" title="阵列与矩阵操作"></a>阵列与矩阵操作</h2><p>&emsp;&emsp;<strong>阵列操作</strong>：对图像矩阵中每个像素进行操作，比如对图像阵列进行求幂操作，表示对图像矩阵中每个像素都进行求幂。<br>&emsp;&emsp;<strong>矩阵操作</strong>：对图像矩阵进行矩阵的操作，矩阵的操作请参考线性代数里的介绍。<br>&emsp;&emsp;矩阵操作的乘法和阵列操作的乘法不同。<br>&emsp;&emsp;阵列操作的乘法：<br>$$<br>\left[\begin{matrix}<br>    a_{11} &amp; a_{12} \\<br>    a_{21} &amp; a_{22} \\<br>\end{matrix}\right]<br>\left[\begin{matrix}<br>    b_{11} &amp; b_{12} \\<br>    b_{21} &amp; b_{22} \\<br>\end{matrix}\right] =<br>\left[\begin{matrix}<br>    a_{11}b_{11} &amp; a_{12}b_{12} \\<br>    a_{21}b_{21} &amp; a_{22}b_{22} \\<br>\end{matrix}\right]<br>$$</p>
+<p>&emsp;&emsp;矩阵操作的乘法：<br>$$<br>\left[\begin{matrix}<br>    a_{11} &amp; a_{12} \\<br>    a_{21} &amp; a_{22} \\<br>\end{matrix}\right]<br>\left[\begin{matrix}<br>    b_{11} &amp; b_{12} \\<br>    b_{21} &amp; b_{22} \\<br>\end{matrix}\right] =<br>\left[\begin{matrix}<br>    a_{11}b_{11} + a_{12}b_{21} &amp; a_{11}b_{12} + a_{12}b_{22} \\<br>    a_{21}b_{11} + a_{22}b_{21} &amp; a_{21}b_{12} + a_{22}b_{22} \\<br>\end{matrix}\right]<br>$$</p>
+<h2 id="线性操作"><a href="#线性操作" class="headerlink" title="线性操作"></a>线性操作</h2><p>&emsp;&emsp;图像处理方法最重要的分类依据之一是，它是线性的还是非线性的。考虑一般的算子$H$，该算子对于给定的输入图像$f(x,y)$，产生一幅输出图像$g(x,y)$：<br>$$H[f(x, y)] = g(x, y)$$</p>
+<p>&emsp;&emsp;<strong>加性</strong>：对两个输入的和进行操作得到的输出，与分别对两个输入进行操作后的输出求和得到的结果相同，用公式可表示为：<br>$$H[f_i(x, y) + f_j(x, y)] = H[f_i(x, y)] + H[f_i(x, y)]$$</p>
+<p>&emsp;&emsp;<strong>同质性</strong>：输入乘以一个常数的输出，与原始输入的输出再乘以该常数的结果相同，用公式可表示为：<br>$$H[a \times f(x, y)] = a \times H[f(x, y)]$$</p>
+<p>&emsp;&emsp;<strong>线性操作</strong>：同时满足加性和同质性的操作，线性操作的算子成为线性算子，如果$H$是一个线性算子，则需要满足：<br>$$H[a_if_i(x, y) + a_jf_j(x, y)] = a_iH[f_i(x, y)] + a_jH[f_j(x, y)] = a_ig_i(x, y) + a_jg_j(x, y)$$</p>
+<p>&emsp;&emsp;上式中，$a_i$和$a_j$是任意常数，$f_i(x, y)$和$f_j(x, y)$是任意大小相同的图像。</p>
+<h2 id="算术操作"><a href="#算术操作" class="headerlink" title="算术操作"></a>算术操作</h2><p>&emsp;&emsp;图像间的算术操作是在相应的像素对之间执行的，属于阵列操作，4种算术操作（即像素间加减乘除）表示为：<br>$$<br>s(x, y) = f(x, y) + g(x, y) \\<br>d(x, y) = f(x, y) - g(x, y) \\<br>p(x, y) = f(x, y) \times g(x, y) \\<br>v(x, y) = f(x, y) \div g(x, y)<br>$$</p>
+<p>&emsp;&emsp;上式中$f$和$g$是两张大小相同的图像，计算得到的$s$、$d$、$p$和$v$也是和$f$、$g$大小相同的图像。<br>&emsp;&emsp;<strong>图像相加</strong>后取平均值可以降低图像的噪声。在天文学邻域，由于在非常低的光照下成像常常会导致传感器噪声，以至于单幅图像无法分析。一种降低噪声的方法是对同一个区域（比如某个星系）进行长时间观测，采集多张图片，然后将这多张图像进行算术相加再取平均值，最后得到的图像相比于单张图像会清晰很多。<br>&emsp;&emsp;<strong>图像相减</strong>可以增强两幅近似图像之间的差别，比如观测某一区域的变化过程，可以用采集的图像与第一次采集的图像相减，以增强两幅图像变化比较明显的部分，降低变化比较小的部分。<br>&emsp;&emsp;<strong>图像相乘</strong>的一个重要应用是矫正阴影（这个没看懂T﹏T）。也用来进行模板操作。</p>
+<h2 id="空间操作"><a href="#空间操作" class="headerlink" title="空间操作"></a>空间操作</h2><p>&emsp;&emsp;空间操作直接在给定图像的像素上执行。</p>
+<h3 id="单像素操作"><a href="#单像素操作" class="headerlink" title="单像素操作"></a>单像素操作</h3><p>&emsp;&emsp;单像素操作生成的图像，每个像素是根据原图中相应像素计算得到的。用公式表示是：<br>$$g(x, y) = T[f(x, y)]$$</p>
+<p>&emsp;&emsp;$f(x, y)$表示原图在$(x, y)$处的像素，$T$表示像素的映射函数，$g(x, y)$表示生产图像对应位置的像素。</p>
+<h3 id="领域操作"><a href="#领域操作" class="headerlink" title="领域操作"></a>领域操作</h3><p>&emsp;&emsp;领域操作生成的图像，每个像素是根据原图中相应像素的领域计算得到的。用公式表示是：<br>$$g(x, y) = T[N(f(x, y))]$$</p>
+<p>&emsp;&emsp;$N(f(x, y))$表示图像在$(x, y)$处的领域。</p>
+<h3 id="几何空间变换"><a href="#几何空间变换" class="headerlink" title="几何空间变换"></a>几何空间变换</h3><p>&emsp;&emsp;请参考我的另一篇博客<a href="/image_processing/space_transformation/">图像的几何空间变换</a>。</p>
+<h3 id="图像配准"><a href="#图像配准" class="headerlink" title="图像配准"></a>图像配准</h3><p>&emsp;&emsp;图像几何空间变换利用已知的变换函数，将原图像上的像素映射到目标图像上指定的位置。而图像的配准则是根据原图像和目标图像上某些像素点之间的映射关系，求变换函数。具体的做法是假设变换函数的模型，然后在原图像上取一些点，将这些点的坐标和它们映射在目标图像上对应点的坐标，代入变换函数模型中，求解出变换函数的未知参数，最终得到变换函数。<br>&emsp;&emsp;举个栗子，假设目标图像是原图像通过仿射变换生成的，变换方式如下：<br>$$<br>\left[\begin{matrix} x &amp; y &amp; 1 \end{matrix}\right] =<br>\left[\begin{matrix} v &amp; w &amp; 1 \end{matrix}\right]T =<br>\left[\begin{matrix} v &amp; w &amp; 1 \end{matrix}\right]<br>\left[\begin{matrix}<br>t_{11} &amp; t_{12} &amp; 0 \\<br>t_{21} &amp; t_{22} &amp; 0 \\<br>t_{31} &amp; t_{32} &amp; 1<br>\end{matrix}\right]<br>$$</p>
+<p>&emsp;&emsp;根据这个变换函数可以列出以下两个方程，这个两个方程就是变换函数的模型。<br>$$<br>x = t_{11}v + t_{21}w + t_{31} \\<br>y = t_{12}v + t_{22}w + t_{32}<br>$$</p>
+<p>&emsp;&emsp;然后取原图像上的三个点$(v_1, w_1)$、$(v_2, w_2)$、$(v_3, w_3)$，假设它们在目标图像上对应点的坐标分别是$(x_1, y_1)$、$(x_2, y_2)$、$(x_3, y_3)$，将这六个点的坐标值代入变换函数模型中，可以的到两个三元一次方程组：<br>$$<br>\begin{cases}<br>    x_1 = t_{11}v_1 + t_{21}w_1 + t_{31} \\<br>    x_2 = t_{11}v_2 + t_{21}w_2 + t_{31} \\<br>    x_3 = t_{11}v_3 + t_{21}w_3 + t_{31}<br>\end{cases} \ \ \ \ \ \ \<br>\begin{cases}<br>    y_1 = t_{12}v_1 + t_{22}w_1 + t_{32} \\<br>    y_2 = t_{12}v_2 + t_{22}w_2 + t_{32} \\<br>    y_3 = t_{12}v_3 + t_{22}w_3 + t_{32}<br>\end{cases}<br>$$</p>
+<p>&emsp;&emsp;解出这两个方程组就可以算出$t_{11}、t_{12}、t_{21}、t_{22}、t_{31}、t_{32}$这几个参数，代入模型中就是我们要求的变换函数了。</p>
+
+      
+    </div>
+    
+    
+    
+    
+    
+
+    
+	  <hr>
+      <div class="post-share">分享到：</div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" rel="tag"># 图像处理</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/acm/hdu-3085/" rel="next" title="HDU-3085 Nightmare Ⅱ">
+                <i class="fa fa-chevron-left"></i> HDU-3085 Nightmare Ⅱ
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/acm/hdu-1067/" rel="prev" title="HDU-1067 Gap">
+                HDU-1067 Gap <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="vcomments"></div>
+    </div>
+  
+
+
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+	<script src='https://unpkg.com/valine/dist/Valine.min.js'></script>
+	<!-- <script src="https://cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+	<!-- <script src="/js/Valine.min.js"></script> -->
+  
+	<style>
+		.v[data-class=v] .vwrap .vemojis{
+			max-height: 400px;
+		}
+		.v[data-class=v] .vwrap .vemojis i{
+			width: auto;
+			height: auto;
+			padding: 0px;
+		}
+		.v[data-class=v] .emoji, .v[data-class=v] .vemoji{
+			margin: 5px;
+		}
+	</style>
+
+	<script type="text/javascript">
+		new Valine({
+			el: '#vcomments',
+			appId: '2mr6x89FybHxLnJcdN4X4MOA-MdYXbMMI',
+			appKey: '07imY589OxwQHeMrwkSkncS0',
+			placeholder: '说点什么吧！ (*´∇｀*)',
+			avatar: 'mp',
+			recordIP: true,
+			visitor: false, // 文章访问量统计 https://valine.js.org/visitor.html
+			enableQQ: true, // 如果是qq邮箱，自动获取QQ头像和昵称
+			pageSize: '10',
+			serverURLs: 'https://2mr6x89f.api.lncldglobal.com',
+			meta: ['nick', 'mail', 'link'],
+
+			// 表情title和图片映射
+			emojiMaps: {
+
+// 黄脸
+"doge":"https://i0.hdslb.com/bfs/emote/3087d273a78ccaff4bb1e9972e2ba2a7583c9f11.png?emoji_size=30",
+"微笑":"https://i0.hdslb.com/bfs/emote/685612eadc33f6bc233776c6241813385844f182.png?emoji_size=30",
+"OK":"https://i0.hdslb.com/bfs/emote/4683fd9ffc925fa6423110979d7dcac5eda297f4.png?emoji_size=30",
+"星星眼":"https://i0.hdslb.com/bfs/emote/63c9d1a31c0da745b61cdb35e0ecb28635675db2.png?emoji_size=30",
+"妙啊":"https://i0.hdslb.com/bfs/emote/b4cb77159d58614a9b787b91b1cd22a81f383535.png?emoji_size=30",
+"辣眼睛":"https://i0.hdslb.com/bfs/emote/35d62c496d1e4ea9e091243fa812866f5fecc101.png?emoji_size=30",
+"吃瓜":"https://i0.hdslb.com/bfs/emote/4191ce3c44c2b3df8fd97c33f85d3ab15f4f3c84.png?emoji_size=30",
+"滑稽":"https://i0.hdslb.com/bfs/emote/d15121545a99ac46774f1f4465b895fe2d1411c3.png?emoji_size=30",
+"呲牙":"https://i0.hdslb.com/bfs/emote/b5a5898491944a4268360f2e7a84623149672eb6.png?emoji_size=30",
+"打call":"https://i0.hdslb.com/bfs/emote/431432c43da3ee5aab5b0e4f8931953e649e9975.png?emoji_size=30",
+"歪嘴":"https://i0.hdslb.com/bfs/emote/4384050fbab0586259acdd170b510fe262f08a17.png?emoji_size=30",
+"调皮":"https://i0.hdslb.com/bfs/emote/8290b7308325e3179d2154327c85640af1528617.png?emoji_size=30",
+"嗑瓜子":"https://i0.hdslb.com/bfs/emote/28a91da1685d90124cfeead74622e1ebb417c0eb.png?emoji_size=30",
+"笑哭":"https://i0.hdslb.com/bfs/emote/c3043ba94babf824dea03ce500d0e73763bf4f40.png?emoji_size=30",
+"脱单doge":"https://i0.hdslb.com/bfs/emote/bf7e00ecab02171f8461ee8cf439c73db9797748.png?emoji_size=30",
+"给心心":"https://i0.hdslb.com/bfs/emote/1597302b98827463f5b75c7cac1f29ea6ce572c4.png?emoji_size=30",
+"嘟嘟":"https://i0.hdslb.com/bfs/emote/abd7404537d8162720ccbba9e0a8cdf75547e07a.png?emoji_size=30",
+"喜欢":"https://i0.hdslb.com/bfs/emote/8a10a4d73a89f665feff3d46ca56e83dc68f9eb8.png?emoji_size=30",
+"酸了":"https://i0.hdslb.com/bfs/emote/92b1c8cbceea3ae0e8e32253ea414783e8ba7806.png?emoji_size=30",
+"哦呼":"https://i0.hdslb.com/bfs/emote/362bded07ea5434886271d23fa25f5d85d8af06c.png?emoji_size=30",
+"嫌弃":"https://i0.hdslb.com/bfs/emote/de4c0783aaa60ec03de0a2b90858927bfad7154b.png?emoji_size=30",
+"大哭":"https://i0.hdslb.com/bfs/emote/2caafee2e5db4db72104650d87810cc2c123fc86.png?emoji_size=30",
+"害羞":"https://i0.hdslb.com/bfs/emote/9d2ec4e1fbd6cb1b4d12d2bbbdd124ccb83ddfda.png?emoji_size=30",
+"疑惑":"https://i0.hdslb.com/bfs/emote/b7840db4b1f9f4726b7cb23c0972720c1698d661.png?emoji_size=30",
+"喜极而泣":"https://i0.hdslb.com/bfs/emote/485a7e0c01c2d70707daae53bee4a9e2e31ef1ed.png?emoji_size=30",
+"奸笑":"https://i0.hdslb.com/bfs/emote/bb84906573472f0a84cebad1e9000eb6164a6f5a.png?emoji_size=30",
+"笑":"https://i0.hdslb.com/bfs/emote/81edf17314cea3b48674312b4364df44d5c01f17.png?emoji_size=30",
+"偷笑":"https://i0.hdslb.com/bfs/emote/6c49d226e76c42cd8002abc47b3112bc5a92f66a.png?emoji_size=30",
+"惊讶":"https://i0.hdslb.com/bfs/emote/f8e9a59cad52ae1a19622805696a35f0a0d853f3.png?emoji_size=30",
+"捂脸":"https://i0.hdslb.com/bfs/emote/6921bb43f0c634870b92f4a8ad41dada94a5296d.png?emoji_size=30",
+"阴险":"https://i0.hdslb.com/bfs/emote/ba8d5f8e7d136d59aab52c40fd3b8a43419eb03c.png?emoji_size=30",
+"囧":"https://i0.hdslb.com/bfs/emote/12e41d357a9807cc80ef1e1ed258127fcc791424.png?emoji_size=30",
+"呆":"https://i0.hdslb.com/bfs/emote/33ad6000d9f9f168a0976bc60937786f239e5d8c.png?emoji_size=30",
+"抠鼻":"https://i0.hdslb.com/bfs/emote/cb89184c97e3f6d50acfd7961c313ce50360d70f.png?emoji_size=30",
+"大笑":"https://i0.hdslb.com/bfs/emote/ca94ad1c7e6dac895eb5b33b7836b634c614d1c0.png?emoji_size=30",
+"惊喜":"https://i0.hdslb.com/bfs/emote/0afecaf3a3499479af946f29749e1a6c285b6f65.png?emoji_size=30",
+"无语":"https://i0.hdslb.com/bfs/emote/44667b7d9349957e903b1b62cb91fb9b13720f04.png?emoji_size=30",
+"点赞":"https://i0.hdslb.com/bfs/emote/1a67265993913f4c35d15a6028a30724e83e7d35.png?emoji_size=30",
+"鼓掌":"https://i0.hdslb.com/bfs/emote/895d1fc616b4b6c830cf96012880818c0e1de00d.png?emoji_size=30",
+"尴尬":"https://i0.hdslb.com/bfs/emote/cb321684ed5ce6eacdc2699092ab8fe7679e4fda.png?emoji_size=30",
+"灵魂出窍":"https://i0.hdslb.com/bfs/emote/43d3db7d97343c01b47e22cfabeca84b4251f35a.png?emoji_size=30",
+"委屈":"https://i0.hdslb.com/bfs/emote/d2f26cbdd6c96960320af03f5514c5b524990840.png?emoji_size=30",
+"傲娇":"https://i0.hdslb.com/bfs/emote/010540d0f61220a0db4922e4a679a1d8eca94f4e.png?emoji_size=30",
+"疼":"https://i0.hdslb.com/bfs/emote/905fd9a99ec316e353b9bd4ecd49a5f0a301eabf.png?emoji_size=30",
+"生病":"https://i0.hdslb.com/bfs/emote/0f25ce04ae1d7baf98650986454c634f6612cb76.png?emoji_size=30",
+"吓":"https://i0.hdslb.com/bfs/emote/9c10c5ebc7bef27ec641b8a1877674e0c65fea5d.png?emoji_size=30",
+"吐":"https://i0.hdslb.com/bfs/emote/06946bfe71ac48a6078a0b662181bb5cad09decc.png?emoji_size=30",
+"捂眼":"https://i0.hdslb.com/bfs/emote/c5c6d6982e1e53e478daae554b239f2b227b172b.png?emoji_size=30",
+"嘘声":"https://i0.hdslb.com/bfs/emote/e64af664d20716e090f10411496998095f62f844.png?emoji_size=30",
+"思考":"https://i0.hdslb.com/bfs/emote/cfa9b7e89e4bfe04bbcd34ccb1b0df37f4fa905c.png?emoji_size=30",
+"再见":"https://i0.hdslb.com/bfs/emote/fc510306bae26c9aec7e287cdf201ded27b065b9.png?emoji_size=30",
+"翻白眼":"https://i0.hdslb.com/bfs/emote/eba54707c7168925b18f6f8b1f48d532fe08c2b1.png?emoji_size=30",
+"哈欠":"https://i0.hdslb.com/bfs/emote/888d877729cbec444ddbd1cf4c9af155a7a06086.png?emoji_size=30",
+"奋斗":"https://i0.hdslb.com/bfs/emote/bb2060c15dba7d3fd731c35079d1617f1afe3376.png?emoji_size=30",
+"墨镜":"https://i0.hdslb.com/bfs/emote/3a03aebfc06339d86a68c2d893303b46f4b85771.png?emoji_size=30",
+"难过":"https://i0.hdslb.com/bfs/emote/a651db36701610aa70a781fa98c07c9789b11543.png?emoji_size=30",
+"撇嘴":"https://i0.hdslb.com/bfs/emote/531863568e5668c5ac181d395508a0eeb1f0cda4.png?emoji_size=30",
+"抓狂":"https://i0.hdslb.com/bfs/emote/4c87afff88c22439c45b79e9d2035d21d5622eba.png?emoji_size=30",
+"生气":"https://i0.hdslb.com/bfs/emote/3195714219c4b582a4fb02033dd1519913d0246d.png?emoji_size=30",
+"口罩":"https://i0.hdslb.com/bfs/emote/3ad2f66b151496d2a5fb0a8ea75f32265d778dd3.png?emoji_size=30",
+"胜利":"https://i0.hdslb.com/bfs/emote/b49fa9f4b1e7c3477918153b82c60b114d87347c.png?emoji_size=30",
+"加油":"https://i0.hdslb.com/bfs/emote/c7aaeacb21e107292d3bb053e5abde4a4459ed30.png?emoji_size=30",
+"抱拳":"https://i0.hdslb.com/bfs/emote/89516218158dbea18ab78e8873060bf95d33bbbe.png?emoji_size=30",
+"响指":"https://i0.hdslb.com/bfs/emote/1b5c53cf14336903e1d2ae3527ca380a1256a077.png?emoji_size=30",
+"保佑":"https://i0.hdslb.com/bfs/emote/fafe8d3de0dc139ebe995491d2dac458a865fb30.png?emoji_size=30",
+"支持":"https://i0.hdslb.com/bfs/emote/3c210366a5585706c09d4c686a9d942b39feeb50.png?emoji_size=30",
+"拥抱":"https://i0.hdslb.com/bfs/emote/41780a4254750cdaaccb20735730a36044e98ef3.png?emoji_size=30",
+"跪了":"https://i0.hdslb.com/bfs/emote/f2b3aee7e521de7799d4e3aa379b01be032698ac.png?emoji_size=30",
+
+// 猫
+"怪我咯":"https://i0.hdslb.com/bfs/emote/07cc6077f7f7d75b8d2c722dd9d9828a9fb9e46d.png?emoji_size=30",
+"哭泣":"https://i0.hdslb.com/bfs/emote/a61abafb8c39defc323b045f30072198007b1c89.png?emoji_size=30",
+"哈哈":"https://i0.hdslb.com/bfs/emote/e6449b0bae13b8c97cc65976ff8cdc2c16be0015.png?emoji_size=30",
+"狗子":"https://i0.hdslb.com/bfs/emote/6a997106af5bf490f22c80a7acf3be813ee755fc.png?emoji_size=30",
+"羞羞":"https://i0.hdslb.com/bfs/emote/f4f9171e4d8c3f30827a8b96ea1ce1beb825ad50.png?emoji_size=30",
+"亲亲":"https://i0.hdslb.com/bfs/emote/2f72bae7b834d499f259c833f7011d5ed8748fd1.png?emoji_size=30",
+
+// tv
+"tv-白眼-动图":"https://i0.hdslb.com/bfs/emote/48f75163437445665a9be80bb316e4cb252c5415.gif?emoji_size=30",
+"tv-doge-动图":"https://i0.hdslb.com/bfs/emote/302d6c88c63ed162c81a49cafe7ed2709e6fb955.gif?emoji_size=30",
+"tv-坏笑-动图":"https://i0.hdslb.com/bfs/emote/5d2572efd09aab5dde9e2a198bb3f9ac1e2a982e.gif?emoji_size=30",
+"tv-难过-动图":"https://i0.hdslb.com/bfs/emote/9c6b41008a67755410f712334c64313df5f91b3f.gif?emoji_size=30",
+"tv-生气-动图":"https://i0.hdslb.com/bfs/emote/1902a5a2df5b5c931d88c12f0feb264b1e109d0d.gif?emoji_size=30",
+"tv-委屈-动图":"https://i0.hdslb.com/bfs/emote/af5a5853edb43a8178a8cb5df707fa5e88143699.gif?emoji_size=30",
+"tv-斜眼笑-动图":"https://i0.hdslb.com/bfs/emote/c66568b471192ca1f62f6ed4384dc1b283ab7508.gif?emoji_size=30",
+"tv-呆-动图":"https://i0.hdslb.com/bfs/emote/d3fa91e4db9215eb1e20ab9da44f1214aa4bda7b.gif?emoji_size=30",
+"tv-发怒-动图":"https://i0.hdslb.com/bfs/emote/3959eb81b952e4fa8d269d98f9e3639172d84073.gif?emoji_size=30",
+"tv-惊吓-动图":"https://i0.hdslb.com/bfs/emote/13549060757fcd92b11d0657d9b3b6038f97abb6.gif?emoji_size=30",
+"tv-呕吐-动图":"https://i0.hdslb.com/bfs/emote/db58e9442aae26694af18cc1683607cca3a16763.gif?emoji_size=30",
+"tv-思考-动图":"https://i0.hdslb.com/bfs/emote/b63f9146bfd985af014f8d6d4bdb498805be48f9.gif?emoji_size=30",
+"tv-微笑-动图":"https://i0.hdslb.com/bfs/emote/b98656855d782f61cb8edc7f7fca6563ecafff7e.gif?emoji_size=30",
+"tv-疑问-动图":"https://i0.hdslb.com/bfs/emote/fce1b1a0f3b0e39a2dc16a18508dba7b91e929f4.gif?emoji_size=30",
+"tv-大哭-动图":"https://i0.hdslb.com/bfs/emote/cba61f05f3039b02a7ffc0dfcd9d7995df9fdd74.gif?emoji_size=30",
+"tv-鼓掌-动图":"https://i0.hdslb.com/bfs/emote/be106e6b265883a9f28fbe10f7b765701e2618d4.gif?emoji_size=30",
+"tv-抠鼻-动图":"https://i0.hdslb.com/bfs/emote/696d9f93e722144dc2a78aeffc569418fdf3d565.gif?emoji_size=30",
+"tv-亲亲-动图":"https://i0.hdslb.com/bfs/emote/3534ea44ab74bd20352b88c245a06c4b4c46d271.gif?emoji_size=30",
+"tv-调皮-动图":"https://i0.hdslb.com/bfs/emote/fcd967395fd14e4dd5829fa7e8a967ce23205e52.gif?emoji_size=30",
+"tv-笑哭-动图":"https://i0.hdslb.com/bfs/emote/1c2fd1e8c9dde12812f86e5d4cbddd8993d98082.gif?emoji_size=30",
+"tv-晕-动图":"https://i0.hdslb.com/bfs/emote/030040ec5c9ddc9e3d067658c4139e7314ab42f8.gif?emoji_size=30",
+"tv-点赞-动图":"https://i0.hdslb.com/bfs/emote/30ecff401245fb56bcc1cf588d1809ac1ab1607c.gif?emoji_size=30",
+"tv-害羞-动图":"https://i0.hdslb.com/bfs/emote/411a3e459e8580f5bfd9f639a408247c4b509935.gif?emoji_size=30",
+"tv-睡着-动图":"https://i0.hdslb.com/bfs/emote/3c8b5e293261287a6203597e29b3de07df4d18c6.gif?emoji_size=30",
+"tv-色-动图":"https://i0.hdslb.com/bfs/emote/a0c6d99ab0ab63b8648f5283ff72cec04b604828.gif?emoji_size=30",
+"tv-吐血-动图":"https://i0.hdslb.com/bfs/emote/e17e4539e169d14a3389ff147afea760cebe5de5.gif?emoji_size=30",
+"tv-无奈-动图":"https://i0.hdslb.com/bfs/emote/eb4cb5f07cfd177c7e6a7914316717e56d9cc1d0.gif?emoji_size=30",
+"tv-再见-动图":"https://i0.hdslb.com/bfs/emote/344f61609ecce2008520dc8a977b6169215748a9.gif?emoji_size=30",
+"tv-流汗-动图":"https://i0.hdslb.com/bfs/emote/390bccec65eaff536bd5bb2a0c5b8b0bdea47334.gif?emoji_size=30",
+"tv-偷笑-动图":"https://i0.hdslb.com/bfs/emote/7f11e6f7f63e79112b833bd41fa13a83d7cd8474.gif?emoji_size=30",
+"tv-抓狂-动图":"https://i0.hdslb.com/bfs/emote/a476b93ecd8e94ac3257323fd822f91cef212de2.gif?emoji_size=30",
+"tv-黑人问号-动图":"https://i0.hdslb.com/bfs/emote/b609adf664be33224a9923262031165ae3e34cd2.gif?emoji_size=30",
+"tv-困-动图":"https://i0.hdslb.com/bfs/emote/91c2bf34ecf842d7016c01d841db3d4074bd281f.gif?emoji_size=30",
+"tv-打脸-动图":"https://i0.hdslb.com/bfs/emote/b0fad4856e59c1240e448437da3287bb5ce547e5.gif?emoji_size=30",
+"tv-闭嘴-动图":"https://i0.hdslb.com/bfs/emote/a3fc5388b09e945be3f18fe23bfed5874a0285b7.gif?emoji_size=30",
+"tv-鄙视-动图":"https://i0.hdslb.com/bfs/emote/293b5d459e6264ecf314d20937a936fa672ccd1e.gif?emoji_size=30",
+"tv-腼腆-动图":"https://i0.hdslb.com/bfs/emote/30984e8264324f901d19bea85dada7103b695534.gif?emoji_size=30",
+"tv-馋-动图":"https://i0.hdslb.com/bfs/emote/2525c5703c594e5f0752f68db8948773caebde47.gif?emoji_size=30",
+"tv-可爱-动图":"https://i0.hdslb.com/bfs/emote/f92d20f76258bc5f33fc9d7c5e2a1d41fef19a7c.gif?emoji_size=30",
+"tv-发财-动图":"https://i0.hdslb.com/bfs/emote/76131e52c9b033681b4c896c6024d29ef7ec7ec2.gif?emoji_size=30",
+"tv-生病-动图":"https://i0.hdslb.com/bfs/emote/beb94829fe04f1a41bd6ca611e1f6ca9ca169afa.gif?emoji_size=30",
+"tv-流鼻血-动图":"https://i0.hdslb.com/bfs/emote/8ef473f74a849420da712487b2f56ecca1f695f5.gif?emoji_size=30",
+"tv-尴尬-动图":"https://i0.hdslb.com/bfs/emote/e0b84ef5ee3e5b8978e584c7c5a6550c51d15f84.gif?emoji_size=30",
+"tv-大佬-动图":"https://i0.hdslb.com/bfs/emote/14ca0c05382b8741940942b2430b7a8d55c02f7e.gif?emoji_size=30",
+
+// 小电视
+"小电视-笑":"https://i0.hdslb.com/bfs/emote/f80d384875183dfe2e24be13011c595c0210d273.png?emoji_size=30",
+"小电视-发愁":"https://i0.hdslb.com/bfs/emote/05e279abbf3f72d5cc45548504a4220c5514b8b9.png?emoji_size=30",
+"小电视-赞":"https://i0.hdslb.com/bfs/emote/86ccf6d0b5480169bf80f3582fae09d7ed455c06.png?emoji_size=30",
+"小电视-差评":"https://i0.hdslb.com/bfs/emote/38456e3bde2839b00b536a8be13934fa57c8e298.png?emoji_size=30",
+"小电视-嘟嘴":"https://i0.hdslb.com/bfs/emote/6fd437f547ef1e4f231ff475d02f58bb94cef5a5.png?emoji_size=30",
+"小电视-汗":"https://i0.hdslb.com/bfs/emote/5c150cec77eae1b05d5ca46526450ff3beeb44d2.png?emoji_size=30",
+"小电视-害羞":"https://i0.hdslb.com/bfs/emote/de3aee88f7b6cc20ba9480c96c02f83a844381a9.png?emoji_size=30",
+"小电视-吃惊":"https://i0.hdslb.com/bfs/emote/05188008ea84c70d94e0076e28de15bf56f4c441.png?emoji_size=30",
+"小电视-哭泣":"https://i0.hdslb.com/bfs/emote/938bdf98df945576ae88e2a22931db07ded9e663.png?emoji_size=30",
+"小电视-太太喜欢":"https://i0.hdslb.com/bfs/emote/eb41a8c04840e4f77e76a4bff7a29ac89c432f4e.png?emoji_size=30",
+"小电视-好怒啊":"https://i0.hdslb.com/bfs/emote/68d524b7e515396b6563d320fb710c64abfb1063.png?emoji_size=30",
+"小电视-困惑":"https://i0.hdslb.com/bfs/emote/6853161f0eab3332b874ab7c6c0311035b7538f3.png?emoji_size=30",
+"小电视-我好兴奋":"https://i0.hdslb.com/bfs/emote/a695fe1301aab2675ab6f6e34757c25a863a8617.png?emoji_size=30",
+"小电视-思索":"https://i0.hdslb.com/bfs/emote/f8219e484d5a55787c3f1722dc3112d0eba03a69.png?emoji_size=30",
+"小电视-无语":"https://i0.hdslb.com/bfs/emote/fbd12affebfdaadd3d721bffdb685a6b1ee71219.png?emoji_size=30",
+
+// 2233娘
+"2233娘-大笑":"https://i0.hdslb.com/bfs/emote/16b8794be990cefa6caeba4d901b934a227ee3b8.png?emoji_size=65",
+"2233娘-吃惊":"https://i0.hdslb.com/bfs/emote/d1628c43d35b1530c0504a643ff80b6189fa0a43.png?emoji_size=65",
+"2233娘-大哭":"https://i0.hdslb.com/bfs/emote/476a2a60f6e337b8c0697a592e0aa82781f6b33b.png?emoji_size=65",
+"2233娘-耶":"https://i0.hdslb.com/bfs/emote/d7178e258a0efc969b65ccc2b1322fb235f5dff4.png?emoji_size=65",
+"2233娘-卖萌":"https://i0.hdslb.com/bfs/emote/ea893aa25355de95ab4f03c2dad3f0c58d0c159e.png?emoji_size=65",
+"2233娘-疑问":"https://i0.hdslb.com/bfs/emote/0b41f509351958dbb63d472fec0132d1bd03bd14.png?emoji_size=65",
+"2233娘-汗":"https://i0.hdslb.com/bfs/emote/247cd9df8cdf84b18368c21e3b2dd374e84c0927.png?emoji_size=65",
+"2233娘-困惑":"https://i0.hdslb.com/bfs/emote/714eeb4eae0d0933b4ff08b7df788b1982f6b940.png?emoji_size=65",
+"2233娘-怒":"https://i0.hdslb.com/bfs/emote/f31953119c51b9748016440ac0b632f779929b37.png?emoji_size=65",
+"2233娘-委屈":"https://i0.hdslb.com/bfs/emote/d9d0bf9d358af8d5761093ec66d4e3f60d963a63.png?emoji_size=65",
+"2233娘-郁闷":"https://i0.hdslb.com/bfs/emote/485203fe7100f2c8fc40b2800a18fe20b35f2f1a.png?emoji_size=65",
+"2233娘-第一":"https://i0.hdslb.com/bfs/emote/3754ee6e5985bd0bd7dfb668981f2a8733398ebd.png?emoji_size=65",
+"2233娘-喝水":"https://i0.hdslb.com/bfs/emote/695bf5429472049b52c1e0de586f8a2511195a23.png?emoji_size=65",
+"2233娘-吐魂":"https://i0.hdslb.com/bfs/emote/e999af499edf38a91ca68b1a9d2f97042c1d6734.png?emoji_size=65",
+"2233娘-无言":"https://i0.hdslb.com/bfs/emote/fdb5870f32cfaf7949e0f88a13f6feba4a48b719.png?emoji_size=65",
+"一周年纪念-awsl":"https://i0.hdslb.com/bfs/emote/9f37f3d1a67abe305fb3d5eec325e793f9e671c2.png?emoji_size=65",
+"一周年纪念-抱大腿":"https://i0.hdslb.com/bfs/emote/0800070155b5dabc3097793c0e086420057a7e2f.png?emoji_size=65",
+"一周年纪念-吃棒棒糖":"https://i0.hdslb.com/bfs/emote/c2dfa4e6ae19e0a4a13f10011a26dcc114c1da18.png?emoji_size=65",
+"一周年纪念-大意了":"https://i0.hdslb.com/bfs/emote/6055ecb07a6d6cf63db08b8d7698f6f317d8f8c4.png?emoji_size=65",
+"一周年纪念-害羞":"https://i0.hdslb.com/bfs/emote/24d49eeb3b16f4f480c490f480b185d0259c0699.png?emoji_size=65",
+"一周年纪念-换装":"https://i0.hdslb.com/bfs/emote/4db8f0864d671fb20cc652554ebf75b0e62f4e90.png?emoji_size=65",
+"一周年纪念-来迟一步":"https://i0.hdslb.com/bfs/emote/f8614173695a5d2388e326cd28b91ccb4b7648be.png?emoji_size=65",
+"一周年纪念-买买买":"https://i0.hdslb.com/bfs/emote/1988a85cda6a8d41bb4827ccac5affc8c4c47b1b.png?emoji_size=65",
+"一周年纪念-摩多摩多":"https://i0.hdslb.com/bfs/emote/d7349954a23caf00cc053bcdbbb07698709f3573.png?emoji_size=65",
+"一周年纪念-抢":"https://i0.hdslb.com/bfs/emote/21d9d4c0996bca87c9f9cea371d9700f37ab6a55.png?emoji_size=65",
+"一周年纪念-网卡了":"https://i0.hdslb.com/bfs/emote/6994cfeccb159f4eb034ad67b327fbcbe6c503cb.png?emoji_size=65",
+"一周年纪念-委屈":"https://i0.hdslb.com/bfs/emote/cbc017651f6254572f3232e206fdfe9509b92705.png?emoji_size=65",
+"一周年纪念-我真不馋":"https://i0.hdslb.com/bfs/emote/80b2b224277b8751f56d6d3d740a26d0e0cf12b2.png?emoji_size=65",
+"一周年纪念-谢谢惠顾":"https://i0.hdslb.com/bfs/emote/75c17277ab784ef486eb1a291384ad75d87a3b4e.png?emoji_size=65",
+"春游-春眠":"https://i0.hdslb.com/bfs/emote/43e6907ccb9fb78595352344b9741e2db17faebd.png?emoji_size=65",
+"春游-荡秋千":"https://i0.hdslb.com/bfs/emote/5c21c541985f58ade1d88e6461807dcd369f92a0.png?emoji_size=65",
+"春游-放风筝":"https://i0.hdslb.com/bfs/emote/07dad7327bf458d6246dddc53d4a76477c458389.png?emoji_size=65",
+"春游-爬山":"https://i0.hdslb.com/bfs/emote/b7628aea6b024fa0284014da632f6e238ed1504e.png?emoji_size=65",
+"春游-赏花":"https://i0.hdslb.com/bfs/emote/d54f6fc314a3e871bb5e4796ddee8f106d9896b2.png?emoji_size=65",
+"春游-踏青":"https://i0.hdslb.com/bfs/emote/f064ef5ad096f979a037e97b4fcb1bac8fe9d02b.png?emoji_size=65",
+"春游-跳舞":"https://i0.hdslb.com/bfs/emote/0135670ee26f47a579b2b199639cc092184abc33.png?emoji_size=65",
+"春游-野餐":"https://i0.hdslb.com/bfs/emote/af42cde4c6f72b2ae38c29bdddee25eca915079a.png?emoji_size=65",
+"春游-植树":"https://i0.hdslb.com/bfs/emote/c3b4253a4af9fa83103baa7551699dfe5bc08975.png?emoji_size=65",
+"春游-自拍":"https://i0.hdslb.com/bfs/emote/1f25bb0cd583764ac87ecc4bb27607ae88a8546d.png?emoji_size=65",
+
+// 罗小黑
+"罗小黑-鼓掌":"https://i0.hdslb.com/bfs/emote/622ce9f5ec001269203aaaf8339dffdc7d67d2a3.png?emoji_size=65",
+"罗小黑-你好呀":"https://i0.hdslb.com/bfs/emote/65728d4bedb13fd75c1555c9c4c9de67d276b153.png?emoji_size=65",
+"罗小黑-加油":"https://i0.hdslb.com/bfs/emote/50d9d9e5f57c202be83cdfdba812a15524d02406.png?emoji_size=65",
+"罗小黑-可可爱爱":"https://i0.hdslb.com/bfs/emote/bcdfa28cd019333cdb243c3a8d73374236924585.png?emoji_size=65",
+"罗小黑-吃瓜":"https://i0.hdslb.com/bfs/emote/57d8965331c9fb87afa1756416b622a22e406c43.png?emoji_size=65",
+"罗小黑-嗨":"https://i0.hdslb.com/bfs/emote/7f5e00355af3331964884f27611cc9a0c64e5ce7.png?emoji_size=65",
+"罗小黑-大麦":"https://i0.hdslb.com/bfs/emote/0f5a51e0272c5fcc2c318e078e92e0f8fea77980.png?emoji_size=65",
+"罗小黑-干杯":"https://i0.hdslb.com/bfs/emote/04cf6b7a2f0f24909e1894694daa5c6c668e1f17.png?emoji_size=65",
+"罗小黑-找彩蛋":"https://i0.hdslb.com/bfs/emote/59e34db87c0cb601a5e100c2db0ccfb2894aa02f.png?emoji_size=65",
+"罗小黑-撒花":"https://i0.hdslb.com/bfs/emote/bbaaaa40328f32f3e3e41ffc77a70c057d0a13ad.png?emoji_size=65",
+"罗小黑-来了":"https://i0.hdslb.com/bfs/emote/fd1950da6509171ba144d138c4d0a81f0840794e.png?emoji_size=65",
+"罗小黑-歪在吗":"https://i0.hdslb.com/bfs/emote/0caf23cc530b0e021c32c623dee045160a2449fa.png?emoji_size=65",
+"罗小黑-求包养":"https://i0.hdslb.com/bfs/emote/2277c2b72646cf22a7217897f3cd62c5c80a6451.png?emoji_size=65",
+"罗小黑-看电影":"https://i0.hdslb.com/bfs/emote/eedd49d8d1d6c5b0eafc3e0a10966f508a7ab6f1.png?emoji_size=65",
+"罗小黑-真棒":"https://i0.hdslb.com/bfs/emote/f03fbb80a7939eafa4819388df80e9c777e8ab7d.png?emoji_size=65",
+"罗小黑-自来水":"https://i0.hdslb.com/bfs/emote/4a0c602ed9d4f1e5550c0595ea63653a9cbf88bd.png?emoji_size=65",
+
+// 洛天依
+"洛天依-傲娇":"https://i0.hdslb.com/bfs/emote/5d7c8307af10540909fce6121066249df3935a24.png?emoji_size=65",
+"洛天依-吃包群众":"https://i0.hdslb.com/bfs/emote/f8cdabfc1b81fd25b85b8457ee49a20a4fc5d91b.png?emoji_size=65",
+"洛天依-吃药":"https://i0.hdslb.com/bfs/emote/883e6654176ebcecafd3e52efa8ee842357e18a0.png?emoji_size=65",
+"洛天依-滑稽":"https://i0.hdslb.com/bfs/emote/692cef7ca51f935aaa499de7e4d6048c53f42324.png?emoji_size=65",
+"洛天依-哈哈哈":"https://i0.hdslb.com/bfs/emote/677c2f5555c1e79fc336a6283fdbbdc7ea88fec4.png?emoji_size=65",
+"洛天依-看透一切":"https://i0.hdslb.com/bfs/emote/4fac414b5002c3739b1ae24f2fc27b5f150ade24.png?emoji_size=65",
+"洛天依-打call":"https://i0.hdslb.com/bfs/emote/2ab983b2519dc241666254de8e5352fbeedc96bb.png?emoji_size=65",
+"洛天依-前排":"https://i0.hdslb.com/bfs/emote/fbbc45e7aee2f256f691df539db0cfcc35b3be7d.png?emoji_size=65",
+"洛天依-去吧":"https://i0.hdslb.com/bfs/emote/0edeeb0d10d44302854e636c47f5dc3aa96a9206.png?emoji_size=65",
+"洛天依-冷漠":"https://i0.hdslb.com/bfs/emote/5f4385db3c9806b08ea15bd9ff444af9d9fe0c3a.png?emoji_size=65",
+"洛天依-可以":"https://i0.hdslb.com/bfs/emote/967377b83e37a0d5dd13bc0f4e4323abf10e4cbf.png?emoji_size=65",
+"洛天依-掀桌":"https://i0.hdslb.com/bfs/emote/803129b7a1143faabc63c2648335b7d506229e7a.png?emoji_size=65",
+"洛天依-消灭你":"https://i0.hdslb.com/bfs/emote/d96dccf8fa248ee34c7e4aba94e813bec28d2dd8.png?emoji_size=65",
+"洛天依-阴阳先生":"https://i0.hdslb.com/bfs/emote/65e195a8ac54bb678dd1c1e6ce6c5d4ba02761b3.png?emoji_size=65",
+"洛天依-无言以对":"https://i0.hdslb.com/bfs/emote/9cfd368b370acd40c1b8f933cec3fb24883356a5.png?emoji_size=65",
+"洛天依-？？？":"https://i0.hdslb.com/bfs/emote/f5f1ebe50c26d5f6d4e17cb983bd5ae59f103dda.png?emoji_size=65",
+"洛天依-爱你哦":"https://i0.hdslb.com/bfs/emote/7102c9e25359af8348489ff8529b3bb2c5bd05d0.png?emoji_size=65",
+
+// 言和
+"言和7th-不好意思":"https://i0.hdslb.com/bfs/emote/770cab6905d3563ea98ce41300ab6faa4d72e0bc.png?emoji_size=65",
+"言和7th-乖巧":"https://i0.hdslb.com/bfs/emote/2cc3e5bd1b74e11d63227626e3e70ccca218b9e8.png?emoji_size=65",
+"言和7th-来晚了":"https://i0.hdslb.com/bfs/emote/e4bf7d9341cf16e531e59fb3ae00b5099bd74903.png?emoji_size=65",
+"言和7th-静静看你":"https://i0.hdslb.com/bfs/emote/a073eb677ae33a72b99a0e08fad8d0d597f69d2b.png?emoji_size=65",
+"言和7th-一键三连":"https://i0.hdslb.com/bfs/emote/033d7dbfd814d9e7baa69a63137157f4b9032b5f.png?emoji_size=65",
+"言和7th-捶你胸口":"https://i0.hdslb.com/bfs/emote/ad5ce66b4480044c31bbc23598f4209e6be2275d.png?emoji_size=65",
+"言和7th-期待":"https://i0.hdslb.com/bfs/emote/4d520d8bd5cd2924548a67a96afb898440789fc1.png?emoji_size=65",
+"言和7th-小fafa":"https://i0.hdslb.com/bfs/emote/efcc742e4c202f631162d6fdfb6e3cbb52a0871b.png?emoji_size=65",
+"言和7th-不行":"https://i0.hdslb.com/bfs/emote/76ae33697d1942cfbb825acdfdd3de8826dbf10e.png?emoji_size=65",
+"言和7th-梦里都有":"https://i0.hdslb.com/bfs/emote/c8c714cbaf4022b71c8b8d0e0e374f08865011cf.png?emoji_size=65",
+
+// 初音未来
+"初音未来-抱抱":"https://i0.hdslb.com/bfs/emote/193259652bf6d72a9c52f8111fcd412b31d79298.png?emoji_size=65",
+"初音未来-nice":"https://i0.hdslb.com/bfs/emote/7f3445c37e0cacaeeeb9a9bbbc7138872ddfbc19.png?emoji_size=65",
+"初音未来-GKD":"https://i0.hdslb.com/bfs/emote/44caa7ec800837d8860482c214ac792f4c37c490.png?emoji_size=65",
+"初音未来-问号":"https://i0.hdslb.com/bfs/emote/eaa4e51f78ff3ba6b7a1606d0fb44482515b4424.png?emoji_size=65",
+"初音未来-吃惊":"https://i0.hdslb.com/bfs/emote/4c262d6c0686391ef129f0c2dcca0a600018f47d.png?emoji_size=65",
+"初音未来-干杯":"https://i0.hdslb.com/bfs/emote/c5d1de20038102c003c04bb7505de51b91e39fd5.png?emoji_size=65",
+"初音未来-端碗":"https://i0.hdslb.com/bfs/emote/3de27d6f8e01b1a8db09a64a56d3a744b33ad435.png?emoji_size=65",
+"初音未来-害怕":"https://i0.hdslb.com/bfs/emote/7fedbd2eb20d6e30985b02c086392f1386db2b9c.png?emoji_size=65",
+"初音未来-加油":"https://i0.hdslb.com/bfs/emote/4943a9be0a3134125c7d585b4dafde79a9a1990a.png?emoji_size=65",
+"初音未来-哭了":"https://i0.hdslb.com/bfs/emote/db9b01e5808967a32ed644b490ab47faf0f29ce3.png?emoji_size=65",
+"初音未来-困了":"https://i0.hdslb.com/bfs/emote/3d442c1d2acc751489ec43d55e5d3b7042e49910.png?emoji_size=65",
+"初音未来-鬼脸":"https://i0.hdslb.com/bfs/emote/91b2bb5d0db1a668f3269059a809e5330f0a2bd0.png?emoji_size=65",
+"初音未来-期待":"https://i0.hdslb.com/bfs/emote/f361daba4c64775b05f45fd241eb43072258accd.png?emoji_size=65",
+"初音未来-生气":"https://i0.hdslb.com/bfs/emote/c527e61be20dfbddcb21d9c07a26b161b01ecacc.png?emoji_size=65",
+"初音未来-睡了":"https://i0.hdslb.com/bfs/emote/f9c2088fe82105c0d912e2b3a6c6db52cb1abf7f.png?emoji_size=65",
+"初音未来-委屈":"https://i0.hdslb.com/bfs/emote/55023c31259200e5c821cac526b36e527f455d43.png?emoji_size=65",
+"初音未来-无语":"https://i0.hdslb.com/bfs/emote/3e32d47239d8f8f8c70cf58cc79f0f8f17383a23.png?emoji_size=65",
+"初音未来-喜欢":"https://i0.hdslb.com/bfs/emote/6b4afbd2addead54037ba31988e8631a7fb9956a.png?emoji_size=65",
+"初音未来-嫌弃":"https://i0.hdslb.com/bfs/emote/6560007ff02d8261dc36a55c58601cf8d7d2a680.png?emoji_size=65",
+"初音未来-再见":"https://i0.hdslb.com/bfs/emote/06094b87ef45f7513bb4c22e049612d62cd5cd8e.png?emoji_size=65",
+
+// 七濑胡桃
+"七濑胡桃-吧唧吧唧":"https://i0.hdslb.com/bfs/emote/f546bd678e03bd8e6c69cfdd261371f1d92b4af0.png?emoji_size=65",
+"七濑胡桃-熬夜":"https://i0.hdslb.com/bfs/emote/6644424251c41faa839baea017b3fe0883403a5f.png?emoji_size=65",
+"七濑胡桃-泪目":"https://i0.hdslb.com/bfs/emote/5db71ee743192636e00ee9e047871660bdf7024d.png?emoji_size=65",
+"七濑胡桃-乖巧":"https://i0.hdslb.com/bfs/emote/cdab66521518433e51b45584ac91a9f62861d237.png?emoji_size=65",
+"七濑胡桃-好饿":"https://i0.hdslb.com/bfs/emote/7b45cfb0165d6a00bd70d97c3c7b4c37255812d5.png?emoji_size=65",
+"七濑胡桃-紧张":"https://i0.hdslb.com/bfs/emote/00e4a030c5ccb3bf037030c184c2e311ef2d5046.png?emoji_size=65",
+"七濑胡桃-噗":"https://i0.hdslb.com/bfs/emote/561eeb8bb8c856f9aea90045325536485a976b54.png?emoji_size=65",
+"七濑胡桃-生气":"https://i0.hdslb.com/bfs/emote/263a846ba5b0bc833b4a72a181cc6c458d1cf9e2.png?emoji_size=65",
+"七濑胡桃-委屈":"https://i0.hdslb.com/bfs/emote/edcbaf329f7b871895676991383dcaaa0b4e6d29.png?emoji_size=65",
+"七濑胡桃-我超可爱":"https://i0.hdslb.com/bfs/emote/3aa314c3ad7f34aa7ed51bf1db7e7f9d3f25183c.png?emoji_size=65",
+"七濑胡桃-我来了！":"https://i0.hdslb.com/bfs/emote/bdc3d96e293d60de32697d24a104d6b6c9b367bf.png?emoji_size=65",
+"七濑胡桃-有意思":"https://i0.hdslb.com/bfs/emote/e4a37733718d034ad7fcf10d1d4c3ec5e27df951.png?emoji_size=65",
+"七濑胡桃-元气满满":"https://i0.hdslb.com/bfs/emote/fc0f26bbb665e517d7a7d56633a782277eeb6040.png?emoji_size=65",
+"七濑胡桃-宅在家":"https://i0.hdslb.com/bfs/emote/459c64c353998240801306404cc14bfa50dadb4f.png?emoji_size=65",
+"七濑胡桃-缜密分析":"https://i0.hdslb.com/bfs/emote/3df7be1c576b8f59399f4d6a8d60967e4a9aeb68.png?emoji_size=65",
+
+// 神乐七奈
+"神乐七奈-dd斩首":"https://i0.hdslb.com/bfs/emote/060cf4e8aa6d4fefd452de3e14a410de7a4ca9c2.png?emoji_size=65",
+"神乐七奈-变猫猫":"https://i0.hdslb.com/bfs/emote/9f699c56da1178079b18be27dc3f219138e4a164.png?emoji_size=65",
+"神乐七奈-好耶":"https://i0.hdslb.com/bfs/emote/c67cabaf0020dc8b203ba239247906fc8fbbb009.png?emoji_size=65",
+"神乐七奈-卖柠檬":"https://i0.hdslb.com/bfs/emote/b74b8f66c5c3afc6d96f57dc29c0721206a4cf7b.png?emoji_size=65",
+"神乐七奈-你好":"https://i0.hdslb.com/bfs/emote/050d7cb23d27f4a3e8a8e9cdf28737b656d36b75.png?emoji_size=65",
+"神乐七奈-随便画画":"https://i0.hdslb.com/bfs/emote/0b67793086c6f4d481479da6e2233fc91cef9c0d.png?emoji_size=65",
+"神乐七奈-辛苦辣":"https://i0.hdslb.com/bfs/emote/7b22908d4afac2c0ad1ba96177ac7a24855f4a2e.png?emoji_size=65",
+"神乐七奈-疑惑":"https://i0.hdslb.com/bfs/emote/eebb4311bddfc88511d2b952727cc56f7404e50f.png?emoji_size=65",
+"神乐七奈-擦玻璃":"https://i0.hdslb.com/bfs/emote/6880f9f8a338ecd38b601f66f7d2d3a68e26a8b6.png?emoji_size=65",
+"神乐七奈-剪刀手":"https://i0.hdslb.com/bfs/emote/7f21c544c62328708bf2d264abea12261bf68867.png?emoji_size=65",
+"神乐七奈-卖桃子":"https://i0.hdslb.com/bfs/emote/eedf616dee91fe20b85a86d7f02c4ee6ec11a7da.png?emoji_size=65",
+"神乐七奈-忘崽牛奶":"https://i0.hdslb.com/bfs/emote/f1e4aa53e5101795b8efd28bd8f2c3bec239582a.png?emoji_size=65",
+"神乐七奈-震惊":"https://i0.hdslb.com/bfs/emote/de6de733deea06fd712f0d27e81135661446c4c0.png?emoji_size=65",
+
+// 原神
+"原神-小事一桩":"https://i0.hdslb.com/bfs/emote/c52cddcb4d454af38d339c033c4a06160e6ba789.png?emoji_size=65",
+"原神-唔":"https://i0.hdslb.com/bfs/emote/f00164e1fdb73d4aa84b2741d343d10a89a8a2ed.png?emoji_size=65",
+"原神-躺平":"https://i0.hdslb.com/bfs/emote/7067e7e2b589e7156be66901be9a73834ecdc25c.png?emoji_size=65",
+"原神-哦":"https://i0.hdslb.com/bfs/emote/4b8b6f0e451c600abf2d83560125d03cfa97fe28.png?emoji_size=65",
+"原神-哭哭":"https://i0.hdslb.com/bfs/emote/d800294a99034af28160bc6e98e7a59c55e60bc8.png?emoji_size=65",
+"原神-救救我":"https://i0.hdslb.com/bfs/emote/49867dd30eb6a1699b9f64ae5316137c96d6280f.png?emoji_size=65",
+"原神-警觉":"https://i0.hdslb.com/bfs/emote/4d03eb99263d1d85c5c820ad046b8a9549f246a9.png?emoji_size=65",
+"原神-交给我吧":"https://i0.hdslb.com/bfs/emote/b09408f0a92ca5367e0ccffeb3389c5f19369817.png?emoji_size=65",
+"原神-哼哼":"https://i0.hdslb.com/bfs/emote/62d09fa482842dabbd4a51176abc0ec20a64a359.png?emoji_size=65",
+"原神-给我走开":"https://i0.hdslb.com/bfs/emote/c0a9f2bea10fdf763b4fbe3874ee254d61916711.png?emoji_size=65",
+"原神-鸽子":"https://i0.hdslb.com/bfs/emote/d03a8f9f490eb007aae2d826f9143e3a29a3be5a.png?emoji_size=65",
+"原神-干杯":"https://i0.hdslb.com/bfs/emote/966f0b307bf4d07e81162dc32bf1e71c83bf997a.png?emoji_size=65",
+"原神-该吃饭了":"https://i0.hdslb.com/bfs/emote/34fb6a22facd0f7d6d4a4e1be50e96f120ae7054.png?emoji_size=65",
+"原神-出货吧":"https://i0.hdslb.com/bfs/emote/a087fb84524b6ffda6fa0385b09065c472432cd7.png?emoji_size=65",
+"原神-吃惊":"https://i0.hdslb.com/bfs/emote/d8d07498a567ea109a8fc4b58ffccdc33643cd99.png?emoji_size=65",
+"原神-不要啊":"https://i0.hdslb.com/bfs/emote/8ea92be976beb8126adc7cabc2aa7f2b02b9bee2.png?emoji_size=65",
+"原神-拜托":"https://i0.hdslb.com/bfs/emote/2f2817b84caf9d81fdce171d18a3f99983f1ec64.png?emoji_size=65",
+"原神-zzZZ":"https://i0.hdslb.com/bfs/emote/3c9d996ac0ed9dd8eaefbd00e6f90a0f21656b3f.png?emoji_size=65",
+"原神-good job":"https://i0.hdslb.com/bfs/emote/dd7666d93cd8f78c58ce5975133582a107b8d286.png?emoji_size=65",
+"原神-1摩拉":"https://i0.hdslb.com/bfs/emote/c77cafc89695d148ccda4d6965698d9ae6a6802d.png?emoji_size=65",
+"原神-OK":"https://i0.hdslb.com/bfs/emote/cd9a2b4c2972dfcab81964f37a652b38fe88d0e7.png?emoji_size=65",
+"原神-暗中观察":"https://i0.hdslb.com/bfs/emote/2532af22d65cf83f0630118c018cd08796558405.png?emoji_size=65",
+"原神-比心":"https://i0.hdslb.com/bfs/emote/8dbfe314096199a65360df01ccf06e06073b3869.png?emoji_size=65",
+"原神-震撼":"https://i0.hdslb.com/bfs/emote/2fbf21300ca4ed47f763698364458fb8dad0f755.png?emoji_size=65",
+"原神-倒":"https://i0.hdslb.com/bfs/emote/d7b114b8d812ec97de10626cb73daaac98000544.png?emoji_size=65",
+"原神-点赞":"https://i0.hdslb.com/bfs/emote/091572b59ea3251288b254abbe88a0f3c20cdffe.png?emoji_size=65",
+"原神-鼓掌":"https://i0.hdslb.com/bfs/emote/c8f852c86219833aae92e739c8b68857f5269aa7.png?emoji_size=65",
+"原神-乖巧":"https://i0.hdslb.com/bfs/emote/53a51820cfe3ee3918cecffd5515719c97f2dcbf.png?emoji_size=65",
+"原神-得意":"https://i0.hdslb.com/bfs/emote/05fbec74a04c03cbf6c5af702c7436a7a2e9143d.png?emoji_size=65",
+"原神-冷漠":"https://i0.hdslb.com/bfs/emote/8c3c8ff85d18d7e839c5247526ce15c60bceddc0.png?emoji_size=65",
+"原神-期待":"https://i0.hdslb.com/bfs/emote/650cfaaaef9b9ec06b8fd6c156bfe395879c60be.png?emoji_size=65",
+"原神-撒花":"https://i0.hdslb.com/bfs/emote/046e0fa34668c4174617e6ba67744ce16100fe47.png?emoji_size=65",
+"原神-晚安":"https://i0.hdslb.com/bfs/emote/5f25c60f015ed45f82b3276f93a819dfac6b61f8.png?emoji_size=65",
+"原神-委屈":"https://i0.hdslb.com/bfs/emote/7db56d34892314ac9ac6eedf4115bc2362bf1c4d.png?emoji_size=65",
+"原神-疑问":"https://i0.hdslb.com/bfs/emote/9a3ed71cb7779710b072069e050d70096adba232.png?emoji_size=65",
+"原神-有主意了":"https://i0.hdslb.com/bfs/emote/08e473ea5ad8a1a40e51b7446d2e4ade1e5f05eb.png?emoji_size=65",
+
+// Hiiro
+"Hiiro-Hii皮笑脸":"https://i0.hdslb.com/bfs/emote/5c6276afd4df1a02af0c95ad4f807c497dbb8595.png?emoji_size=65",
+"Hiiro-wink":"https://i0.hdslb.com/bfs/emote/100b6f3429dffbea01d041647e07a8746ec45bf5.png?emoji_size=65",
+"Hiiro-傲娇":"https://i0.hdslb.com/bfs/emote/8fa7e6ffc5595c42a09f5f28536da176a55e3dcd.png?emoji_size=65",
+"Hiiro-饿了":"https://i0.hdslb.com/bfs/emote/d6190a4d3278d8cb0400e4017572ca17dc95ac55.png?emoji_size=65",
+"Hiiro-感谢":"https://i0.hdslb.com/bfs/emote/5c8a0a1ce152ad4de9b091efc8a6cb9fb498e4f8.png?emoji_size=65",
+"Hiiro-害羞":"https://i0.hdslb.com/bfs/emote/7f304fe4c781a2da1dc35d7d1b031f14b8b8631b.png?emoji_size=65",
+"Hiiro-可爱":"https://i0.hdslb.com/bfs/emote/3fb98917c30d878e96b077079a29c57c406110a4.png?emoji_size=65",
+"Hiiro-哭笑不得":"https://i0.hdslb.com/bfs/emote/f3ee8f1092c2322786b7a777da5fd7ed77c5af58.png?emoji_size=65",
+"Hiiro-泪目":"https://i0.hdslb.com/bfs/emote/4a604ac0ae729b6ce540327a7121f095e42d0b54.png?emoji_size=65",
+"Hiiro-亲亲":"https://i0.hdslb.com/bfs/emote/0b54433d978f51a7031a965f2981832129eb8ef5.png?emoji_size=65",
+"Hiiro-烧开水":"https://i0.hdslb.com/bfs/emote/53c29d3ce7fb7c0f98e040667e47adb57155cc3d.png?emoji_size=65",
+"Hiiro-生气":"https://i0.hdslb.com/bfs/emote/17e4595799ba8952f12ed8f4b290813dfd4ae67a.png?emoji_size=65",
+"Hiiro-王牛奶":"https://i0.hdslb.com/bfs/emote/5fdeb7de9be166a7bc4ed43cca33e98e8cfd1698.png?emoji_size=65",
+"Hiiro-王酸奶":"https://i0.hdslb.com/bfs/emote/e220c868856ea2b036fa9751b8de12985f968814.png?emoji_size=65",
+"Hiiro-装酷":"https://i0.hdslb.com/bfs/emote/14193deff0390a77423a51523bb4bb5e54db3a2d.png?emoji_size=65",
+
+// 元龙
+"元龙-好汉饶命":"https://i0.hdslb.com/bfs/emote/3e267ed30aa9be74ed59e77e75b64e3ac5a9d2a1.png?emoji_size=65",
+"元龙-捂脸":"https://i0.hdslb.com/bfs/emote/acd37e3530f80e88ea6b8b4fa2e1bd1b1912e114.png?emoji_size=65",
+"元龙-我错了":"https://i0.hdslb.com/bfs/emote/d4a061a8473929187962f1ff675ccb6a773f7122.png?emoji_size=65",
+"元龙-我投降":"https://i0.hdslb.com/bfs/emote/31caf8622e4d1a919e10dc825259500c38aa6fa3.png?emoji_size=65",
+
+// 雪未来
+"雪未来-太棒了":"https://i0.hdslb.com/bfs/emote/d03c1d062bb4f346c1041ca60bc763d404ddbd56.png?emoji_size=65",
+"雪未来-摸头":"https://i0.hdslb.com/bfs/emote/c7389d48b89699ecfeec373f90c8c26ea6d3496b.png?emoji_size=65",
+"雪未来-击掌":"https://i0.hdslb.com/bfs/emote/bd257c4ce22fca6a810c74873e90b343ddcead68.png?emoji_size=65",
+"雪未来-等一等":"https://i0.hdslb.com/bfs/emote/16e50092a82375171513018f372ed72377fcd979.png?emoji_size=65",
+"雪未来-忽然出现":"https://i0.hdslb.com/bfs/emote/02ba37478cdb287f40b2a328c5755873937cc417.png?emoji_size=65",
+"雪未来-喝奶茶":"https://i0.hdslb.com/bfs/emote/7847100be4de8cb3bf25825af165bed4f0668084.png?emoji_size=65",
+"雪未来-冲呀":"https://i0.hdslb.com/bfs/emote/d5a14055c8b4b457d7d815c79e7e4180299b375d.png?emoji_size=65",
+"雪未来-下雪了":"https://i0.hdslb.com/bfs/emote/12d2ef42e75d2806bb8a071476e825c58e797f1a.png?emoji_size=65",
+"雪未来-堆雪人":"https://i0.hdslb.com/bfs/emote/b2ee932586ee69f1a5ba69676f5fd345b4cd069a.png?emoji_size=65",
+"雪未来-赖床":"https://i0.hdslb.com/bfs/emote/239d2acb5dc2b96ec98af1ba1a81f49c8b211cd4.png?emoji_size=65",
+"雪未来-忍住不笑":"https://i0.hdslb.com/bfs/emote/852cc4cc73caa982b07bcbe48683d20be6c8df61.png?emoji_size=65",
+"雪未来-打气":"https://i0.hdslb.com/bfs/emote/1eafe084dccb3c8afff05b21d302e40e06dd07dd.png?emoji_size=65",
+"雪未来-叹气":"https://i0.hdslb.com/bfs/emote/a515cd6aa54093c1ccb364f22360620e2d5d76cb.png?emoji_size=65",
+"雪未来-给你惊喜":"https://i0.hdslb.com/bfs/emote/0b552c42157aef2002f8e9c05b06939ac3226127.png?emoji_size=65",
+"雪未来-生气":"https://i0.hdslb.com/bfs/emote/27e30065621ff3c981102b60865872d1be40fcd7.png?emoji_size=65",
+"雪未来-早安":"https://i0.hdslb.com/bfs/emote/7d941da6f69bf256b71b2f4c813c9e15bc6f89fa.png?emoji_size=65",
+"雪未来-挠头":"https://i0.hdslb.com/bfs/emote/6c5f3b58a568185b9844e902c632ee5cf362170d.png?emoji_size=65",
+"雪未来-嘿嘿":"https://i0.hdslb.com/bfs/emote/7bee0f7af3eef454f9107e883b1c5988fada42a5.png?emoji_size=65",
+"雪未来-唱歌":"https://i0.hdslb.com/bfs/emote/1ac8692986fc4e3d271fa14289f99d5d11dee54d.png?emoji_size=65",
+"雪未来-泪目":"https://i0.hdslb.com/bfs/emote/7d721758533a060933d6cef176012bf15f0fba81.png?emoji_size=65",
+
+// 新月冰冰
+"新月冰冰-awsl":"https://i0.hdslb.com/bfs/emote/324e2e3b18af6dbabbe445b02b85c3cec48e43bc.png?emoji_size=65",
+"新月冰冰-呆suki":"https://i0.hdslb.com/bfs/emote/5bb4dd5d3f0d069e0cb78bbfff80f1788d6011ba.png?emoji_size=65",
+"新月冰冰-干杯":"https://i0.hdslb.com/bfs/emote/f7038566ae57f8259f761256d2ef03744e808bb8.png?emoji_size=65",
+"新月冰冰-喝茶":"https://i0.hdslb.com/bfs/emote/f7150cb7185abd37906f2bfc9607702100632b32.png?emoji_size=65",
+"新月冰冰-嚯奶茶":"https://i0.hdslb.com/bfs/emote/ec842dd0a2babcc9b391fef5a88c18b8e1e3ad19.png?emoji_size=65",
+"新月冰冰-忙忙忙":"https://i0.hdslb.com/bfs/emote/068db38dcced6622113b67603461dd996c89c656.png?emoji_size=65",
+"新月冰冰-冒冷汗":"https://i0.hdslb.com/bfs/emote/abb9e449b57da2e79454232533f89ae5ee9179f2.png?emoji_size=65",
+"新月冰冰-生气":"https://i0.hdslb.com/bfs/emote/948234df49f83597951cc8cc1a94f9d7d7150608.png?emoji_size=65",
+"新月冰冰-送牛肉酱":"https://i0.hdslb.com/bfs/emote/1ec17f690a917100b2718085d4d594fc3497dd9f.png?emoji_size=65",
+"新月冰冰-叹气":"https://i0.hdslb.com/bfs/emote/dce26800be487be2d3c2458ca5e947526a0a70f4.png?emoji_size=65",
+"新月冰冰-探头":"https://i0.hdslb.com/bfs/emote/28e1ed3aba231c9dd26bfaa327578e19d0c7cb41.png?emoji_size=65",
+"新月冰冰-汪汪碎冰冰":"https://i0.hdslb.com/bfs/emote/bcd3645522f0886bbf0199f068fca98c523ad2fe.png?emoji_size=65",
+"新月冰冰-我吃柠檬":"https://i0.hdslb.com/bfs/emote/a1adad7ef9c4eebbebd21713f7c389653d45eef3.png?emoji_size=65",
+"新月冰冰-疑惑":"https://i0.hdslb.com/bfs/emote/3644f4e55723c6793ea5a926cda9c2ffccb77793.png?emoji_size=65",
+"新月冰冰-醉了":"https://i0.hdslb.com/bfs/emote/f51ca4292f685b63ccbcf022c37da962908d124b.png?emoji_size=65",
+
+// 琉绮Ruki
+"琉绮Ruki-？？？":"https://i0.hdslb.com/bfs/emote/043a092820fe53ce92e817c4479450abb9f6e46a.png?emoji_size=65",
+"琉绮Ruki-不是吧":"https://i0.hdslb.com/bfs/emote/634b2d58c727ec910ab44eb249270190788ab1b0.png?emoji_size=65",
+"琉绮Ruki-吃瓜":"https://i0.hdslb.com/bfs/emote/fcde21ba88f51c9120866629207fdac31f0d2e86.png?emoji_size=65",
+"琉绮Ruki-刺激":"https://i0.hdslb.com/bfs/emote/645bfc31dbf49d527d9e04a5349763cb7385aa07.png?emoji_size=65",
+"琉绮Ruki-害羞":"https://i0.hdslb.com/bfs/emote/69f57aa355a4b891739a723f4d147bcbbcd052bd.png?emoji_size=65",
+"琉绮Ruki-惊呆惹":"https://i0.hdslb.com/bfs/emote/a45a61a41842e4b88187ed1274b8279e529d4124.png?emoji_size=65",
+"琉绮Ruki-哭哭":"https://i0.hdslb.com/bfs/emote/51f3a7ab019e00a400f43e24b8b17544f9a7984c.png?emoji_size=65",
+"琉绮Ruki-气鼓鼓":"https://i0.hdslb.com/bfs/emote/be46e705785b9fbbdceea26acbe3270eb48d0fbf.png?emoji_size=65",
+"琉绮Ruki-身体被掏空":"https://i0.hdslb.com/bfs/emote/6d13a5f3f5e8a8c3be967ab5451aab93b62cb26a.png?emoji_size=65",
+"琉绮Ruki-思考中":"https://i0.hdslb.com/bfs/emote/59741ff96e5fb3638d563513c22cf109414e9a1a.png?emoji_size=65",
+"琉绮Ruki-哇哦":"https://i0.hdslb.com/bfs/emote/89f3ba397480e6a346283eae2ca3005aaaf423a8.png?emoji_size=65",
+
+// 大航海嘉然
+"大航海嘉然-？？？":"https://i0.hdslb.com/bfs/emote/62c63c377ab71b151ca14f36d5de8f22224bff3e.png?emoji_size=65",
+"大航海嘉然-NO":"https://i0.hdslb.com/bfs/emote/5a3711be72b6d75cd1a88b3877b11ac37f347ee5.png?emoji_size=65",
+"大航海嘉然-YYDS":"https://i0.hdslb.com/bfs/emote/77bc8051ad2e8ff84382268801d5fe85ae9b0e2b.png?emoji_size=65",
+"大航海嘉然-饿了":"https://i0.hdslb.com/bfs/emote/24efe361c443e657b11dbe77855002e8eb3b62c1.png?emoji_size=65",
+"大航海嘉然-干饭":"https://i0.hdslb.com/bfs/emote/814651c664802627ccc4fa5d7a74ba8353045a0b.png?emoji_size=65",
+"大航海嘉然-好耶":"https://i0.hdslb.com/bfs/emote/aa80c99462285de0ef2edc2f3888d2b275a43f51.png?emoji_size=65",
+"大航海嘉然-柠檬":"https://i0.hdslb.com/bfs/emote/55d3922190bc885b5a38dc62f4b49709498b6b8d.png?emoji_size=65",
+"大航海嘉然-生气":"https://i0.hdslb.com/bfs/emote/4900810ac900ab4a2b58b206acb49c3207553cde.png?emoji_size=65",
+"大航海嘉然-失意":"https://i0.hdslb.com/bfs/emote/dc3707cec17e5c296734cdb01ef03d6896c75ae1.png?emoji_size=65",
+"大航海嘉然-晚安":"https://i0.hdslb.com/bfs/emote/7a72fd17aff5045bcb6c8bbf95e4de47701d499f.png?emoji_size=65",
+"大航海嘉然-委屈":"https://i0.hdslb.com/bfs/emote/6b19226bd0cbca2e7568cf070c68589882754823.png?emoji_size=65",
+"大航海嘉然-喜欢":"https://i0.hdslb.com/bfs/emote/1abad1e3a3cbc9a647fad73a46f05a4cce7d18b6.png?emoji_size=65",
+"大航海嘉然-想你":"https://i0.hdslb.com/bfs/emote/c47c5bc1bbd491f4307ff0fb2e8fe25f607b8781.png?emoji_size=65",
+"大航海嘉然-原来如此":"https://i0.hdslb.com/bfs/emote/4e60251e65998275a69aa8c7ca187c43510c90e1.png?emoji_size=65",
+"大航海嘉然-震撼":"https://i0.hdslb.com/bfs/emote/574252fa6ffe487561593d1a7b757743f5aa1902.png?emoji_size=65",
+
+// 椎名菜羽
+"椎名菜羽-nano好":"https://i0.hdslb.com/bfs/emote/3a4b506a3d0a5e94f83c34a43c03738da1d9f980.png?emoji_size=65",
+"椎名菜羽-NO":"https://i0.hdslb.com/bfs/emote/e9079e761f17a3968870750bb5b8989c4168f392.png?emoji_size=65",
+"椎名菜羽-OK":"https://i0.hdslb.com/bfs/emote/e24ed3e3b9dea2f72c181aef9524e4ffcc9d8686.png?emoji_size=65",
+"椎名菜羽-好耶":"https://i0.hdslb.com/bfs/emote/6eae51a363e57ab56d300318f6b8e314c0511f53.png?emoji_size=65",
+"椎名菜羽-愣":"https://i0.hdslb.com/bfs/emote/0383a16d60bfa2d5007ddca340a18aa7bf55e3b4.png?emoji_size=65",
+"椎名菜羽-咪啪":"https://i0.hdslb.com/bfs/emote/fa4d72271d07ddada40517ff1a40c62adbd00916.png?emoji_size=65",
+"椎名菜羽-铁咩":"https://i0.hdslb.com/bfs/emote/62fc9b93c04e2fb203c59b96da52c68640d11260.png?emoji_size=65",
+"椎名菜羽-偷瞄":"https://i0.hdslb.com/bfs/emote/82a8c3a04c9d94af7d91ca11a3a6798a08b47a83.png?emoji_size=65",
+"椎名菜羽-晚安":"https://i0.hdslb.com/bfs/emote/d94ea94549fc7704c4325634edbc0b8a9f8991c7.png?emoji_size=65",
+"椎名菜羽-威严":"https://i0.hdslb.com/bfs/emote/46196a53e430cb58cc98de7a7784703a23dff3f2.png?emoji_size=65",
+"椎名菜羽-喜欢":"https://i0.hdslb.com/bfs/emote/a3e019821ab3ffc6592ca518d5d3028226ea665f.png?emoji_size=65",
+"椎名菜羽-谢谢":"https://i0.hdslb.com/bfs/emote/056cba09bf22246cde96a4509f4b5d684fa52e49.png?emoji_size=65",
+"椎名菜羽-辛苦了":"https://i0.hdslb.com/bfs/emote/61135d411d74ad96c5daadecb4fdbe15d49569cf.png?emoji_size=65",
+"椎名菜羽-雨刷":"https://i0.hdslb.com/bfs/emote/5a1a85e92e35117f1e32e782272aa0bcd3114052.png?emoji_size=65",
+"椎名菜羽-震撼":"https://i0.hdslb.com/bfs/emote/b7007c5f5f4f79f3ca35ff89f5572a0f0697bb0d.png?emoji_size=65",
+
+// 狐妖小红娘
+"狐妖-不服憋着":"https://i0.hdslb.com/bfs/emote/d3633ea35afac42d46679a3d31775a9860e63c2d.png?emoji_size=65",
+"狐妖-吃瓜":"https://i0.hdslb.com/bfs/emote/8c5ad49f83b29262e2e785124bec6651670ae36b.png?emoji_size=65",
+"狐妖-不明嚼栗":"https://i0.hdslb.com/bfs/emote/71601899fe445454c3593e7d82e4ea01f980b230.png?emoji_size=65",
+"狐妖-抽打":"https://i0.hdslb.com/bfs/emote/43bb8e363f6c94c97a396a68852c8f2182651fc0.png?emoji_size=65",
+"狐妖-吃我安利":"https://i0.hdslb.com/bfs/emote/3a0bf7d0320a84002ea8b4907e6c3baa97ec0dd0.png?emoji_size=65",
+"狐妖-伐开心":"https://i0.hdslb.com/bfs/emote/01f6b69d1f69e8ea879569827e7363f4da630cba.png?emoji_size=65",
+"狐妖-惊":"https://i0.hdslb.com/bfs/emote/e1c6e6aca03b634f32bc71762015c44431dafd74.png?emoji_size=65",
+"狐妖-大笑":"https://i0.hdslb.com/bfs/emote/38bc9f4e39c2ec9d7442f2d67e13092fd535846b.png?emoji_size=65",
+"狐妖-震惊":"https://i0.hdslb.com/bfs/emote/83361a40f6fd010e6da88825aa27320189ad2df5.png?emoji_size=65",
+"狐妖-脸红":"https://i0.hdslb.com/bfs/emote/79175b3bc469061020d15114e22ac261b0668819.png?emoji_size=65",
+"狐妖-冷漠":"https://i0.hdslb.com/bfs/emote/842b69b5c3e98d11292edd4f4cf6abb8504c18bc.png?emoji_size=65",
+"狐妖-哭":"https://i0.hdslb.com/bfs/emote/29de352176c8ead5b301212aa61facb5e3abcd55.png?emoji_size=65",
+"狐妖-目瞪口呆":"https://i0.hdslb.com/bfs/emote/c75e6841c81a5c020971debe394334d8b2700151.png?emoji_size=65",
+"狐妖-前排":"https://i0.hdslb.com/bfs/emote/4d2702f9383dec00c7c77ff026768c3ddaaf6d60.png?emoji_size=65",
+"狐妖-沙发":"https://i0.hdslb.com/bfs/emote/5ff883da9618dfd9740256e569279244bbff03b1.png?emoji_size=65",
+"狐妖-掀桌":"https://i0.hdslb.com/bfs/emote/f0917c6d982a86c2ab02c979359226f761581c37.png?emoji_size=65",
+"狐妖-心":"https://i0.hdslb.com/bfs/emote/77123fd85c11478b46d762a1c8553328013637ef.png?emoji_size=65",
+"狐妖-晕":"https://i0.hdslb.com/bfs/emote/64702d1fc92c44e8aaa39ffdacdc87aaa6d38d3d.png?emoji_size=65",
+"狐妖-吃药":"https://i0.hdslb.com/bfs/emote/059d810cbc5ad4df4f9bbf08e44643b022a2354f.png?emoji_size=65",
+"狐妖-mdzz":"https://i0.hdslb.com/bfs/emote/e68fd21a5bcfa50b6d45f2a8f5926f992f484ae3.png?emoji_size=65",
+
+// 干物妹！小埋
+"干物妹！小埋-？？？":"https://i0.hdslb.com/bfs/emote/d2d0955e6ddf2d3528c6f2364b7002b114907c94.png?emoji_size=65",
+"干物妹！小埋-拜托了哥哥":"https://i0.hdslb.com/bfs/emote/e2f35f75f878a53a415e0468668fbfd1fb459d54.png?emoji_size=65",
+"干物妹！小埋-抱抱":"https://i0.hdslb.com/bfs/emote/f7d5a5150733a15386d98015114630e893f5281b.png?emoji_size=65",
+"干物妹！小埋-变身":"https://i0.hdslb.com/bfs/emote/894dc489523d79b2ab949956b5008b143b1f9333.png?emoji_size=65",
+"干物妹！小埋-补充体力":"https://i0.hdslb.com/bfs/emote/fa60a9632462cf9b611db818fad1626630adfa57.png?emoji_size=65",
+"干物妹！小埋-不想动":"https://i0.hdslb.com/bfs/emote/e8cb80089784cb1ae90534f6bf2faf91bc2e0bb5.png?emoji_size=65",
+"干物妹！小埋-吨吨吨":"https://i0.hdslb.com/bfs/emote/d15345458165a24c334aaa3beb5dc68efb2c8381.png?emoji_size=65",
+"干物妹！小埋-好吃":"https://i0.hdslb.com/bfs/emote/a62168cc811bf3d32e54959fd27c0551c8f6763f.png?emoji_size=65",
+"干物妹！小埋-好累啊":"https://i0.hdslb.com/bfs/emote/ff84362bd86c9c803b4be3ed18058582546e69c2.png?emoji_size=65",
+"干物妹！小埋-假装没事":"https://i0.hdslb.com/bfs/emote/dfd69f9e83bba871038d831395a9531bd2726da9.png?emoji_size=65",
+"干物妹！小埋-简单的快乐":"https://i0.hdslb.com/bfs/emote/22df86eaef7ba4cfbca8a9fb3c4fdc375e5eb7d7.png?emoji_size=65",
+"干物妹！小埋-看戏":"https://i0.hdslb.com/bfs/emote/9c5b4401362643b45b6af6768def2d504fb93396.png?emoji_size=65",
+"干物妹！小埋-人生赢家":"https://i0.hdslb.com/bfs/emote/ea13bd5ebe0054bd2f9756fa96d839bb1bbc0f8b.png?emoji_size=65",
+"干物妹！小埋-瑟瑟发抖":"https://i0.hdslb.com/bfs/emote/de907ceadef1727af58334918eae8ca82479fb8b.png?emoji_size=65",
+"干物妹！小埋-石化":"https://i0.hdslb.com/bfs/emote/0e4e69bbf2ff2f84d532f5e172c4da0be4ec2645.png?emoji_size=65",
+"干物妹！小埋-玩游戏":"https://i0.hdslb.com/bfs/emote/5ed6fe6d99ccb591f1eec3363af9383a4d558626.png?emoji_size=65",
+"干物妹！小埋-我富了":"https://i0.hdslb.com/bfs/emote/3f745d71958c5be0b901e3ea979c5b82eab35739.png?emoji_size=65",
+"干物妹！小埋-无语":"https://i0.hdslb.com/bfs/emote/b57c3bd2a41fd48253a542567c239997806f4e4f.png?emoji_size=65",
+"干物妹！小埋-羡慕":"https://i0.hdslb.com/bfs/emote/6af8ad3d9e7723aa97d000d177440215e9e874e1.png?emoji_size=65",
+"干物妹！小埋-嘤嘤嘤":"https://i0.hdslb.com/bfs/emote/e94e0774891d26fe2855428e2a2e12a5235309ca.png?emoji_size=65",
+			},
+		});
+	</script>
+	<script>
+		// 根据表情的emoji_size参数设置表情的大小
+		function change_emoji_szie()
+		{
+			var emoji_list = document.getElementsByClassName("vemoji");
+			for (var i = 0; i < emoji_list.length; i++)
+			{
+				var emoji_elem = emoji_list[i];
+				var emoji_size = /emoji_size=[0-9]+/.exec(emoji_elem.src);
+				if (emoji_size != null)
+				{
+					emoji_size = emoji_size[0].substring(11);
+					emoji_elem.style.width = emoji_size + "px";
+					emoji_elem.style.height = emoji_size + "px";
+				}
+			}
+		}
+		setInterval(change_emoji_szie, 1000);
+	</script>
+
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/ganyuo.png"
+                alt="ganyuo" />
+            
+              <p class="site-author-name" itemprop="name">ganyuo's blog</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/ganyuo" target="_blank" title="GitHub" data-balloon="GitHub" data-balloon-pos="up">
+                    
+                      <i class="fa fa-fw fa-github"></i></a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto://ganyuo@outlook.com" target="_blank" title="Mail" data-balloon="Mail" data-balloon-pos="up">
+                    
+                      <i class="fa fa-fw fa-envelope"></i></a>
+                </span>
+              
+            
+          </div>
+
+          
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+            
+
+          </nav>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本概念"><span class="nav-number">1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#像素间的基本关系"><span class="nav-number">2.</span> <span class="nav-text">像素间的基本关系</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#相邻像素"><span class="nav-number">2.1.</span> <span class="nav-text">相邻像素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#邻接性"><span class="nav-number">2.2.</span> <span class="nav-text">邻接性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连通性"><span class="nav-number">2.3.</span> <span class="nav-text">连通性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#区域和边界"><span class="nav-number">2.4.</span> <span class="nav-text">区域和边界</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#距离度量"><span class="nav-number">2.5.</span> <span class="nav-text">距离度量</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数学基础"><span class="nav-number">3.</span> <span class="nav-text">数学基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#阵列与矩阵操作"><span class="nav-number">3.1.</span> <span class="nav-text">阵列与矩阵操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线性操作"><span class="nav-number">3.2.</span> <span class="nav-text">线性操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算术操作"><span class="nav-number">3.3.</span> <span class="nav-text">算术操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#空间操作"><span class="nav-number">3.4.</span> <span class="nav-text">空间操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单像素操作"><span class="nav-number">3.4.1.</span> <span class="nav-text">单像素操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#领域操作"><span class="nav-number">3.4.2.</span> <span class="nav-text">领域操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#几何空间变换"><span class="nav-number">3.4.3.</span> <span class="nav-text">几何空间变换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图像配准"><span class="nav-number">3.4.4.</span> <span class="nav-text">图像配准</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <!--<div class="footer-image"></div>-->
+      <div class="footer-inner">
+        <p>
+小破站在各种灾难中苟活了
+	<span id="since"></span>
+	<span class="my-face">o(╥﹏╥)o</span>
+	<a href="/atom.xml" target="_blank">RSS</a>
+</p>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数 <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量 <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+	<img class="background-image" src="/images/backgound_1.jpg" />
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+	
+		<div class="live2d-container">
+	<div class="live2d-tips"></div>
+	<canvas id="live2d-canvas" height="380" style="width:300px;" ></canvas>
+	<div class="live2d-tools">
+		<i class="fa fa-commenting"></i>
+		<i class="fa fa-chevron-down"></i>
+		<i class="fa fa-chevron-up"></i>
+	</div>
+</div>
+
+<script type="text/javascript" src="/js/live2d.js"></script>
+<script type="text/javascript" src="/js/live2d_tools.js"></script>
+<script>
+	loadlive2d('live2d-canvas', "images/live2d_model/nepnep/index.json");
+</script>
+
+	
+
+    
+
+  </div>
+
+  <script type="text/javascript" src="/js/sagiri.min.js"></script>
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('2');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
