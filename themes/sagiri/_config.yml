@@ -20,8 +20,8 @@ override: false
 # Then need to rename & redefine they on any other names, otherwise icons from Next will rewrite your custom icons in Hexo.
 favicon:
   visibilitychange: true
-  narmal: https://cdn.jsdelivr.net/gh/ganyuo/ganyuo.github.io/images/ganyuo.png
-  hidden: https://cdn.jsdelivr.net/gh/ganyuo/ganyuo.github.io/images/failure.ico
+  narmal: /images/ganyuo.png
+  hidden: /images/failure.ico
   show_text: (/≧▽≦/)欢迎回来！
   hide_text: (T﹏T)不要走嘛...
   apple_touch_icon: 
@@ -115,7 +115,7 @@ links_layout: block
 # Sidebar Avatar
 # in theme directory(source/images): /images/avatar.gif
 # in site  directory(source/uploads): /uploads/avatar.gif
-avatar: https://cdn.jsdelivr.net/gh/ganyuo/ganyuo.github.io/images/ganyuo.png
+avatar: /images/ganyuo.png
 
 # Table Of Contents in the Sidebar
 toc:
@@ -757,25 +757,25 @@ vendors:
 
 
 # Assets
-css: https://cdn.jsdelivr.net/gh/ganyuo/ganyuo.github.io/css
-js: https://cdn.jsdelivr.net/gh/ganyuo/ganyuo.github.io/js
-images: https://cdn.jsdelivr.net/gh/ganyuo/ganyuo.github.io/images
+css: /css
+js: /js
+images: /images
 
 background:
   # PC端背景图片
-  image_src_1: https://cdn.jsdelivr.net/gh/ganyuo/ganyuo.github.io/images/backgound_1.jpg
+  image_src_1: https://ganyuo.github.io/images/backgound_1.jpg
   # 手机背景图片
-  image_src_2: https://cdn.jsdelivr.net/gh/ganyuo/ganyuo.github.io/images/backgound_2.jpg
+  image_src_2: https://ganyuo.github.io/images/backgound_2.jpg
   image_opacity: 0.9
   element_opacity: 0.85
 
 # 图片镜像，可用于jsdelivr加速
 img_mirror:
-  enable: true
+  enable: false
   prefix: https://cdn.jsdelivr.net/gh/ganyuo/ganyuo.github.io/
 
 card:
-  avatar: https://cdn.jsdelivr.net/gh/ganyuo/ganyuo.github.io/images/ganyuo.png
+  avatar: images/ganyuo.png
   name: ganyuo's blog
   description: 
 
@@ -801,7 +801,7 @@ footer:
   # -------------------------------------------------------------
   # Any custom text can be defined here.
   custom_text: custom text
-  sitemap: /atom.xml
+  sitemap: atom.xml
   beian: 
 
 # 页面右上角github图标
@@ -821,7 +821,7 @@ post_title_num : true
 # 看板娘
 live2d:
   enable: true
-  model: https://cdn.jsdelivr.net/gh/ganyuo/ganyuo.github.io/images/live2d_model/nepnep/index.json # 模型的地址
+  model: /images/live2d_model/nepnep/index.json # 模型的地址
   width: 300 # 控制模型的尺寸比例
   height: 380 # 需要根据不同模型来调整
 

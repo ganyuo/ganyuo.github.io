@@ -6,7 +6,7 @@ tags: [论文, 指纹识别]
 mathjax: true
 ---
 
-[论文原文下载链接](https://cdn.jsdelivr.net/gh/ganyuo/ganyuo.github.io/documnets/papers/Segmentation_and_Enhancement_of_Latent_Fingerprints.pdf)
+[论文原文下载链接](/documnets/papers/Segmentation_and_Enhancement_of_Latent_Fingerprints.pdf)
 
 # Introduction
 &emsp;&emsp;潜在指纹(或简称“潜指纹”或“指印”)指的是某人在不小心触摸或手握过的物品表面上留下的指纹，通常出现在犯罪现场。与在参与模式下获得的滚动和平面指纹(或样本指纹)相比，潜在指纹的脊线结构通常质量较差，包含背景噪声和非线性失真(见图1)。由于这些因素的影响，潜指纹识别(潜指纹对样本匹配)的准确性远远低于样本指纹(样本对样本匹配)的准确性。作为一个例子，在上NIST评估，在10,000个平面指纹的后台数据库上，表现最好的自动指纹识别系统(AFIS)取得了99.4%的1级鉴定率；用1114个潜指纹在包含100,000个样本指纹后台数据库上，表现最好的商业潜指纹匹配器只能达到63.4%的1级鉴定率。图2显示了滚动到滚动指纹匹配和潜指纹到滚动指纹匹配的示例。在这些例子中，滚动指纹的特征是由AFIS自动提取的，而潜在指纹的特征是人工标记的。

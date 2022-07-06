@@ -6,7 +6,7 @@ tags: [arm, 嵌入式, 神经网络, 深度学习]
 mathjax: true
 ---
 
-[论文原文下载链接](https://cdn.jsdelivr.net/gh/ganyuo/ganyuo.github.io/documnets/papers/CMSIS-NN.pdf)
+[论文原文下载链接](/documnets/papers/CMSIS-NN.pdf)
 
 # 摘要
 
