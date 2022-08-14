@@ -2,7 +2,7 @@
 title: '哈夫曼树'
 date: 2022-01-04
 categories: 学习笔记
-tags: [二叉树，数据结构，算法]
+tags: [二叉树, 数据结构, 算法]
 mathjax: true
 ---
 

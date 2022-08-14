@@ -2,7 +2,7 @@
 title: '线索二叉树'
 date: 2021-12-29
 categories: 学习笔记
-tags: [二叉树，数据结构，算法]
+tags: [二叉树, 数据结构, 算法]
 mathjax: true
 ---
 

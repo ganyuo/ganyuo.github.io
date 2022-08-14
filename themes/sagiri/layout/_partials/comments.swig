@@ -62,9 +62,14 @@
       {% endif %}
     </div>
 
-  {% elseif theme.valine.appid and theme.valine.appkey %}
+  {% elseif theme.valine.enable and theme.valine.appid and theme.valine.appkey %}
     <div class="comments" id="comments">
       <div id="vcomments"></div>
+    </div>
+
+  {% elseif theme.waline.enable and theme.waline.serverURL %}
+    <div class="comments" id="comments">
+      <div id="waline"></div>
     </div>
   {% endif %}
 

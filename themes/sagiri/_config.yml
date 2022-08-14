@@ -342,13 +342,16 @@ changyan:
 # You can get your appid and appkey from https://leancloud.cn
 # more info please open https://github.com/xCss/Valine
 valine:
-  enable: true
+  enable: false
   appid: 2mr6x89FybHxLnJcdN4X4MOA-MdYXbMMI # your leancloud application appid
   appkey: 07imY589OxwQHeMrwkSkncS0 # your leancloud application appkey
   serverURLs: https://2mr6x89f.api.lncldglobal.com
   placeholder: 说点什么吧！ (*´∇｀*)
   avatar: mp
 
+waline:
+  enable: true
+  serverURL: https://waline-test-11aslqzru-ganyuo-outlookcom.vercel.app
 
 # Support for youyan comments system.
 # You can get your uid from http://www.uyan.cc
