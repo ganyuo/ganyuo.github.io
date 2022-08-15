@@ -18,6 +18,18 @@
             --waline-bgcolor: #fff0;
             --waline-bgcolor-light: #fff0;
         }
+        .wl-panel
+        {
+            margin: 2em;
+        }
+        .wl-count
+        {
+            padding: 0em 2em 0em 2em;
+        }
+        .wl-power
+        {
+            padding: .5em 2em;
+        }
         .wl-emoji-popup .wl-tab-wrapper {
             background: #FFF;
             max-height: 125px;
