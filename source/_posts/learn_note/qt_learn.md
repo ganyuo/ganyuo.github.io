@@ -22,5 +22,42 @@ mathjax: false
 
 &emsp;&emsp;我自己是在linuxmint系统下用VScode搭建的，具体参考这篇[博客](/learn_note/linux_qt_config/)，其他系统下搭建环境的小伙伴也可以参考一下。
 
+# pro文件配置
+
 # GUI
+
+Qt的很多GUI控件都是继承自QWidget，所以使用Qt的GUI一般都需要加上`widgets`和`gui`这两个库，pro项目文件样例如下：
+
+``` conf
+# 添加widgets和gui库
+QT += widgets gui
+
+# 把main.cpp加到项目的代码列表里
+SOURCES += \
+	main.cpp
+```
+
+## QWidget
+
+QWidget是Qt的窗口类，可以创建一个窗口，main.cpp样例代码如下：
+
+``` cpp
+#include <QApplication> /* 应用程序抽象类 */
+#include <QWidget>  /* 窗口类 */
+
+int main(int argc, char *argv[])
+{
+	QApplication app(argc, argv); /* 创建一个Qt应用 */
+
+	QWidget widget; /* 构造一个窗口 */
+	widget.setWindowTitle("Hello World"); /* 设置窗口标题 */
+	widget.show(); /* 显示窗口 */
+
+	return app.exec(); /* exec():进入消息循环 */
+}
+```
+
+
+
+## 控件
 
