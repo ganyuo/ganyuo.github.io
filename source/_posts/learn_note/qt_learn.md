@@ -18,11 +18,145 @@ mathjax: false
 
 &emsp;&emsp;上面是从[C语言中文网](http://c.biancheng.net/view/1792.html)上抄的Qt简介，附上[Qt的官网](https://www.qt.io)，感兴趣的小伙伴可以去看看。
 
+&emsp;&emsp;Qt包含很多C++的类，但是头文件代码里的注释基本没有，2333...，所以只能去看Qt官网上的文档：<https://doc.qt.io/qt-5/classes.html>，里面有所有类的说明。因为类太多了，所以后面关于类的成员函数就不解析了，小伙伴们有不清楚的地方可以去官网上查。
+
 # 环境搭建
 
 &emsp;&emsp;我自己是在linuxmint系统下用VScode搭建的，具体参考这篇[博客](/learn_note/linux_qt_config/)，其他系统下搭建环境的小伙伴也可以参考一下。
 
 # pro文件配置
+
+&emsp;&emsp;pro文件只要用于配置Qt项目的编译，具体配置方式~~抄~~参考了一下大佬的这篇[文章](https://zhuanlan.zhihu.com/p/110782759)
+
+## 常用配置项
+
+1. 注释 : 注释是从一行的`#`开始，到这一行的结束。
+2. `QT += ` : 这个是添加QT项目需要的模块的，若项目中要排除某个模块，也可用`QT -= `配置项。
+3. `TEMPLATE = ` : 这个配置项确定`qmake`为这个应用程序生成哪种`makefile` 。有下面五种形式可供选择：
+
+	- `app` : 建立一个应用程序的makefile，这个是默认值，若模块项未指定，将默认使用此项；
+	- `lib` : 建立一个库的makefile；
+	- `vcapp` : 建立一个应用程序的VisualStudio项目文件；
+	- `vclib` : 建立一个库的VisualStudio项目文件；
+	- `subdirs` : 这是一个特殊的模板，可以创建一个可进入特定目录并为一个项目文件生成makefile，此makfile可以调用make；
+
+4. `TARGET = `: 这个配置项用来指定最后生成的目标应用程序的名称。
+
+5. `CONFIG += ` : 用来告诉qmake关于应用程序的配置信息，使用+=表示在现有的配置上添加，这样会更安全。比如，`CONFIG += qt warn_on release` 其具体的意义为：
+
+	- `qt` : 告诉qmake此程序是使用qt来连编的。即qmake在连接、为编译添加所需包含路径时会考虑qt的库；
+	- `warn_on` : 告诉qmake要将编译器设置为输出警告信息形式；
+	- `release` : 告诉qmake应用程序必须被连编为一个可发布的应用程序。开发过程中，也可以使用`debug`；
+
+6. `UIC_DIR += ` : 用来指定`uic`命令，将`.ui`文件转化为`ui_*.h`文件存放的目录。
+
+7. `RCC_DIR += ` : 用来指定`rcc`命令，将`.qrc`文件转换成`qrc_*.h`文件存放的目录。
+
+8. `MOC_DIR += ` : 用来指定`moc`命令，将含有`Q_OBJECT`的头文件转换成标准`.h`文件存放的目录。
+
+9. `OBJECTS_DIR += ` : 用来指定目标文件`obj`的存放目录。
+
+10. `DEPENDPATH += ` : 用来指定工程的依赖路径。
+
+11. `INCLUDEPATH += ` : 用来指定工程所需要的头文件。
+
+12. `CODECFORSRC += ` : 用来指定源文件的编码格式。
+
+13. `FORMS += ` : 用来指定工程中的`ui`文件。
+
+14. `HEADERS += ` : 用来指定工程中所包含的头文件。
+
+15. `SOURCES += ` : 用来指定工程中包含的源文件。
+
+16. `RESOURCES += ` : 用来指定工程中所包含的资源文件。
+
+17. `LIBS += ` : 用来指定引入的`lib`文件的路径，一般会在前面加下参数`-L`，根据不同的版本可以分为两种形式：
+
+	``` conf
+	Release: LIBS += -L folder_Path # release版本引入的lib文件
+	Debug: LIBS += -L folder_Path   # debug版本引入的lib文件
+	```
+
+18. `DEFINES += ` : 用来定义编译选项。
+
+19. `DESTDIR += ` : 用来指定目标的生成路径。
+
+20. 跨平台处理信息也要写在pro文件中。 其示例如下：
+
+	``` conf
+	win32
+	{
+		....
+	}
+
+	unix
+	{
+		...
+	}
+	```
+
+## pro文件样例
+
+下面是大佬给的一个pro文件样例：
+
+``` conf
+# 添加QT依赖的库
+QT += gui
+QT += core xml network multimedia serialport
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+ 
+# 添加c11配置支持
+CONFIG += c++11
+# 输出文件的名称
+TARGET = YouAppName
+# 配置控制台输出
+CONFIG += console
+# 输出类型application
+TEMPLATE = app
+ 
+# 源文件
+SOURCES += main.cpp \
+    appconfig.cpp \
+    opendoorthread.cpp \
+    TestProject/testform.cpp \
+    TestProject/common.pb.cpp \
+    TestProject/goods_req.pb.cpp \
+    TestProject/goods_resp.pb.cpp
+ 
+# 头文件
+HEADERS += \
+    appconfig.h \
+    opendoorthread.h \
+    TestProject/testform.h \
+    TestProject/common.pb.h \
+    TestProject/goods_req.pb.h \
+    TestProject/goods_resp.pb.h
+ 
+# 配置debug和release
+CONFIG +=debug_and_release
+CONFIG(debug,debug|release){
+DESTDIR += $$PWD/debug
+LIBS += -L$$PWD/debug/ -lThorModel
+LIBS += -L$$PWD/debug/ -lThorUtil
+LIBS += -L$$PWD/debug/ -lThorBLL
+LIBS += -L$$PWD/debug/ -lThorHardwareUtil
+LIBS += -L$$PWD/debug/ -lprotobufd
+LIBS += -L$$PWD/debug/ -lprotobuf-lited
+LIBS += -L$$PWD/debug/ -lopencv_core2410d
+LIBS += -L$$PWD/debug/ -lopencv_highgui2410d
+LIBS += -L$$PWD/debug/ -lopencv_imgproc2410d
+LIBS += -L$$PWD/debug/ -lQtActionDetectd
+}else{
+}
+# 需要的头文件
+INCLUDEPATH += $$PWD/AllDLL/include
+INCLUDEPATH += $$PWD/debug/3rdparty/opencv-2.4.10/include \
+            $$PWD/debug/3rdparty/opencv-2.4.10/include/opencv \
+            $$PWD/debug/3rdparty/opencv-2.4.10/include/opencv2
+# ui
+FORMS += \
+    TestProject/testform.ui
+```
 
 # GUI
 
