@@ -104,7 +104,7 @@ mathjax: false
 QT += gui
 QT += core xml network multimedia serialport
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
- 
+
 # 添加c11配置支持
 CONFIG += c++11
 # 输出文件的名称
@@ -113,7 +113,7 @@ TARGET = YouAppName
 CONFIG += console
 # 输出类型application
 TEMPLATE = app
- 
+
 # 源文件
 SOURCES += main.cpp \
     appconfig.cpp \
@@ -122,7 +122,7 @@ SOURCES += main.cpp \
     TestProject/common.pb.cpp \
     TestProject/goods_req.pb.cpp \
     TestProject/goods_resp.pb.cpp
- 
+
 # 头文件
 HEADERS += \
     appconfig.h \
@@ -131,7 +131,7 @@ HEADERS += \
     TestProject/common.pb.h \
     TestProject/goods_req.pb.h \
     TestProject/goods_resp.pb.h
- 
+
 # 配置debug和release
 CONFIG +=debug_and_release
 CONFIG(debug,debug|release){
@@ -148,6 +148,7 @@ LIBS += -L$$PWD/debug/ -lopencv_imgproc2410d
 LIBS += -L$$PWD/debug/ -lQtActionDetectd
 }else{
 }
+
 # 需要的头文件
 INCLUDEPATH += $$PWD/AllDLL/include
 INCLUDEPATH += $$PWD/debug/3rdparty/opencv-2.4.10/include \
@@ -234,6 +235,12 @@ int main(int argc, char *argv[])
 
 &emsp;&emsp;一个窗口在执行`show()`成员函数时，会将已经添加的子窗口也一起显示，如果是子窗口是在父窗口执行`show()`之后添加的，则子窗口不会显示，子窗口也需要执行`show()`才能显示出来。比如，去掉上面代码中的`button.show()`之后，虽然之后将`button`按钮添加到了父窗口`widget`里，但是`widget`窗口里的`button`按钮不显示。如果在`widget`窗口执行`show()`之前，将`button`按钮添加到了父窗口`widget`里，也就是在`widget.show()`之前执行`button.setParent(&widget)`，则即使`button`按钮不执行`show()`，也会在父窗口`widget`执行`show()`的时候一起显示出来。
 
+### 输入框-QLineEdit
+
 ## 坐标体系
 
 ## layout
+
+## 信号和事件
+
+## 画板
