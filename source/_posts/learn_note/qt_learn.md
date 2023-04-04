@@ -203,6 +203,8 @@ int main(int argc, char *argv[])
 | 按钮 | QPushButton |
 | 输入框 | QLineEdit |
 
+&emsp;&emsp;由于控件种类太多了，这里只介绍一下按钮`QPushButton`和输入框`QLineEdit`这两种控件，其他控件的很多性质和接口都比较相似，小伙伴们可以自己尝试，~~我就偷懒不写了~~。
+
 ### 按钮-QPushButton
 
 &emsp;&emsp;下面是一个在窗口中添加一个按钮的样例：
@@ -217,7 +219,6 @@ int main(int argc, char *argv[])
 	QApplication app(argc, argv);
 
 	QWidget widget; /* 构造一个窗口 */
-	widget.setWindowTitle("Hello World");
 	widget.show(); /* 显示窗口 */
 
 	QPushButton button; /* 创建一个按钮对象 */
@@ -236,6 +237,41 @@ int main(int argc, char *argv[])
 &emsp;&emsp;一个窗口在执行`show()`成员函数时，会将已经添加的子窗口也一起显示，如果是子窗口是在父窗口执行`show()`之后添加的，则子窗口不会显示，子窗口也需要执行`show()`才能显示出来。比如，去掉上面代码中的`button.show()`之后，虽然之后将`button`按钮添加到了父窗口`widget`里，但是`widget`窗口里的`button`按钮不显示。如果在`widget`窗口执行`show()`之前，将`button`按钮添加到了父窗口`widget`里，也就是在`widget.show()`之前执行`button.setParent(&widget)`，则即使`button`按钮不执行`show()`，也会在父窗口`widget`执行`show()`的时候一起显示出来。
 
 ### 输入框-QLineEdit
+
+&emsp;&emsp;下面是一个输入框的样例代码：
+
+``` cpp
+#include <QApplication> /* 应用程序抽象类 */
+#include <QWidget>      /* 窗口类 */
+#include <QLineEdit>    /* 输入框 */
+#include <QVBoxLayout>
+#include <QCompleter>
+
+int main(int argc, char *argv[])
+{
+	QApplication app(argc, argv);
+	QWidget widget; /* 构造一个窗口 */
+
+	/* 添加两个输入框 */
+	QLineEdit name_input, password_input;
+	QVBoxLayout layout(&widget);
+	layout.addWidget(&name_input);
+	layout.addWidget(&password_input);
+
+	QCompleter completer(QStringList() << "abc" << "aaa" << "123");
+	completer.setFilterMode(Qt::MatchContains);
+	name_input.setCompleter(&completer); /* 设置输入匹配提示 */
+	name_input.setPlaceholderText("请用户名"); /* 设置输入提示 */
+
+	password_input.setEchoMode(QLineEdit::Password); /* 设置回显模式为密码模式 */
+	password_input.setPlaceholderText("请输入密码"); /* 设置输入提示 */
+
+	widget.show(); /* 显示窗口 */
+	return app.exec(); /* exec():进入消息循环 */
+}
+```
+
+&emsp;&emsp;上面的代码向窗口中添加了两个输入框，一个用来输入用户名，一个用来输入密码。用户名输入框设置了一个`completer`，可以将输入的字符串与`completer`的字符串列表进行匹配，显示匹配成功的字符串。密码输入框设置了设置回显模式为密码模式，可以将输入的字符显示为`●`。
 
 ## 坐标体系
 
