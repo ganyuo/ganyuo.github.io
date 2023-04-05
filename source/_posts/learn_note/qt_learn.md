@@ -275,7 +275,84 @@ int main(int argc, char *argv[])
 
 ## 坐标体系
 
+&emsp;&emsp;Qt里的`Qwidget`可以使用`setGeometry()`来设置控件的位置坐标，位置坐标是相对与父窗口的左上角计算的，下面是一个例子：
+
+``` cpp
+	QWidget widget;
+	QPushButton button;
+	button.setText("Button");
+	button.setParent(&widget);
+	/* 设置button相对父窗口的坐标ax,ay，以及button的宽度aw和高度ah */
+	button.setGeometry(30, 30, 200, 100);
+```
+
+&emsp;&emsp;上面的例子中，`setGeometry()`有4个参数，前两个参数是`button`相对父窗口的坐标ax，ay，后面两个是`button`的宽度和高度aw，ah。
+
 ## layout
+
+&emsp;&emsp;当一个窗口里控件很多时，使用`setGeometry()`来设置很麻烦，而且无法随着窗口的大小变化而调整。使用layout就可以很方便的解决这个问题，他们负责一组控件的几何管理。上面[输入框-QLineEdit](#输入框-QLineEdit)里的样例代码，使用的`QVBoxLayout`就是一种layout，可以将控件在垂直方向上排列，使得`name_input`输入框在`password_input`输入框上面，如果不使用layout，则两个输入框会重叠在一起。
+
+&emsp;&emsp;除了`QVBoxLayout`，Qt还有很多其他的layout，下面列出了一些常用的layout（参考自大佬的这篇[博客](https://blog.csdn.net/leacock1991/article/details/118947828)），他们都继承自`QLayout`类。
+
+- `QHBoxLayout`：从左到右在水平行中布置控件。
+
+	![](/images/learn_note/qt_learn/fig_1.png)
+
+- `QVBoxLayout`：在垂直列中从上到下布置控件。
+
+	![](/images/learn_note/qt_learn/fig_2.png)
+
+- `QGridLayout`：在二维网格中布置控件，控件可以占用多个单元格。
+
+	![](/images/learn_note/qt_learn/fig_3.png)
+
+- `QFormLayout`：把控件按照标签-输入框的形式排列在两列。
+
+	![](/images/learn_note/qt_learn/fig_4.png)
+
+&emsp;&emsp;layout之间还可以嵌套使用，下面是一个样例：
+
+``` cpp
+#include <QApplication>
+#include <QWidget>
+#include <QPushButton>
+#include <QLineEdit>
+#include <QLabel>
+
+#include <QVBoxLayout> /* 垂直布局 */
+#include <QHBoxLayout> /* 水平布局 */
+#include <QGridLayout> /* 格子布局 */
+
+int main(int argc, char *argv[])
+{
+	QApplication app(argc, argv);
+	QWidget widget;
+
+	QGridLayout layout;
+	layout.setRowStretch(0, 1);
+	layout.setColumnStretch(0, 1);
+
+	layout.addWidget(new QLabel("用户名："), 1, 1);
+	layout.addWidget(new QLineEdit(), 1, 2);
+
+	layout.addWidget(new QLabel("密码："), 2, 1);
+	QLineEdit *passwd_edit = new QLineEdit();
+	layout.addWidget(passwd_edit, 2, 2);
+	passwd_edit->setEchoMode(QLineEdit::Password);
+
+	QHBoxLayout hbox;
+	hbox.addStretch(1);
+	hbox.addWidget(new QPushButton("登录"));
+	layout.addLayout(&hbox, 3, 1, 1, 2);
+
+	layout.setRowStretch(4, 1);
+	layout.setColumnStretch(3, 1);
+
+	widget.setLayout(&layout);
+	widget.show();
+	return app.exec();
+}
+```
 
 ## 信号和事件
 
