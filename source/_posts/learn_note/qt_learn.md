@@ -290,13 +290,13 @@ int main(int argc, char *argv[])
 
 ## layout
 
-&emsp;&emsp;当一个窗口里控件很多时，使用`setGeometry()`来设置很麻烦，而且无法随着窗口的大小变化而调整。使用layout就可以很方便的解决这个问题，他们负责一组控件的几何管理。上面[输入框-QLineEdit](#输入框-QLineEdit)里的样例代码，使用的`QVBoxLayout`就是一种layout，可以将控件在垂直方向上排列，使得`name_input`输入框在`password_input`输入框上面，如果不使用layout，则两个输入框会重叠在一起。(以下内容大部分抄的大佬的这篇[博客](https://blog.csdn.net/leacock1991/article/details/118947828))
+&emsp;&emsp;当一个窗口里控件很多时，使用`setGeometry()`来设置很麻烦，而且无法随着窗口的大小变化而调整。使用layout(布局)就可以很方便的解决这个问题，他们负责一组控件的几何管理。上面[输入框-QLineEdit](#输入框-QLineEdit)里的样例代码，使用的`QVBoxLayout`就是一种layout，可以将控件在垂直方向上排列，使得`name_input`输入框在`password_input`输入框上面，如果不使用layout，则两个输入框会重叠在一起。(以下内容大部分抄的大佬的这篇[博客](https://blog.csdn.net/leacock1991/article/details/118947828))
 
 ### 简述
 
-Qt布局系统提供了一种简单而强大的方法，可以在控件内自动排列子控件，以确保它们充分利用可用空间。Qt包含一组布局管理类，用于描述控件在应用程序用户界面中的布局方式。当控件的可用空间发生变化时，这些布局会自动定位和调整控件的大小，确保它们的排列一致并且用户界面作为一个整体仍然可用。
+&emsp;&emsp;Qt布局系统提供了一种简单而强大的方法，可以在控件内自动排列子控件，以确保它们充分利用可用空间。Qt包含一组布局管理类，用于描述控件在应用程序用户界面中的布局方式。当控件的可用空间发生变化时，这些layout会自动定位和调整控件的大小，确保它们的排列一致并且用户界面作为一个整体仍然可用。
 
-所有`QWidget`子类都可以使用布局来管理它们的子类。`QWidget::setLayout()`函数可以为一个控件布局。 当以这种方式在`widget`上设置布局时，它负责以下任务：
+&emsp;&emsp;所有`QWidget`子类都可以使用layout来管理它们的子类。`QWidget::setLayout()`函数可以为一个控件设置layout。 当以这种方式在窗口上设置layout时，它负责以下任务：
 
 - 布置子控件。
 - 最高层窗口可感知的默认大小。
@@ -309,7 +309,7 @@ Qt布局系统提供了一种简单而强大的方法，可以在控件内自动
 
 ### 常用layout
 
-为控件提供良好布局的最简单方法是使用内置布局管理器：`QHBoxLayout`、`QVBoxLayout`、`QGridLayout`和`QFormLayout`。这些类从`QLayout`继承，而`QLayout`又从`QObject`（而不是`QWidget`）派生。他们负责一组控件的几何管理。要创建更复杂的布局，可以将布局管理器相互嵌套。
+&emsp;&emsp;为控件提供良好布局的最简单方法是使用Qt内置的布局管理器：`QHBoxLayout`、`QVBoxLayout`、`QGridLayout`和`QFormLayout`。这些类从`QLayout`继承，而`QLayout`又从`QObject`（而不是`QWidget`）派生。他们负责一组控件的几何管理。要创建更复杂的布局，可以将布局管理器相互嵌套。
 
 - `QHBoxLayout`：从左到右在水平行中布置控件。
 
@@ -329,22 +329,49 @@ Qt布局系统提供了一种简单而强大的方法，可以在控件内自动
 
 ### 为layout添加控件
 
-将控件添加到一个layout时，布局过程如下：
+&emsp;&emsp;将控件添加到一个layout时，布局过程如下：
 
-1. 所有控件最初将根据它们的 QWidget::sizePolicy() 和 QWidget::sizeHint() 分配一定数量的空间。
+1. 所有控件最初将根据它们的`QWidget::sizePolicy()`和`QWidget::sizeHint()`分配一定数量的空间。
 2. 如果任何控件设置了拉伸系数，并且其值大于零，那么它们将按其拉伸因子的比例分配空间（如下[伸展因素](#伸展因素)所述）。
-3. 如果任何控件的拉伸系数设置为零，它们只会在没有其他控件需要空间的情况下获得更多空间。 其中，空间首先分配给具有扩展大小策略的控件。
+3. 如果任何控件的拉伸系数设置为零，它们只会在没有其他控件需要空间的情况下获得更多空间。其中，空间首先分配给具有扩展大小策略的控件。
 4. 任何控件被分配的空间的大小如果小于它们的最小大小（如果未指定最小尺寸，则为最小尺寸提示），它们就会被按它们所需要的最小大小分配空间。（如果控件的伸展因素是它们的决定因素，它们不必有最小大小或者最小大小的提示。）
 5. 任何控件被分配的空间的大小如果大于它们的最大大小，它们就会被按它们所需要的最大大小分配空间。（如果控件的伸展因素是它们的决定因素，它们不必有最大大小。）
 
 ### 伸展因素
 
-控件通常是在没有伸展因素设置的情况下被生成的。当它们被布置到一个布局中时，控件会被根据它们的QWidget::sizePolicy()或者它们的最小大小的提示中大的那一个分配给整个空间的一部分。伸展因素是用来根据控件互相的比例来改变它们所被分配的空间。
+&emsp;&emsp;控件通常是在没有伸展因素设置的情况下被生成的。当它们被布置到一个layout中时，控件会被根据它们的`QWidget::sizePolicy()`或者它们的最小大小的提示中大的那一个分配给整个空间的一部分。伸展因素是用来根据控件互相的比例来改变它们所被分配的空间。
 
-如果你使用一个QHBoxLayout来布置没有伸展参数设置的三个控件，我们就会得到像下面这样的布局：
+&emsp;&emsp;如果使用一个`QHBoxLayout`来布置没有伸展参数设置的三个控件，则我们就会得到像下面这样的布局：
 
-如果我们给每个控件设置一个伸展因素，它们就会被按比例布置（但是不能小于最小大小的提示）：
+![](/images/learn_note/qt_learn/fig_5.png)
 
+&emsp;&emsp;如果我们给每个控件设置一个伸展因素，它们就会被按比例布置（但是不能小于最小大小的提示），以下是按1:3:2设置的：
+
+![](/images/learn_note/qt_learn/fig_6.png)
+
+### 简单的demo
+
+&emsp;&emsp;布局中常用的方法有`addWidget()`和`addLayout()`，`addWidget()`方法用于向layout中加入需要布局的控件，`addLayout()`方法用于向layout中加入子布局。
+
+``` cpp
+void addWidget(
+	QWidget *widget, // 需要插入的控件对象
+	int fromRow,     // 插入的行
+	int fromColumn,  // 插入的列
+	int rowSpan,     // 占用的行
+	int columnSpan,  // 占用的列数
+	Qt::Alignment alignment = Qt::Alignment // 各个控件的对齐方式
+);
+
+void addLayout(
+	QLayout *layout, // 需要插入的子布局对象
+	int row,         // 插入的起始行
+	int column,      // 插入的起始列
+	int rowSpan,     // 占用的行数
+	int columnSpan,  // 占用的列数
+	Qt::Alignment alignment = Qt::Alignment // 指定的对齐方式
+);
+```
 
 &emsp;&emsp;下面是一个样例：
 
@@ -364,33 +391,30 @@ int main(int argc, char *argv[])
 	QApplication app(argc, argv);
 	QWidget widget;
 
-	QGridLayout layout;
-	layout.setRowStretch(0, 1);
-	layout.setColumnStretch(0, 1);
+	QGridLayout layout;            // 创建格子布局
+	layout.setRowStretch(0, 1);    // 设置第0行的拉伸系数
+	layout.setColumnStretch(0, 1); // 设置第0列的拉伸系数
 
+	/* 向layout中添加控件 */
 	layout.addWidget(new QLabel("用户名："), 1, 1);
-	layout.addWidget(new QLineEdit(), 1, 2);
-
+	layout.addWidget(new QLineEdit(), 1, 2); 
 	layout.addWidget(new QLabel("密码："), 2, 1);
-	QLineEdit *passwd_edit = new QLineEdit();
-	layout.addWidget(passwd_edit, 2, 2);
-	passwd_edit->setEchoMode(QLineEdit::Password);
+	layout.addWidget(new QLineEdit(), 2, 2);
 
+	/* 向layout中添加子布局 */
 	QHBoxLayout hbox;
 	hbox.addStretch(1);
 	hbox.addWidget(new QPushButton("登录"));
 	layout.addLayout(&hbox, 3, 1, 1, 2);
 
-	layout.setRowStretch(4, 1);
-	layout.setColumnStretch(3, 1);
+	layout.setRowStretch(4, 1);    // 设置最后一行的拉伸系数
+	layout.setColumnStretch(3, 1); // 设置最后一列的拉伸系数
 
-	widget.setLayout(&layout);
+	widget.setLayout(&layout); // 给窗口设置layout
 	widget.show();
 	return app.exec();
 }
 ```
-
-
 
 ## 信号和事件
 
