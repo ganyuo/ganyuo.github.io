@@ -196,12 +196,21 @@ int main(int argc, char *argv[])
 
 ## 控件
 
-&emsp;&emsp;Qt里有很多控件，大部分都是继承自`Qwidget`，所以控件也可以看作是一个窗口，这里列举一些常用的控件：
+&emsp;&emsp;Qt里有很多控件，大部分都是继承自`Qwidget`，所以控件也可以看作是一个窗口，这里列举一些常用的控件(抄大佬的这篇[博客](https://zhuanlan.zhihu.com/p/612560027))：
 
-| 控件 | 类名 |
-| --- | --- |
-| 按钮 | QPushButton |
-| 输入框 | QLineEdit |
+| 控件 | 类名 | 描述 |
+| --- | --- | --- |
+| 标签 | QLabel | 显示一个文本或图像。 |
+| 按钮 | QPushButton | 用户可以点击的一个按钮，用来触发某个操作。 |
+| 输入框 | QLineEdit | 用户可以在其中输入文本的一个输入框。 |
+| 复选框 | QCheckBox | 用户可以勾选或取消的一个复选框。 |
+| 单选按钮 | QRadioButton | 用户可以选择其中一个选项的一组单选按钮。 |
+| 数字微调框 | QSpinBox | 用于选择一个数值的微调框。 |
+| 滑动条 | QSlider | 用户可以通过滑动来选择数值的一个滑动条。 |
+| 列表框 | QListWidget | 用于显示一组列表项的一个列表框。 |
+| 组合框 | QComboBox | 类似于下拉菜单的一个组合框，用户可以选择其中一个选项。 |
+| 多行文本框 | QTextEdit | 用户可以在其中编辑多行文本的一个文本编辑框。 |
+| 日期和时间编辑框 | QDateTimeEdit | 用于选择日期和时间的一个日期和时间编辑框。 |
 
 &emsp;&emsp;由于控件种类太多了，这里只介绍一下按钮`QPushButton`和输入框`QLineEdit`这两种控件，其他控件的很多性质和接口都比较相似，小伙伴们可以自己尝试，~~我就偷懒不写了~~。
 
@@ -403,7 +412,7 @@ int main(int argc, char *argv[])
 
 	/* 向layout中添加子布局 */
 	QHBoxLayout hbox;
-	hbox.addStretch(1);
+	hbox.addStretch(1);  // 添加伸缩量
 	hbox.addWidget(new QPushButton("登录"));
 	layout.addLayout(&hbox, 3, 1, 1, 2);
 
