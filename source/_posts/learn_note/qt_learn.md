@@ -34,19 +34,19 @@ mathjax: false
 2. `QT += ` : 这个是添加QT项目需要的模块的，若项目中要排除某个模块，也可用`QT -= `配置项。
 3. `TEMPLATE = ` : 这个配置项确定`qmake`为这个应用程序生成哪种`makefile` 。有下面五种形式可供选择：
 
-	- `app` : 建立一个应用程序的makefile，这个是默认值，若模块项未指定，将默认使用此项；
-	- `lib` : 建立一个库的makefile；
-	- `vcapp` : 建立一个应用程序的VisualStudio项目文件；
-	- `vclib` : 建立一个库的VisualStudio项目文件；
-	- `subdirs` : 这是一个特殊的模板，可以创建一个可进入特定目录并为一个项目文件生成makefile，此makfile可以调用make；
+    - `app` : 建立一个应用程序的makefile，这个是默认值，若模块项未指定，将默认使用此项；
+    - `lib` : 建立一个库的makefile；
+    - `vcapp` : 建立一个应用程序的VisualStudio项目文件；
+    - `vclib` : 建立一个库的VisualStudio项目文件；
+    - `subdirs` : 这是一个特殊的模板，可以创建一个可进入特定目录并为一个项目文件生成makefile，此makfile可以调用make；
 
 4. `TARGET = `: 这个配置项用来指定最后生成的目标应用程序的名称。
 
 5. `CONFIG += ` : 用来告诉qmake关于应用程序的配置信息，使用+=表示在现有的配置上添加，这样会更安全。比如，`CONFIG += qt warn_on release` 其具体的意义为：
 
-	- `qt` : 告诉qmake此程序是使用qt来连编的。即qmake在连接、为编译添加所需包含路径时会考虑qt的库；
-	- `warn_on` : 告诉qmake要将编译器设置为输出警告信息形式；
-	- `release` : 告诉qmake应用程序必须被连编为一个可发布的应用程序。开发过程中，也可以使用`debug`；
+    - `qt` : 告诉qmake此程序是使用qt来连编的。即qmake在连接、为编译添加所需包含路径时会考虑qt的库；
+    - `warn_on` : 告诉qmake要将编译器设置为输出警告信息形式；
+    - `release` : 告诉qmake应用程序必须被连编为一个可发布的应用程序。开发过程中，也可以使用`debug`；
 
 6. `UIC_DIR += ` : 用来指定`uic`命令，将`.ui`文件转化为`ui_*.h`文件存放的目录。
 
@@ -72,10 +72,10 @@ mathjax: false
 
 17. `LIBS += ` : 用来指定引入的`lib`文件的路径，一般会在前面加下参数`-L`，根据不同的版本可以分为两种形式：
 
-	``` conf
-	Release: LIBS += -L folder_Path # release版本引入的lib文件
-	Debug: LIBS += -L folder_Path   # debug版本引入的lib文件
-	```
+    ``` conf
+    Release: LIBS += -L folder_Path # release版本引入的lib文件
+    Debug: LIBS += -L folder_Path   # debug版本引入的lib文件
+    ```
 
 18. `DEFINES += ` : 用来定义编译选项。
 
@@ -83,17 +83,17 @@ mathjax: false
 
 20. 跨平台处理信息也要写在pro文件中。 其示例如下：
 
-	``` conf
-	win32
-	{
-		....
-	}
+    ``` conf
+    win32
+    {
+        ....
+    }
 
-	unix
-	{
-		...
-	}
-	```
+    unix
+    {
+        ...
+    }
+    ```
 
 ## pro文件样例
 
@@ -169,7 +169,7 @@ QT += widgets gui
 
 # 把main.cpp加到项目的代码列表里
 SOURCES += \
-	main.cpp
+    main.cpp
 ```
 
 ## QWidget
@@ -182,13 +182,13 @@ SOURCES += \
 
 int main(int argc, char *argv[])
 {
-	QApplication app(argc, argv); /* 创建一个Qt应用 */
+    QApplication app(argc, argv); /* 创建一个Qt应用 */
 
-	QWidget widget; /* 构造一个窗口 */
-	widget.setWindowTitle("Hello World"); /* 设置窗口标题 */
-	widget.show(); /* 显示窗口 */
+    QWidget widget; /* 构造一个窗口 */
+    widget.setWindowTitle("Hello World"); /* 设置窗口标题 */
+    widget.show(); /* 显示窗口 */
 
-	return app.exec(); /* exec():进入消息循环 */
+    return app.exec(); /* exec():进入消息循环 */
 }
 ```
 
@@ -225,17 +225,17 @@ int main(int argc, char *argv[])
 
 int main(int argc, char *argv[])
 {
-	QApplication app(argc, argv);
+    QApplication app(argc, argv);
 
-	QWidget widget; /* 构造一个窗口 */
-	widget.show(); /* 显示窗口 */
+    QWidget widget; /* 构造一个窗口 */
+    widget.show(); /* 显示窗口 */
 
-	QPushButton button; /* 创建一个按钮对象 */
-	button.setText("Button"); /* 设置按钮显示的文本 */
-	button.setParent(&widget); /* 设置按钮的父窗口 */
-	button.show(); /* 显示按钮 */
+    QPushButton button; /* 创建一个按钮对象 */
+    button.setText("Button"); /* 设置按钮显示的文本 */
+    button.setParent(&widget); /* 设置按钮的父窗口 */
+    button.show(); /* 显示按钮 */
 
-	return app.exec(); /* exec():进入消息循环 */
+    return app.exec(); /* exec():进入消息循环 */
 }
 ```
 
@@ -258,25 +258,25 @@ int main(int argc, char *argv[])
 
 int main(int argc, char *argv[])
 {
-	QApplication app(argc, argv);
-	QWidget widget; /* 构造一个窗口 */
+    QApplication app(argc, argv);
+    QWidget widget; /* 构造一个窗口 */
 
-	/* 添加两个输入框 */
-	QLineEdit name_input, password_input;
-	QVBoxLayout layout(&widget);
-	layout.addWidget(&name_input);
-	layout.addWidget(&password_input);
+    /* 添加两个输入框 */
+    QLineEdit name_input, password_input;
+    QVBoxLayout layout(&widget);
+    layout.addWidget(&name_input);
+    layout.addWidget(&password_input);
 
-	QCompleter completer(QStringList() << "abc" << "aaa" << "123");
-	completer.setFilterMode(Qt::MatchContains);
-	name_input.setCompleter(&completer); /* 设置输入匹配提示 */
-	name_input.setPlaceholderText("请用户名"); /* 设置输入提示 */
+    QCompleter completer(QStringList() << "abc" << "aaa" << "123");
+    completer.setFilterMode(Qt::MatchContains);
+    name_input.setCompleter(&completer); /* 设置输入匹配提示 */
+    name_input.setPlaceholderText("请用户名"); /* 设置输入提示 */
 
-	password_input.setEchoMode(QLineEdit::Password); /* 设置回显模式为密码模式 */
-	password_input.setPlaceholderText("请输入密码"); /* 设置输入提示 */
+    password_input.setEchoMode(QLineEdit::Password); /* 设置回显模式为密码模式 */
+    password_input.setPlaceholderText("请输入密码"); /* 设置输入提示 */
 
-	widget.show(); /* 显示窗口 */
-	return app.exec(); /* exec():进入消息循环 */
+    widget.show(); /* 显示窗口 */
+    return app.exec(); /* exec():进入消息循环 */
 }
 ```
 
@@ -287,12 +287,12 @@ int main(int argc, char *argv[])
 &emsp;&emsp;Qt里的`Qwidget`可以使用`setGeometry()`来设置控件的位置坐标，位置坐标是相对与父窗口的左上角计算的，下面是一个例子：
 
 ``` cpp
-	QWidget widget;
-	QPushButton button;
-	button.setText("Button");
-	button.setParent(&widget);
-	/* 设置button相对父窗口的坐标ax,ay，以及button的宽度aw和高度ah */
-	button.setGeometry(30, 30, 200, 100);
+    QWidget widget;
+    QPushButton button;
+    button.setText("Button");
+    button.setParent(&widget);
+    /* 设置button相对父窗口的坐标ax,ay，以及button的宽度aw和高度ah */
+    button.setGeometry(30, 30, 200, 100);
 ```
 
 &emsp;&emsp;上面的例子中，`setGeometry()`有4个参数，前两个参数是`button`相对父窗口的坐标ax，ay，后面两个是`button`的宽度和高度aw，ah。
@@ -312,9 +312,9 @@ int main(int argc, char *argv[])
 - 最高层窗口可感知的最小大小。
 - 调整大小的处理。
 - 当内容改变的时候自动更新：
-	- 字体大小、文本或者子控件的其它内容。
-	- 隐藏或者显示子控件。
-	- 移除一些子控件。
+    - 字体大小、文本或者子控件的其它内容。
+    - 隐藏或者显示子控件。
+    - 移除一些子控件。
 
 ### 常用layout
 
@@ -322,19 +322,19 @@ int main(int argc, char *argv[])
 
 - `QHBoxLayout`：从左到右在水平行中布置控件。
 
-	![](/images/learn_note/qt_learn/fig_1.png)
+    ![](/images/learn_note/qt_learn/fig_1.png)
 
 - `QVBoxLayout`：在垂直列中从上到下布置控件。
 
-	![](/images/learn_note/qt_learn/fig_2.png)
+    ![](/images/learn_note/qt_learn/fig_2.png)
 
 - `QGridLayout`：在二维网格中布置控件，控件可以占用多个单元格。
 
-	![](/images/learn_note/qt_learn/fig_3.png)
+    ![](/images/learn_note/qt_learn/fig_3.png)
 
 - `QFormLayout`：把控件按照标签-输入框的形式排列在两列。
 
-	![](/images/learn_note/qt_learn/fig_4.png)
+    ![](/images/learn_note/qt_learn/fig_4.png)
 
 ### 为layout添加控件
 
@@ -364,21 +364,21 @@ int main(int argc, char *argv[])
 
 ``` cpp
 void addWidget(
-	QWidget *widget, // 需要插入的控件对象
-	int fromRow,     // 插入的行
-	int fromColumn,  // 插入的列
-	int rowSpan,     // 占用的行
-	int columnSpan,  // 占用的列数
-	Qt::Alignment alignment = Qt::Alignment // 各个控件的对齐方式
+    QWidget *widget, // 需要插入的控件对象
+    int fromRow,     // 插入的行
+    int fromColumn,  // 插入的列
+    int rowSpan,     // 占用的行
+    int columnSpan,  // 占用的列数
+    Qt::Alignment alignment = Qt::Alignment // 各个控件的对齐方式
 );
 
 void addLayout(
-	QLayout *layout, // 需要插入的子布局对象
-	int row,         // 插入的起始行
-	int column,      // 插入的起始列
-	int rowSpan,     // 占用的行数
-	int columnSpan,  // 占用的列数
-	Qt::Alignment alignment = Qt::Alignment // 指定的对齐方式
+    QLayout *layout, // 需要插入的子布局对象
+    int row,         // 插入的起始行
+    int column,      // 插入的起始列
+    int rowSpan,     // 占用的行数
+    int columnSpan,  // 占用的列数
+    Qt::Alignment alignment = Qt::Alignment // 指定的对齐方式
 );
 ```
 
@@ -397,34 +397,226 @@ void addLayout(
 
 int main(int argc, char *argv[])
 {
-	QApplication app(argc, argv);
-	QWidget widget;
+    QApplication app(argc, argv);
+    QWidget widget;
 
-	QGridLayout layout;            // 创建格子布局
-	layout.setRowStretch(0, 1);    // 设置第0行的拉伸系数
-	layout.setColumnStretch(0, 1); // 设置第0列的拉伸系数
+    QGridLayout layout;            // 创建格子布局
+    layout.setRowStretch(0, 1);    // 设置第0行的拉伸系数
+    layout.setColumnStretch(0, 1); // 设置第0列的拉伸系数
 
-	/* 向layout中添加控件 */
-	layout.addWidget(new QLabel("用户名："), 1, 1);
-	layout.addWidget(new QLineEdit(), 1, 2); 
-	layout.addWidget(new QLabel("密码："), 2, 1);
-	layout.addWidget(new QLineEdit(), 2, 2);
+    /* 向layout中添加控件 */
+    layout.addWidget(new QLabel("用户名："), 1, 1);
+    layout.addWidget(new QLineEdit(), 1, 2); 
+    layout.addWidget(new QLabel("密码："), 2, 1);
+    layout.addWidget(new QLineEdit(), 2, 2);
 
-	/* 向layout中添加子布局 */
-	QHBoxLayout hbox;
-	hbox.addStretch(1);  // 添加伸缩量
-	hbox.addWidget(new QPushButton("登录"));
-	layout.addLayout(&hbox, 3, 1, 1, 2);
+    /* 向layout中添加子布局 */
+    QHBoxLayout hbox;
+    hbox.addStretch(1);  // 添加伸缩量
+    hbox.addWidget(new QPushButton("登录"));
+    layout.addLayout(&hbox, 3, 1, 1, 2);
 
-	layout.setRowStretch(4, 1);    // 设置最后一行的拉伸系数
-	layout.setColumnStretch(3, 1); // 设置最后一列的拉伸系数
+    layout.setRowStretch(4, 1);    // 设置最后一行的拉伸系数
+    layout.setColumnStretch(3, 1); // 设置最后一列的拉伸系数
 
-	widget.setLayout(&layout); // 给窗口设置layout
-	widget.show();
-	return app.exec();
+    widget.setLayout(&layout); // 给窗口设置layout
+    widget.show();
+    return app.exec();
 }
 ```
 
-## 信号和事件
+## 事件
+
+&emsp;&emsp;抄了大佬的这篇[博客](https://blog.csdn.net/qq_29912325/article/details/117767972)
+
+### 事件定义
+
+&emsp;&emsp;事件(event)是由系统或者 Qt 本身在不同的时刻发出的。当用户按下鼠标，敲下键盘，或者是窗口需要重新绘制的时候，都会发出一个相应的事件。一些事件是在对用户操作做出响应的时候发出，如键盘事件等；另一些事件则是由系统自动发出，如计时器事件。
+
+### 事件与信号槽
+
+&emsp;&emsp;一般来说，使用 Qt 编程时，我们并不会把主要精力放在事件上，因为在 Qt 中，需要我们关心的事件总会发出一个信号。比如，我们关心的是`QPushButton`的鼠标点击，但我们不需要关心这个鼠标点击事件，而是关心它的`clicked()`信号。
+
+- **信号槽**：`signal`由具体对象发出，然后会马上交给由`connect`函数连接的`slot`进行处理。
+- **事件**：Qt 使用一个事件队列对所有发出的事件进行维护，当新的事件产生时，会被追加到事件队列的尾部，前一个事件完成后，取出后面的事件进行处理。但是，必要的时候，Qt 的事件也是可以不进入事件队列，而是直接处理的。并且，事件还可以使用“事件过滤器”进行过滤。
+
+&emsp;&emsp;总的来说，如果我们使用组件，我们关心的是信号槽；如果我们自定义组件，我们关心的是事件。因为我们可以通过事件来改变组件的默认操作。比如，如果我们要自定义一个`QPushButton`，那么我们就需要重写它的鼠标点击事件和键盘处理事件，并且在恰当的时候发出`clicked()`信号。
+
+### 事件循环
+
+&emsp;&emsp;我们在 main 函数里面创建了一个`QApplication`对象，然后调用了它的`exec()`函数。其实，这个函数就是开始 Qt 的事件循环。在执行`exec()`函数之后，程序将进入事件循环来监听应用程序的事件。
+
+### 事件处理函数
+
+&emsp;&emsp;当事件发生时，Qt 将创建一个事件对象。Qt 的所有事件都继承于`QEvent`类。在事件对象创建完毕后，Qt 将这个事件对象传递给 QObject 的`event()`函数。`event()`函数并不直接处理事件，而是按照事件对象的类型分派给特定的事件处理函数(event handler) 。
+
+&emsp;&emsp;例如在所有组件的父类 QWidget 中，定义了很多事件处理函数 ，如`keyPressEvent()`、`keyReleaseEvent()`、`mouseDoubleClickEvent()`、`mouseMoveEvent ()`、`mousePressEvent()`、`mouseReleaseEvent()`等。这些函数都是`protected virtual`的，也就是说，我们应该在子类中重写这些函数。下面是一个重写事件处理函数的例子：
+
+``` cpp
+#include <QApplication>
+#include <QWidget>
+#include <QMouseEvent>
+#include <QKeyEvent>
+#include <QDebug>
+
+class event_widget : public QWidget
+{
+protected:
+    /* 事件处理主函数，主要用来截取事件 */
+    bool event(QEvent *ev);
+
+    /* 鼠标按下事件处理 */
+    void mousePressEvent(QMouseEvent *ev);
+    /* 鼠标释放事件处理 */
+    void mouseReleaseEvent(QMouseEvent *ev);
+    /* 鼠标移动事件处理 */
+    void mouseMoveEvent(QMouseEvent *ev);
+    /* 鼠标双击事件处理 */
+    void mouseDoubleClickEvent(QMouseEvent *ev);
+
+    /* 键盘按下事件处理 */
+    void keyPressEvent(QKeyEvent *ev);
+    /* 键盘释放事件处理 */
+    void keyReleaseEvent(QKeyEvent *ev);
+
+    /* 窗口隐藏事件处理 */
+    void hideEvent(QHideEvent *ev);
+    /* 窗口显示事件处理 */
+    void showEvent(QShowEvent *ev);
+    /* 重绘事件处理 */
+    void paintEvent(QPaintEvent *ev);
+    /* 窗口关闭事件处理 */
+    void closeEvent(QCloseEvent *ev);
+};
+
+/* 事件处理主函数，主要用来截取事件 */
+bool event_widget::event(QEvent *ev)
+{
+    /* 默认的事件处理函数 */
+    return QWidget::event(ev);
+}
+
+/* 鼠标按下事件处理 */
+void event_widget::mousePressEvent(QMouseEvent *ev)
+{
+    qDebug() << "mouse press event";
+    QWidget::mousePressEvent(ev);
+}
+
+/* 鼠标释放事件处理 */
+void event_widget::mouseReleaseEvent(QMouseEvent *ev)
+{
+    qDebug() << "mouse release event";
+    QWidget::mouseReleaseEvent(ev);
+}
+
+/* 鼠标移动事件处理 */
+void event_widget::mouseMoveEvent(QMouseEvent *ev)
+{
+    static int i = 0;
+    /* 只有鼠标按下时移动，才能触发事件 */
+    qDebug() << "mouse move " << i++;
+    /* 如果要在鼠标不按下时，也触发事件，需要在构造函数中运行下面的代码 */
+    // this->setMouseTracking(true);
+    QWidget::mouseMoveEvent(ev);
+}
+
+/* 鼠标双击事件处理 */
+void event_widget::mouseDoubleClickEvent(QMouseEvent *ev)
+{
+    qDebug() << "mouse double click event";
+    QWidget::mouseDoubleClickEvent(ev);
+}
+
+/* 键盘按下事件处理 */
+void event_widget::keyPressEvent(QKeyEvent *ev)
+{
+    qDebug() << "key press event " << ev->key();
+    QWidget::keyPressEvent(ev);
+}
+
+/* 键盘释放事件处理 */
+void event_widget::keyReleaseEvent(QKeyEvent *ev)
+{
+    qDebug() << "key release event " << ev->key();
+    QWidget::keyPressEvent(ev);
+}
+
+/* 窗口隐藏事件处理 */
+void event_widget::hideEvent(QHideEvent *ev)
+{
+    qDebug() << "hide event";
+    QWidget::hideEvent(ev);
+}
+
+/* 窗口显示事件处理 */
+void event_widget::showEvent(QShowEvent *ev)
+{
+    qDebug() << "show event";
+    QWidget::showEvent(ev);
+}
+
+/* 重绘事件处理 */
+void event_widget::paintEvent(QPaintEvent *ev)
+{
+    qDebug() << "paint event";
+    QWidget::paintEvent(ev);
+}
+
+/* 窗口关闭事件处理 */
+void event_widget::closeEvent(QCloseEvent *ev)
+{
+    qDebug() << "close event";
+    QWidget::closeEvent(ev);
+}
+
+int main(int argc, char *argv[])
+{
+    QApplication app(argc, argv);
+
+    event_widget widget;
+    widget.show();
+
+    return app.exec();
+}
+
+```
+
+上面的例子中，我们定义了一个`QWidget`的子类`event_widget`，重写了一些事件处理函数。
+
+### 事件接受与忽略
+
+&emsp;&emsp;前面的例子中我们在重写事件处理函数时，都会调用父类对应的事件处理函数。这在某种程度上说，是把事件向上传递给父类去响应，也就是说，我们在子类中“忽略”了这个事件。
+
+&emsp;&emsp;我们可以把 Qt 的事件传递看成链状：如果子类没有处理这个事件，就会继续向其他类传递。其实，Qt 的事件对象都有一个`accept()`函数和`ignore()`函数。正如它们的名字，前者用来告诉 Qt，事件处理函数“接收”了这个事件，不要再传递；后者则告诉 Qt，事件处理函数“忽略”了这个事件，需要继续传递，寻找另外的接受者。在事件处理函数中，可以使用`isAccepted()`来查询这个事件是不是已经被接收了。
+
+&emsp;&emsp;事实上，我们很少使用`accept()`和`ignore()`函数，而是像上面的示例一样，如果希望忽略事件，只要调用父类的响应函数即可。
+
+&emsp;&emsp;Qt 中的事件大部分是`protected`的，因此，重写的函数必定存在着其父类中的响应函数，这个方法是可行的。为什么要这么做呢？因为我们无法确认父类中的这个处理函数没有操作，如果我们在子类中直接忽略事件，Qt 不会再去寻找其他的接受者，那么父类的操作也就不能进行，这可能会有潜在的危险。
+
+&emsp;&emsp;在一个情形下，我们必须使用`accept()`和`ignore()`函数，那就是在窗口关闭的时候。如果你在窗口关闭时需要有个询问对话框，那么就需要这么去写：
+
+```cpp
+/* 窗口关闭事件处理 */
+void event_widget::closeEvent(QCloseEvent * event)
+{
+    QMessageBox::StandardButton ret;
+    ret = QMessageBox::question(this, 
+                                "Quit", "Are you sure to quit this application",
+                                QMessageBox::Yes | QMessageBox::No,
+                                QMessageBox::No);
+    if(ret == QMessageBox::Yes) {
+        event->accept();
+    } else {
+        event->ignore();
+    }
+}
+```
+
+这样，我们经过询问之后才能正常退出程序。
+
+### event()函数
+
+### 事件过滤器
 
 ## 画板
