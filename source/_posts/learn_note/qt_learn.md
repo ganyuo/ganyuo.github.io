@@ -406,7 +406,7 @@ int main(int argc, char *argv[])
 
     /* 向layout中添加控件 */
     layout.addWidget(new QLabel("用户名："), 1, 1);
-    layout.addWidget(new QLineEdit(), 1, 2); 
+    layout.addWidget(new QLineEdit(), 1, 2);
     layout.addWidget(new QLabel("密码："), 2, 1);
     layout.addWidget(new QLineEdit(), 2, 2);
 
@@ -489,7 +489,7 @@ protected:
     void closeEvent(QCloseEvent *ev);
 };
 
-/* 事件处理主函数，主要用来截取事件 */
+/* 事件处理主函数，主要用于事件的分发 */
 bool event_widget::event(QEvent *ev)
 {
     /* 默认的事件处理函数 */
@@ -594,17 +594,16 @@ int main(int argc, char *argv[])
 
 &emsp;&emsp;Qt 中的事件大部分是`protected`的，因此，重写的函数必定存在着其父类中的响应函数，这个方法是可行的。为什么要这么做呢？因为我们无法确认父类中的这个处理函数没有操作，如果我们在子类中直接忽略事件，Qt 不会再去寻找其他的接受者，那么父类的操作也就不能进行，这可能会有潜在的危险。
 
-&emsp;&emsp;在一个情形下，我们必须使用`accept()`和`ignore()`函数，那就是在窗口关闭的时候。如果你在窗口关闭时需要有个询问对话框，那么就需要这么去写：
+&emsp;&emsp;在一个情形下，我们必须使用`accept()`和`ignore()`函数，那就是在窗口关闭的时候。如果在窗口关闭时需要有个询问对话框，那么就需要这么去写：
 
 ```cpp
 /* 窗口关闭事件处理 */
 void event_widget::closeEvent(QCloseEvent * event)
 {
     QMessageBox::StandardButton ret;
-    ret = QMessageBox::question(this, 
-                                "Quit", "Are you sure to quit this application",
-                                QMessageBox::Yes | QMessageBox::No,
-                                QMessageBox::No);
+    ret = QMessageBox::question(this, "Quit",
+        "Are you sure to quit this application",
+        QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
     if(ret == QMessageBox::Yes) {
         event->accept();
     } else {
@@ -617,6 +616,126 @@ void event_widget::closeEvent(QCloseEvent * event)
 
 ### event()函数
 
+&emsp;&emsp;事件对象创建完毕后，Qt 将这个事件对象传递给`QObject`的`event()`函数。`event()`函数并不直接处理事件，而是将这些事件对象按照它们不同的类型，分发给不同的事件处理器(event handler)。
+
+&emsp;&emsp;`event()`函数主要用于事件的分发，所以，如果希望在事件分发之前做一些操作，那么，就需要注意这个`event()`函数了。为了达到这种目的，我们可以重写`event()`函数。
+
+&emsp;&emsp;例如，如果希望在窗口中的 tab 键按下时将焦点移动到下一组件，而不是让具有焦点的组件处理，那么就可以继承 QWidget ，并重写它的`event()`函数，以达到这个目的：
+
+```cpp
+bool MyWidget::event(QEvent *event)
+{
+    if (event->type() == QEvent::KeyPress)
+    {
+        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+        if (keyEvent->key() == Qt::Key_Tab)
+        {
+            // 处理 Tab 键时事件
+            return true;
+        }
+    }
+    return QWidget::event(event);
+}
+```
+
+&emsp;&emsp;`event()`函数接受一个 QEvent 对象，也就是需要这个函数进行转发的对象。为了进行转发，必定需要有一系列的类型判断，这就可以调用 QEvent 的`type()`函数，其返回值是`QEvent::Type`类型的枚举。
+
+&emsp;&emsp;我们处理过自己需要的事件后，可以直接`return `回去，对于其他我们不关心的事件，需要调用父类的`event()`函数继续转发，否则这个组件就只能处理我们定义的事件了。
+
+&emsp;&emsp;`event()`函数返回值是`bool`类型，如果传入的事件已被识别并且处理，返回`true`，否则返回`false`。如果返回值是`true`，QApplication 会认为这个事件已经处理完毕，会继续处理事件队列中的下一事件；如果返回值是`false`，QApplication 会尝试寻找这个事件的下一个处理函数。
+
+&emsp;&emsp;`event()`函数的返回值和事件的`accept()`和`ignore()`函数不同。`accept()`和`ignore()`函数用于不同的事件处理器之间的沟通，例如判断这一事件是否处理；`event()`函数的返回值主要是通知 QApplication 的`notify()`函数是否处理下一事件。
+
+为了更加明晰这一点，我们来看看 QWidget 的`event()`函数是如何定义的：
+
+```cpp
+bool QWidget::event(QEvent *event)
+{
+    switch (e->type())
+    {
+        case QEvent::KeyPress:keyPressEvent((QKeyEvent *)event);
+            if (!((QKeyEvent *)event)->isAccepted())
+                return false;
+            break;
+        case QEvent::KeyRelease:
+            keyReleaseEvent((QKeyEvent *)event);
+            if (!((QKeyEvent *)event)->isAccepted())
+                return false;
+            break;
+        // more...
+    }
+    return true;
+}
+```
+
+&emsp;&emsp;QWidget 的`event()`函数使用一个巨大的 switch 来判断 QEvent 的 type，并且分发给不同的事件处理函数。在事件处理函数之后，使用这个事件的`isAccepted()`方法，获知这个事件是不是被接受，如果没有被接受则`event()`函数立即返回`false`，否则返回`true`。
+
+&emsp;&emsp;另外一个必须重写`event()`函数的情形是有自定义事件的时候。如果程序中有自定义事件，则必须重写`event()`函数以便将自定义事件进行分发，否则自定义事件永远也不会被调用。
+
 ### 事件过滤器
+
+&emsp;&emsp;Qt 创建了 QEvent 事件对象之后，会调用 QObject 的`event()`函数做事件的分发。有时候，可能需要在调用event()函数之前做一些另外的操作，比如，对话框上某些组件可能并不需要响应回车按下的事件，此时，就需要重新定义组件的`event()`函数。如果组件很多，就需要重写很多次`event()`函数，这显然没有效率。为此，可以使用一个事件过滤器，来判断是否需要调用`event()`函数。
+
+QOjbect 有一个`eventFilter()`函数，用于建立事件过滤器。这个函数的签名如下：
+
+```cpp
+virtual bool QObject::eventFilter(QObject * watched, QEvent * event)
+```
+
+如果 watched 对象安装了事件过滤器，这个函数会被调用并进行事件过滤，然后才轮到组件进行事件处理。在重写这个函数时，如果需要过滤掉某个事件，例如停止对这个事件的响应，需要返回true。
+
+```cpp
+bool MainWindow::eventFilter(QObject *obj, QEvent *event)
+{
+    if (obj == textEdit)
+    {
+        if (event->type() == QEvent::KeyPress)
+        {
+            QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+            qDebug() << "Ate key press" << keyEvent->key();
+            return true;
+        }
+        else
+            return false;
+    }
+    else
+    {
+        // pass the event on to the parent class
+        return QMainWindow::eventFilter(obj, event);
+    }
+}
+```
+
+&emsp;&emsp;上面的例子中为 MainWindow 建立了一个事件过滤器。为了过滤某个组件上的事件，首先需要判断这个对象是哪个组件，然后判断这个事件的类型。
+
+&emsp;&emsp;例如，我不想让 textEdit 组件处理键盘事件，于是就首先找到这个组件，如果这个事件是键盘事件，则直接返回`true`，也就是过滤掉了这个事件，其他事件还是要继续处理，所以返回`false`。对于其他组件，我们并不保证是不是还有过滤器，于是最保险的办法是调用父类的函数。
+
+&emsp;&emsp;在创建了过滤器之后，下面要做的是安装这个过滤器。安装过滤器需要调用`installEventFilter()`函数。这个函数的签名如下：
+
+```cpp
+void QObject::installEventFilter(QObject* filterObj)
+```
+
+&emsp;&emsp;这个函数是 QObject 的一个函数，因此可以安装到任何 QObject 的子类，并不仅仅是 UI 组件。这个函数接收一个 QObject 对象，调用了这个函数安装事件过滤器的组件会调用 filterObj 定义的`eventFilter()`函数。
+
+&emsp;&emsp;例如，`textField.installEventFilter(obj)`，则如果有事件发送到 textField 组件是，会先调用`obj->eventFilter()`函数，然后才会调用`textField.event()`。
+
+&emsp;&emsp;当然，你也可以把事件过滤器安装到 QApplication 上面，这样就可以过滤所有的事件，已获得更大的控制权。不过，这样做的后果就是会降低事件分发的效率。
+
+&emsp;&emsp;如果一个组件安装了多个过滤器，则最后一个安装的会最先调用，类似于堆栈的行为。
+
+&emsp;&emsp;**注意**：如果你在事件过滤器中`delete`了某个接收组件，务必将返回值设为`true`。否则，Qt 还是会将事件分发给这个接收组件，从而导致程序崩溃。
+
+&emsp;&emsp;事件过滤器和被安装的组件必须在同一线程，否则，过滤器不起作用。另外，如果在 install 之后，这两个组件到了不同的线程，那么，只有等到二者重新回到同一线程的时候过滤器才会有效。
+
+&emsp;&emsp;事件的调用最终都会调用 QCoreApplication 的`notify()`函数，因此，最大的控制权实际上是重写 QCoreApplication 的`notify()`函数。由此可以看出，Qt 的事件处理实际上是分层五个层次：
+
+1. 重定义事件处理函数
+2. 重定义 event()函数
+3. 为单个组件安装事件过滤器
+4. 为 QApplication 安装事件过滤器
+5. 重定义 QCoreApplication 的`notify()`函数
+
+这几个层次的控制权是逐层增大的。
 
 ## 画板
