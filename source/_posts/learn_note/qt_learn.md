@@ -800,3 +800,88 @@ bool CustomWidget::event(QEvent *event) {
 这两种办法都是可行的。
 
 ## 画板
+
+&emsp;&emsp;抄了大佬的这篇[博客](https://zhuanlan.zhihu.com/p/638570663)。
+
+&emsp;&emsp;`QPainter`是 Qt 中用于进行绘图操作的类。它提供了各种绘制函数，可以在不同的绘图设备上进行绘制，如窗口、图像、打印机等。
+
+以下是`QPainter`类的一些常用属性和方法：
+
+- `begin(QPaintDevice *device)`: 在给定的绘图设备上开始绘制操作。
+- `end()`: 结束绘制操作。
+- `drawText(const QRectF &rectangle, const QString &text)`: 绘制指定矩形区域内的文本。
+- `drawImage(const QRectF &target, const QImage &image, const QRectF &source)`: 在目标矩形区域内绘制源图像的一部分。
+- `setPen(const QPen &pen)`: 设置绘制的画笔样式。
+- `setBrush(const QBrush &brush)`: 设置绘制的画刷样式。
+- `setFont(const QFont &font)`: 设置绘制的字体样式。
+- `translate(const QPointF &offset)`: 将绘图坐标原点平移指定的偏移量。
+- `scale(qreal sx, qreal sy)`: 沿着x轴和y轴方向对绘图进行缩放。
+- `rotate(qreal angle)`: 以原点为中心，按照给定的角度旋转绘图。
+- `save()`: 保存当前的绘图状态，包括画笔、画刷、字体等设置。
+- `restore()`: 恢复上一次保存的绘图状态。
+
+&emsp;&emsp;这些方法和属性只是`QPainter`类的一部分，还有其他许多功能可以用于绘制不同的图形和效果。可以根据需要在`QPainter`文档中进一步了解更多细节。
+
+&emsp;&emsp;下面是一个简单的示例，演示了如何使用`QPainter`在窗口上进行绘制：
+
+```cpp
+#include <QApplication>
+#include <QWidget>
+#include <QPainter>
+#include <QPixmap>
+
+class my_painter : public QWidget
+{
+private:
+    /* data */
+public:
+    my_painter() {};
+    ~my_painter() {};
+
+    void paintEvent(QPaintEvent *e);
+};
+
+void my_painter::paintEvent(QPaintEvent *e)
+{
+    QPainter painter(this);
+
+    /* 消锯齿 */
+    painter.setRenderHint(QPainter::Antialiasing);
+    /* 设置画笔，线条为红色，线宽为2，使用虚线 */
+    painter.setPen(QPen(Qt::red , 2, Qt::DashLine));
+    /* 设置画刷，当画矩形等封闭图形时，用黄色填充 */
+    painter.setBrush(Qt::yellow);
+    /* 设置字体，楷体，大小为40，700加粗，斜体 */
+    painter.setFont(QFont("楷体", 40, 700, true));
+
+    /* 画直线 */
+    painter.drawLine(20, 40, 200, 40);
+    /* 画圆 */
+    painter.drawEllipse(QPoint(100, 120), 50, 50);
+    /* 写字 */
+    painter.drawText(QPoint(20, 240), "hello world");
+
+    /* 向左移动400 */
+    painter.translate(400, 0);
+    /* 画图片 */
+    painter.drawPixmap(QPoint(0, 20), QPixmap("./image/滑稽.png"));
+    // /* 画矩形 */
+    painter.drawRect(QRect(0, 120, 100, 50));
+    // /* 画圆角矩形 */
+    painter.drawRoundRect(QRect(0, 200, 100, 50));
+}
+
+int main(int argc, char *argv[])
+{
+	QApplication app(argc, argv);
+
+	my_painter widget;
+	widget.show();
+
+	return app.exec();
+}
+```
+
+&emsp;&emsp;在上述示例中，我们创建了一个自定义的`QWidget`派生类`my_painter`，并重写了`paintEvent()`函数。在`paintEvent()`函数中，我们创建了一个`QPainter`对象，将其关联到窗口上，并使用一些绘制函数，在窗口的矩形区域内绘制图形。最后，我们创建了一个`my_painter`对象并显示窗口，绘制的图形将在窗口中心显示。
+
+&emsp;&emsp;这只是一个简单的示例，你可以根据需要使用其他绘图函数和属性来绘制更复杂的图形和效果。
