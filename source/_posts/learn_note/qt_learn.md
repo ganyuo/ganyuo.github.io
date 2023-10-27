@@ -885,3 +885,183 @@ int main(int argc, char *argv[])
 &emsp;&emsp;在上述示例中，我们创建了一个自定义的`QWidget`派生类`my_painter`，并重写了`paintEvent()`函数。在`paintEvent()`函数中，我们创建了一个`QPainter`对象，将其关联到窗口上，并使用一些绘制函数，在窗口的矩形区域内绘制图形。最后，我们创建了一个`my_painter`对象并显示窗口，绘制的图形将在窗口中心显示。
 
 &emsp;&emsp;这只是一个简单的示例，你可以根据需要使用其他绘图函数和属性来绘制更复杂的图形和效果。
+
+
+## 信号和槽
+
+&emsp;&emsp;抄了大佬的这篇[博客](https://zhuanlan.zhihu.com/p/648165514)。
+
+### 简介
+
+&emsp;&emsp;信号槽是QT中用于对象间通信的一种机制，也是QT的核心机制。在GUI编程中，我们经常需要在改变一个组件的同时，通知另一个组件做出响应。
+
+&emsp;&emsp;早期，对象间的通信采用回调来实现。回调实际上是利用函数指针来实现，当我们希望某件事发生时处理函数能够获得通知，就需要将回调函数的指针传递给处理函数，这样处理函数就会在合适的时候调用回调函数。回调有两个明显的缺点：
+
+- 它们不是类型安全的，我们无法保证处理函数传递给回调函数的参数都是正确的。
+- 回调函数和处理函数紧密耦合，源于处理函数必须知道哪一个函数被回调。
+
+&emsp;&emsp;在QT中，我们有回调技术之外的选择，也即是信号槽机制。所谓的信号与槽，其实都是函数。当特定事件被触发时将发送一个信号，而与该信号建立的连接槽，则可以接收到该信号并做出反应。
+
+&emsp;&emsp;QT组件预定义了很多信号和槽，而在GUI编程中，我们习惯于继承那些组件，继承后添加我们自己的槽，以便以我们的方式来处理信号。槽和普通的C++成员函数几乎是一样的，它可以是虚函数，可以被重载，可以是共有、私有或是保护的，也同样可以被其他成员函数调用。它的函数参数也可以是任意类型的。唯一不同的是：槽还可以和信号连接在一起。
+
+&emsp;&emsp;与回调不同，信号槽机制是类型安全的。这体现在信号的函数签名与槽的函数签名必须匹配上，才能够发生信号的传递。实际上，槽的参数个数可以比信号的参数个数少，因为槽能够忽略信号形参中多出来的参数。信号和槽是松耦合的：发出信号的类不关心哪些类将接收它的信号。QT的槽能够接收到信号的参数并调用，信号和槽都可以有任意个数的参数，它们都是类型安全的。
+
+### 样例分析
+
+&emsp;&emsp;首先我们要知道的是，所有继承自`QObject`或者它的子类（如`QWidget`）都可以包含信号槽。我们写的类也要继承自`QObject`（或其子类）。所有包含了信号槽的类都必须在声明的上部含有`Q_OBJECT`宏。
+
+一个基于`QObject`的C++简单类：
+
+```cpp
+//MyStr.h
+# ifndef  MYSTR
+# define  MYSTR
+#include<QObject>
+#include<QString>
+ 
+class MyStr :public QObject
+{
+    Q_OBJECT //必须包含的宏
+
+public:
+    MyStr (){m_value = "zero";}
+ 
+    QString value() const {return  m_value;}
+
+public slots :
+    void setValue(QString value);
+ 
+    signals: //信号
+    void valueChanged(QString newValue); 
+private:
+    QString m_value;
+};
+ 
+#endif 
+```
+
+&emsp;&emsp;在这个简单的类中，我们可以看到，使用slots来表示槽，而使用signals来表示信号。
+
+&emsp;&emsp;Signal的代码会由 moc 自动生成，开发人员一定不能在自己的C++代码中实现它。反之，槽应该由编程人员来实现，下面提供MyStr::setVaule()的一种可能实现。
+
+```cpp
+#include"MyStr.h"
+void MyStr::setValue(QString value)
+{
+    if(value != m_value)
+    {
+        m_value = value;
+        emit valueChanged(value);
+    }
+}
+```
+
+&emsp;&emsp;setValue函数首先比较新参的值与数据成员的值是否是一样的（后面有解释为何这样做），如果不是，则设置好数据成员m_value的值，然后，把信号valueChanged（）发送出去。发送给谁？类并没有写，这并不是类设计者所关心的，也不是类所关心的，它只管把信号发送出去就行。然后，我们再来设置谁来接收这个信号。
+
+```cpp
+int main(int argc, char *argv[])
+{
+    MyStr a;
+    MyStr b;
+    QObject::connect(&a,SIGNAL(valueChanged(QString)),&b,SLOT(setValue(QString)));
+    a.setValue("this is A");
+    return 0;
+}
+```
+
+&emsp;&emsp;我们定义了两个类对象a/b，使用 QObject::connect（）函数指定了发送方、信号、接收方、槽等信息，connect函数的格式如下：
+
+```cpp
+QObject::connect(/*发送方*/, SIGNAL(), /*接收方*/, SLOT());
+```
+
+&emsp;&emsp;当我们调用a的成员函数setValue时，该函数除了把a.m_value设置为"this is A"，也把信号valueChanged()发送出去，被b.setValue所接收，从而，把b.m_value设置为"this is A"，同时b.setValue又把valueChanged信号发射出去，然而该信号并没有对象接收，因为我们没有建立以b为发送方的任何连接。此时你应该明白，为何在emit前需要判断value != m_value，因为如果没有此步骤，且恰巧设置了
+
+```cpp
+QObject::connect(&b,SIGNAL(valueChanged(QString)),&a,SLOT(setValue(QString)));
+```
+
+则b的信号被a接收，a又发送信号被b接收，如此进入死循环。
+
+```cpp
+int main(int argc, char *argv[])
+{
+    QApplication app(argc, argv);
+ 
+    MyStr  a;
+    MyStr  b;
+    QObject::connect(&a,SIGNAL(valueChanged(QString)),&b,SLOT(setValue(QString)));
+    a.setValue("this is A");
+ 
+    QLabel* label = new QLabel;
+    label->setText( b.value());
+    label->show();
+    return app.exec();
+}
+```
+
+&emsp;&emsp;我们使用label输出来看看b是否接收到a的信号，如果是，则b的内容应该是"this is A"，输出在label上，程序运行结果：
+
+
+&emsp;&emsp;这个例子展示了对象之间通信的一种方式。对象间可以一起工作，而不需要知道彼此的任何信息。为了达到通信的目的，只需要将它们连接起来，而这只需要通过 调用 QObject::connect() 函数指定一些简单信息就好。
+
+### 连接
+
+要把信号成功连接到槽，它们的参数必须具有相同的顺序和相同的类型，或者允许信号的参数比槽多，槽会自动忽略掉多出来的参数而进行调用。
+
+#### 一个信号可以连接多个槽
+
+&emsp;&emsp;使用QObject::connect可以把一个信号连接到多个槽，而当信号发射时，将按声明联系时的顺序依次调用槽。
+
+```cpp
+MyStr  a;
+ MyStr  b;
+ MyStr  c;
+//信号连接到两个槽
+ QObject::connect(&a,SIGNAL(valueChanged(QString)),&b,SLOT(setValue(QString)));
+ QObject::connect(&a,SIGNAL(valueChanged(QString)),&c,SLOT(setValue(QString)));
+ a.setValue("this is A");
+//依次调用b.setValue()、c.setValue()
+```
+
+#### 多个信号可以连接同一个槽
+
+&emsp;&emsp;同样的，可以让多个信号连接到同一个槽上 ，而且其中的每一个信号的发送，都会调用了那个槽。
+
+```cpp
+MyStr  a;
+ MyStr  b;
+ MyStr  c;
+//两个信号连接到同一个槽
+ QObject::connect(&a,SIGNAL(valueChanged(QString)),&c,SLOT(setValue(QString)));
+ QObject::connect(&b,SIGNAL(valueChanged(QString)),&c,SLOT(setValue(QString)));
+//下面的操作皆会调用到槽c.setValue()
+ a.setValue("this is A");
+b.setValue("this is B");
+```
+
+#### 一个信号可以和另外一个信号相连接
+
+&emsp;&emsp;当发射第一个信号的时候，也会把第二个信号一个发送出去。
+
+```cpp
+MyStr  a;
+ MyStr  b;
+ MyStr  c;
+//两个信号相连接
+ QObject::connect(&a,SIGNAL(valueChanged(QString)),&b,SIGNAL(valueChanged(QString)));
+//再建立b与c的连接
+ QObject::connect(&b,SIGNAL(valueChanged(QString)),&c,SLOT(setValue(QString)));
+//下面的操作同时发送了信号a.valueChanged与b.valueChanged
+ a.setValue("this is A");
+//从而信号b.valueChanged被槽c.setValue所接收
+```
+
+#### 连接可以被移除
+
+```cpp
+//移除b 与 c之间的连接
+  QObject::disconnect(&b,SIGNAL(valueChanged(QString)),&c,SLOT(setValue(QString)));
+```
+
+&emsp;&emsp;实际上当对象被delete时，其关联的所有链接都会失效，QT会自动移除和这个对象的所有链接。
