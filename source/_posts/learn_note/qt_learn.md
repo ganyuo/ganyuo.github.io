@@ -910,37 +910,29 @@ int main(int argc, char *argv[])
 
 &emsp;&emsp;首先我们要知道的是，所有继承自`QObject`或者它的子类（如`QWidget`）都可以包含信号槽。我们写的类也要继承自`QObject`（或其子类）。所有包含了信号槽的类都必须在声明的上部含有`Q_OBJECT`宏。
 
-一个基于`QObject`的C++简单类：
+一个基于`QObject`的信号类：
 
 ```cpp
-//MyStr.h
-# ifndef  MYSTR
-# define  MYSTR
-#include<QObject>
-#include<QString>
- 
-class MyStr :public QObject
+#ifndef __MY_SIGHNAL_H__
+#define __MY_SIGHNAL_H__
+
+#include <QObject>
+
+class my_signal : public QObject
 {
-    Q_OBJECT //必须包含的宏
-
+    Q_OBJECT
 public:
-    MyStr (){m_value = "zero";}
- 
-    QString value() const {return  m_value;}
+    my_signal() : QObject() {};
+    ~my_signal() {};
 
-public slots :
-    void setValue(QString value);
- 
-    signals: //信号
-    void valueChanged(QString newValue); 
-private:
-    QString m_value;
+signals:
+    void signal_fun();
 };
- 
-#endif 
+
+#endif /* __MY_SIGHNAL_H__ */
 ```
 
-&emsp;&emsp;在这个简单的类中，我们可以看到，使用slots来表示槽，而使用signals来表示信号。
+&emsp;&emsp;在这个信号类中，我们使用Qt的`signals`关键字定义了一个信号函数`signal_fun()`，这个信号函数不需要开发人员来实现，需要用Qt的moc工具来实现。
 
 &emsp;&emsp;Signal的代码会由 moc 自动生成，开发人员一定不能在自己的C++代码中实现它。反之，槽应该由编程人员来实现，下面提供MyStr::setVaule()的一种可能实现。
 
