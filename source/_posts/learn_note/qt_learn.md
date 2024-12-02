@@ -299,7 +299,7 @@ int main(int argc, char *argv[])
 
 ## layout
 
-&emsp;&emsp;当一个窗口里控件很多时，使用`setGeometry()`来设置很麻烦，而且无法随着窗口的大小变化而调整。使用layout(布局)就可以很方便的解决这个问题，他们负责一组控件的几何管理。上面[输入框-QLineEdit](#输入框-QLineEdit)里的样例代码，使用的`QVBoxLayout`就是一种layout，可以将控件在垂直方向上排列，使得`name_input`输入框在`password_input`输入框上面，如果不使用layout，则两个输入框会重叠在一起。(以下内容大部分抄的大佬的这篇[博客](https://blog.csdn.net/leacock1991/article/details/118947828))
+&emsp;&emsp;当一个窗口里控件很多时，使用`setGeometry()`来设置很麻烦，而且无法随着窗口的大小变化而调整。使用layout(布局)就可以很方便的解决这个问题，他们负责一组控件的几何管理。上面[输入框-QLineEdit](../../../../../downloads/qt_learn.md#输入框-QLineEdit)里的样例代码，使用的`QVBoxLayout`就是一种layout，可以将控件在垂直方向上排列，使得`name_input`输入框在`password_input`输入框上面，如果不使用layout，则两个输入框会重叠在一起。(以下内容大部分抄的大佬的这篇[博客](https://blog.csdn.net/leacock1991/article/details/118947828))
 
 ### 简述
 
@@ -341,7 +341,7 @@ int main(int argc, char *argv[])
 &emsp;&emsp;将控件添加到一个layout时，布局过程如下：
 
 1. 所有控件最初将根据它们的`QWidget::sizePolicy()`和`QWidget::sizeHint()`分配一定数量的空间。
-2. 如果任何控件设置了拉伸系数，并且其值大于零，那么它们将按其拉伸因子的比例分配空间（如下[伸展因素](#伸展因素)所述）。
+2. 如果任何控件设置了拉伸系数，并且其值大于零，那么它们将按其拉伸因子的比例分配空间（如下[伸展因素](../../../../../downloads/qt_learn.md#伸展因素)所述）。
 3. 如果任何控件的拉伸系数设置为零，它们只会在没有其他控件需要空间的情况下获得更多空间。其中，空间首先分配给具有扩展大小策略的控件。
 4. 任何控件被分配的空间的大小如果小于它们的最小大小（如果未指定最小尺寸，则为最小尺寸提示），它们就会被按它们所需要的最小大小分配空间。（如果控件的伸展因素是它们的决定因素，它们不必有最小大小或者最小大小的提示。）
 5. 任何控件被分配的空间的大小如果大于它们的最大大小，它们就会被按它们所需要的最大大小分配空间。（如果控件的伸展因素是它们的决定因素，它们不必有最大大小。）
@@ -424,6 +424,94 @@ int main(int argc, char *argv[])
     return app.exec();
 }
 ```
+
+## 画板
+
+&emsp;&emsp;抄了大佬的这篇[博客](https://zhuanlan.zhihu.com/p/638570663)。
+
+&emsp;&emsp;`QPainter`是 Qt 中用于进行绘图操作的类。它提供了各种绘制函数，可以在不同的绘图设备上进行绘制，如窗口、图像、打印机等。
+
+以下是`QPainter`类的一些常用属性和方法：
+
+- `begin(QPaintDevice *device)`: 在给定的绘图设备上开始绘制操作。
+- `end()`: 结束绘制操作。
+- `drawText(const QRectF &rectangle, const QString &text)`: 绘制指定矩形区域内的文本。
+- `drawImage(const QRectF &target, const QImage &image, const QRectF &source)`: 在目标矩形区域内绘制源图像的一部分。
+- `setPen(const QPen &pen)`: 设置绘制的画笔样式。
+- `setBrush(const QBrush &brush)`: 设置绘制的画刷样式。
+- `setFont(const QFont &font)`: 设置绘制的字体样式。
+- `translate(const QPointF &offset)`: 将绘图坐标原点平移指定的偏移量。
+- `scale(qreal sx, qreal sy)`: 沿着x轴和y轴方向对绘图进行缩放。
+- `rotate(qreal angle)`: 以原点为中心，按照给定的角度旋转绘图。
+- `save()`: 保存当前的绘图状态，包括画笔、画刷、字体等设置。
+- `restore()`: 恢复上一次保存的绘图状态。
+
+&emsp;&emsp;这些方法和属性只是`QPainter`类的一部分，还有其他许多功能可以用于绘制不同的图形和效果。可以根据需要在`QPainter`文档中进一步了解更多细节。
+
+&emsp;&emsp;下面是一个简单的示例，演示了如何使用`QPainter`在窗口上进行绘制：
+
+```cpp
+#include <QApplication>
+#include <QWidget>
+#include <QPainter>
+#include <QPixmap>
+
+class my_painter : public QWidget
+{
+private:
+    /* data */
+public:
+    my_painter() {};
+    ~my_painter() {};
+
+    void paintEvent(QPaintEvent *e);
+};
+
+void my_painter::paintEvent(QPaintEvent *e)
+{
+    QPainter painter(this);
+
+    /* 消锯齿 */
+    painter.setRenderHint(QPainter::Antialiasing);
+    /* 设置画笔，线条为红色，线宽为2，使用虚线 */
+    painter.setPen(QPen(Qt::red , 2, Qt::DashLine));
+    /* 设置画刷，当画矩形等封闭图形时，用黄色填充 */
+    painter.setBrush(Qt::yellow);
+    /* 设置字体，楷体，大小为40，700加粗，斜体 */
+    painter.setFont(QFont("楷体", 40, 700, true));
+
+    /* 画直线 */
+    painter.drawLine(20, 40, 200, 40);
+    /* 画圆 */
+    painter.drawEllipse(QPoint(100, 120), 50, 50);
+    /* 写字 */
+    painter.drawText(QPoint(20, 240), "hello world");
+
+    /* 向左移动400 */
+    painter.translate(400, 0);
+    /* 画图片 */
+    painter.drawPixmap(QPoint(0, 20), QPixmap("./image/滑稽.png"));
+    // /* 画矩形 */
+    painter.drawRect(QRect(0, 120, 100, 50));
+    // /* 画圆角矩形 */
+    painter.drawRoundRect(QRect(0, 200, 100, 50));
+}
+
+int main(int argc, char *argv[])
+{
+	QApplication app(argc, argv);
+
+	my_painter widget;
+	widget.show();
+
+	return app.exec();
+}
+```
+
+&emsp;&emsp;在上述示例中，我们创建了一个自定义的`QWidget`派生类`my_painter`，并重写了`paintEvent()`函数。在`paintEvent()`函数中，我们创建了一个`QPainter`对象，将其关联到窗口上，并使用一些绘制函数，在窗口的矩形区域内绘制图形。最后，我们创建了一个`my_painter`对象并显示窗口，绘制的图形将在窗口中心显示。
+
+&emsp;&emsp;这只是一个简单的示例，你可以根据需要使用其他绘图函数和属性来绘制更复杂的图形和效果。
+
 
 ## 事件
 
@@ -653,7 +741,8 @@ bool QWidget::event(QEvent *event)
 {
     switch (e->type())
     {
-        case QEvent::KeyPress:keyPressEvent((QKeyEvent *)event);
+        case QEvent::KeyPress:
+            keyPressEvent((QKeyEvent *)event);
             if (!((QKeyEvent *)event)->isAccepted())
                 return false;
             break;
@@ -687,16 +776,11 @@ virtual bool QObject::eventFilter(QObject * watched, QEvent * event)
 ```cpp
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
-    if (obj == textEdit)
+    if (obj == textEdit && event->type() == QEvent::KeyPress)
     {
-        if (event->type() == QEvent::KeyPress)
-        {
-            QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
-            qDebug() << "Ate key press" << keyEvent->key();
-            return true;
-        }
-        else
-            return false;
+        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+        qDebug() << "Ate key press" << keyEvent->key();
+        return true;
     }
     else
     {
@@ -708,7 +792,7 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 
 &emsp;&emsp;上面的例子中为 MainWindow 建立了一个事件过滤器。为了过滤某个组件上的事件，首先需要判断这个对象是哪个组件，然后判断这个事件的类型。
 
-&emsp;&emsp;例如，我不想让 textEdit 组件处理键盘事件，于是就首先找到这个组件，如果这个事件是键盘事件，则直接返回`true`，也就是过滤掉了这个事件，其他事件还是要继续处理，所以返回`false`。对于其他组件，我们并不保证是不是还有过滤器，于是最保险的办法是调用父类的函数。
+&emsp;&emsp;例如，我不想让 textEdit 组件处理键盘事件，于是就首先找到这个组件，如果这个事件是键盘事件，则直接返回`true`，也就是过滤掉了这个事件。对于其他组件，我们并不保证是不是还有过滤器，于是最保险的办法是调用父类的函数。
 
 &emsp;&emsp;在创建了过滤器之后，下面要做的是安装这个过滤器。安装过滤器需要调用`installEventFilter()`函数。这个函数的签名如下：
 
@@ -787,105 +871,17 @@ void CustomWidget::customEvent(QEvent *event) {
 另外，你也可以通过重写 event()函数来处理自定义事件：
 
 ```cpp
-bool CustomWidget::event(QEvent *event) { 
-    if (event->type() == MyCustomEventType) { 
-        CustomEvent *myEvent = static_cast<CustomEvent *>(event); 
+bool CustomWidget::event(QEvent *event) {
+    if (event->type() == MyCustomEventType) {
+        CustomEvent *myEvent = static_cast<CustomEvent *>(event);
         // processing... 
-        return true; 
-    } 
-    return QWidget::event(event); 
+        return true;
+    }
+    return QWidget::event(event);
 }
 ```
 
 这两种办法都是可行的。
-
-## 画板
-
-&emsp;&emsp;抄了大佬的这篇[博客](https://zhuanlan.zhihu.com/p/638570663)。
-
-&emsp;&emsp;`QPainter`是 Qt 中用于进行绘图操作的类。它提供了各种绘制函数，可以在不同的绘图设备上进行绘制，如窗口、图像、打印机等。
-
-以下是`QPainter`类的一些常用属性和方法：
-
-- `begin(QPaintDevice *device)`: 在给定的绘图设备上开始绘制操作。
-- `end()`: 结束绘制操作。
-- `drawText(const QRectF &rectangle, const QString &text)`: 绘制指定矩形区域内的文本。
-- `drawImage(const QRectF &target, const QImage &image, const QRectF &source)`: 在目标矩形区域内绘制源图像的一部分。
-- `setPen(const QPen &pen)`: 设置绘制的画笔样式。
-- `setBrush(const QBrush &brush)`: 设置绘制的画刷样式。
-- `setFont(const QFont &font)`: 设置绘制的字体样式。
-- `translate(const QPointF &offset)`: 将绘图坐标原点平移指定的偏移量。
-- `scale(qreal sx, qreal sy)`: 沿着x轴和y轴方向对绘图进行缩放。
-- `rotate(qreal angle)`: 以原点为中心，按照给定的角度旋转绘图。
-- `save()`: 保存当前的绘图状态，包括画笔、画刷、字体等设置。
-- `restore()`: 恢复上一次保存的绘图状态。
-
-&emsp;&emsp;这些方法和属性只是`QPainter`类的一部分，还有其他许多功能可以用于绘制不同的图形和效果。可以根据需要在`QPainter`文档中进一步了解更多细节。
-
-&emsp;&emsp;下面是一个简单的示例，演示了如何使用`QPainter`在窗口上进行绘制：
-
-```cpp
-#include <QApplication>
-#include <QWidget>
-#include <QPainter>
-#include <QPixmap>
-
-class my_painter : public QWidget
-{
-private:
-    /* data */
-public:
-    my_painter() {};
-    ~my_painter() {};
-
-    void paintEvent(QPaintEvent *e);
-};
-
-void my_painter::paintEvent(QPaintEvent *e)
-{
-    QPainter painter(this);
-
-    /* 消锯齿 */
-    painter.setRenderHint(QPainter::Antialiasing);
-    /* 设置画笔，线条为红色，线宽为2，使用虚线 */
-    painter.setPen(QPen(Qt::red , 2, Qt::DashLine));
-    /* 设置画刷，当画矩形等封闭图形时，用黄色填充 */
-    painter.setBrush(Qt::yellow);
-    /* 设置字体，楷体，大小为40，700加粗，斜体 */
-    painter.setFont(QFont("楷体", 40, 700, true));
-
-    /* 画直线 */
-    painter.drawLine(20, 40, 200, 40);
-    /* 画圆 */
-    painter.drawEllipse(QPoint(100, 120), 50, 50);
-    /* 写字 */
-    painter.drawText(QPoint(20, 240), "hello world");
-
-    /* 向左移动400 */
-    painter.translate(400, 0);
-    /* 画图片 */
-    painter.drawPixmap(QPoint(0, 20), QPixmap("./image/滑稽.png"));
-    // /* 画矩形 */
-    painter.drawRect(QRect(0, 120, 100, 50));
-    // /* 画圆角矩形 */
-    painter.drawRoundRect(QRect(0, 200, 100, 50));
-}
-
-int main(int argc, char *argv[])
-{
-	QApplication app(argc, argv);
-
-	my_painter widget;
-	widget.show();
-
-	return app.exec();
-}
-```
-
-&emsp;&emsp;在上述示例中，我们创建了一个自定义的`QWidget`派生类`my_painter`，并重写了`paintEvent()`函数。在`paintEvent()`函数中，我们创建了一个`QPainter`对象，将其关联到窗口上，并使用一些绘制函数，在窗口的矩形区域内绘制图形。最后，我们创建了一个`my_painter`对象并显示窗口，绘制的图形将在窗口中心显示。
-
-&emsp;&emsp;这只是一个简单的示例，你可以根据需要使用其他绘图函数和属性来绘制更复杂的图形和效果。
-
 
 ## 信号和槽
 
