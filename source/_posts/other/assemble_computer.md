@@ -61,20 +61,9 @@ tags: [电脑, 装机]
 
 &emsp;&emsp;内存条选的是两根8G的金士顿的骇客神条3600，买金士顿是因为听说兼容性好，后期如果升级成4根的话可能会方便一点。
 
-<table style="border: 0px;"><tbody>
-	<tr style="border: 0px;">
-		<td style="border: 0px;">
-			<a href="/images/other/assemble_computer/RAM_case.jpeg" class="fancybox fancybox.image" rel="group">
-				<img src="/images/other/assemble_computer/RAM_case.jpeg">
-			</a>
-		</td>
-		<td style="border: 0px;">
-			<a href="/images/other/assemble_computer/RAM_show.jpeg" class="fancybox fancybox.image" rel="group">
-				<img src="/images/other/assemble_computer/RAM_show.jpeg">
-			</a>
-		</td>
-	</tr>
-</tbody></table>
+![](/images/other/assemble_computer/RAM_case.jpeg)
+
+![](/images/other/assemble_computer/RAM_show.jpeg)
 
 ## 电源
 
@@ -90,20 +79,9 @@ tags: [电脑, 装机]
 
 &emsp;&emsp;一开始是打算买西部数据的SN750 500G作为系统盘的，后来发现三星970 EVO Plus 500G读写速度会快一点，而且也只贵了一点点，所以选了三星的。然后买一张西部数据SN550 1T作为数据盘。
 
-<table style="border: 0px;"><tbody>
-	<tr style="border: 0px;">
-		<td style="border: 0px;">
-			<a href="/images/other/assemble_computer/hard_disk_case.jpeg" class="fancybox fancybox.image" rel="group">
-				<img src="/images/other/assemble_computer/hard_disk_case.jpeg">
-			</a>
-		</td>
-		<td style="border: 0px;">
-			<a href="/images/other/assemble_computer/hard_disk_show.jpeg" class="fancybox fancybox.image" rel="group">
-				<img src="/images/other/assemble_computer/hard_disk_show.jpeg">
-			</a>
-		</td>
-	</tr>
-</tbody></table>
+![](/images/other/assemble_computer/hard_disk_case.jpeg)
+
+![](/images/other/assemble_computer/hard_disk_show.jpeg)
 
 ## 机箱
 
@@ -117,20 +95,9 @@ tags: [电脑, 装机]
 
 &emsp;&emsp;买的是乔思伯CR-1400，买这个散热器是因为机箱限高135mm，符合这个高度还带RGB的就这款了，4热管压3600X是没问题的。
 
-<table style="border: 0px;"><tbody>
-	<tr style="border: 0px;">
-		<td style="border: 0px;">
-			<a href="/images/other/assemble_computer/heat_sink_case.jpeg" class="fancybox fancybox.image" rel="group">
-				<img src="/images/other/assemble_computer/heat_sink_case.jpeg">
-			</a>
-		</td>
-		<td style="border: 0px;">
-			<a href="/images/other/assemble_computer/heat_sink_show.jpeg" class="fancybox fancybox.image" rel="group">
-				<img src="/images/other/assemble_computer/heat_sink_show.jpeg">
-			</a>
-		</td>
-	</tr>
-</tbody></table>
+![](/images/other/assemble_computer/heat_sink_case.jpeg)
+
+![](/images/other/assemble_computer/heat_sink_show.jpeg)
 
 ## 风扇
 
@@ -150,39 +117,17 @@ tags: [电脑, 装机]
 &emsp;&emsp;根据这款机箱的设计，要先装电源再装主板，~~没错，我就是顺序搞错了才知道的，~~。
 &emsp;&emsp;先把机箱的玻璃侧板拆了，然后把尾部的风扇、顶部风扇支架、电源支架还有电源线都拆了，再给机箱顶部贴上防尘网（后面如果装了主板就不方便贴了）。然后用螺丝把电源固定在电源支架上，再把电源支架装回机箱里。固定电源的那个螺丝特别难对准，说到这我又后悔没买先马趣造了。
 
-<table style="border: 0px;"><tbody>
-	<tr style="border: 0px;">
-		<td style="border: 0px;">
-			<a href="/images/other/assemble_computer/step_1_1.jpeg" class="fancybox fancybox.image" rel="group">
-				<img src="/images/other/assemble_computer/step_1_1.jpeg">
-			</a>
-		</td>
-		<td style="border: 0px;">
-			<a href="/images/other/assemble_computer/step_1_2.jpeg" class="fancybox fancybox.image" rel="group">
-				<img src="/images/other/assemble_computer/step_1_2.jpeg">
-			</a>
-		</td>
-	</tr>
-</tbody></table>
+![](/images/other/assemble_computer/step_1_1.jpeg)
+
+![](/images/other/assemble_computer/step_1_2.jpeg)
 
 ## 安装CPU
 
 &emsp;&emsp;把主板的CPU卡扣打开。CPU的四个角里，有一个角是标记过的，用来和主板对准，主板的CPU底座也有一个角是标记过的，把CPU和主板的这两个特殊的角对应好（在下面图里，这两个角是左上角），再把CPU放到底座上面就好了，然后把卡扣扣上。
 
-<table style="border: 0px;"><tbody>
-	<tr style="border: 0px;">
-		<td style="border: 0px;">
-			<a href="/images/other/assemble_computer/step_2_1.jpeg" class="fancybox fancybox.image" rel="group">
-				<img src="/images/other/assemble_computer/step_2_1.jpeg">
-			</a>
-		</td>
-		<td style="border: 0px;">
-			<a href="/images/other/assemble_computer/step_2_2.jpeg" class="fancybox fancybox.image" rel="group">
-				<img src="/images/other/assemble_computer/step_2_2.jpeg">
-			</a>
-		</td>
-	</tr>
-</tbody></table>
+![](/images/other/assemble_computer/step_2_1.jpeg)
+
+![](/images/other/assemble_computer/step_2_2.jpeg)
 
 ## 安装散热器
 

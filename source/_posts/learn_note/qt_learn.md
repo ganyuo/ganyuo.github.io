@@ -494,7 +494,7 @@ void my_painter::paintEvent(QPaintEvent *e)
     // /* 画矩形 */
     painter.drawRect(QRect(0, 120, 100, 50));
     // /* 画圆角矩形 */
-    painter.drawRoundRect(QRect(0, 200, 100, 50));
+    painter.drawRoundedRect(QRect(0, 200, 100, 50), 15, 15, Qt::AbsoluteSize);
 }
 
 int main(int argc, char *argv[])
@@ -508,7 +508,9 @@ int main(int argc, char *argv[])
 }
 ```
 
-&emsp;&emsp;在上述示例中，我们创建了一个自定义的`QWidget`派生类`my_painter`，并重写了`paintEvent()`函数。在`paintEvent()`函数中，我们创建了一个`QPainter`对象，将其关联到窗口上，并使用一些绘制函数，在窗口的矩形区域内绘制图形。最后，我们创建了一个`my_painter`对象并显示窗口，绘制的图形将在窗口中心显示。
+&emsp;&emsp;在上述示例中，我们创建了一个自定义的`QWidget`派生类`my_painter`，并重写了`paintEvent()`函数。在`paintEvent()`函数中，我们创建了一个`QPainter`对象，将其关联到窗口上，并使用一些绘制函数，在窗口的矩形区域内绘制图形。最后，我们创建了一个`my_painter`对象并显示窗口，绘制的图形将在窗口中心显示。运行的结果如下：
+
+![](/images/learn_note/qt_learn/fig_7.png)
 
 &emsp;&emsp;这只是一个简单的示例，你可以根据需要使用其他绘图函数和属性来绘制更复杂的图形和效果。
 
@@ -774,23 +776,22 @@ virtual bool QObject::eventFilter(QObject * watched, QEvent * event)
 如果 watched 对象安装了事件过滤器，这个函数会被调用并进行事件过滤，然后才轮到组件进行事件处理。在重写这个函数时，如果需要过滤掉某个事件，例如停止对这个事件的响应，需要返回true。
 
 ```cpp
-bool MainWindow::eventFilter(QObject *obj, QEvent *event)
+/* 重载消息过滤器 */
+bool event_filter_t::eventFilter(QObject *o, QEvent *e)
 {
-    if (obj == textEdit && event->type() == QEvent::KeyPress)
+    if (e->type() == QEvent::MouseButtonPress ||
+        e->type() == QEvent::MouseButtonRelease ||
+        e->type() == QEvent::MouseButtonDblClick)
     {
-        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-        qDebug() << "Ate key press" << keyEvent->key();
+		QPushButton *button = static_cast<QPushButton *>(o);
+        qDebug() << button->text() << "button mouse event";
         return true;
     }
-    else
-    {
-        // pass the event on to the parent class
-        return QMainWindow::eventFilter(obj, event);
-    }
+    return QObject::eventFilter(o, e);
 }
 ```
 
-&emsp;&emsp;上面的例子中为 MainWindow 建立了一个事件过滤器。为了过滤某个组件上的事件，首先需要判断这个对象是哪个组件，然后判断这个事件的类型。
+&emsp;&emsp;上面的例子中为 event_filter_t 建立了一个事件过滤器。为了过滤某个组件上的事件，首先需要判断这个对象是哪个组件，然后判断这个事件的类型。
 
 &emsp;&emsp;例如，我不想让 textEdit 组件处理键盘事件，于是就首先找到这个组件，如果这个事件是键盘事件，则直接返回`true`，也就是过滤掉了这个事件。对于其他组件，我们并不保证是不是还有过滤器，于是最保险的办法是调用父类的函数。
 
@@ -832,7 +833,7 @@ void QObject::installEventFilter(QObject* filterObj)
 
 &emsp;&emsp;在 Qt 中，系统将保留`0 - 999`的值，也就是说，你的事件 type 要大于999. 具体来说，你的自定义事件的 type 要在 QEvent::User 和 QEvent::MaxUser 的范围之间。其中，QEvent::User 值是1000，QEvent::MaxUser 的值是65535。从这里知道，你最多可以定义64536个事件，相信这个数字已经足够大了！
 
-&emsp;&emsp;但是，即便如此，也只能保证用户自定义事件不能覆盖系统事件，并不能保证自定义事件之间不会被覆盖。为了解决这个问题，Qt 提供了一个函数：registerEventType(),用于自定义事件的注册。该函数签名如下：
+&emsp;&emsp;但是，即便如此，也只能保证用户自定义事件不能覆盖系统事件，并不能保证自定义事件之间不会被覆盖。为了解决这个问题，Qt 提供了一个函数：`registerEventType()`，用于自定义事件的注册。该函数签名如下：
 
 ```cpp
 static int QEvent::registerEventType(int hint = -1);
@@ -843,10 +844,10 @@ static int QEvent::registerEventType(int hint = -1);
 &emsp;&emsp;你可以在 QEvent 子类中添加自己的事件所需要的数据，然后进行事件的发送。Qt 中提供了两种发送方式：
 
 `static bool QCoreApplication::sendEvent(QObjecy receiver, QEvent event)`：事件被
-QCoreApplication 的 notify()函数直接发送给 receiver 对象，返回值是事件处理函数的返回值。使用这个函数必须要在栈上创建对象，例如：
+QCoreApplication 的 notify()函数直接发送给 receiver 对象，返回值是事件处理函数的返回值。使用这个函数必须要在栈上创建事件对象，例如：
 
 ```cpp
-QMouseEvent event(QEvent::MouseButtonPress, pos, 0, 0, 0); 
+QMouseEvent event(QEvent::MouseButtonPress, pos, 0, 0, 0);
 QApplication::sendEvent(mainWindow, &event);
 ```
 
@@ -859,29 +860,75 @@ QApplication::postEvent(object, new MyEvent(QEvent::registerEventType(2048)));
 
 &emsp;&emsp;这个对象不需要手动 delete，Qt 会自动 delete 掉！因此，如果在 post 事件之后调用 delete，程序可能会崩溃。另外，postEvent()函数还有一个重载的版本，增加一个优先级参数，具体请参见API。通过调用 sendPostedEvent()函数可以让已提交的事件立即得到处理。
 
-&emsp;&emsp;如果要处理自定义事件，可以重写 QObject 的 customEvent()函数，该函数接收一个 QEvent 对象作为参数。可以像前面介绍的重写 event()函数的方法去重写这个函数：
+&emsp;&emsp;如果要处理自定义事件，可以重写 QObject 的`customEvent()`函数，该函数接收一个 QEvent 对象作为参数，也可以像前面介绍的重写`event()`函数的方法去重写这个函数，这两种办法都是可行的。下面是一个使用自定义信号的例子：
 
 ```cpp
-void CustomWidget::customEvent(QEvent *event) { 
-    CustomEvent *customEvent = static_cast<CustomEvent *>(event); 
-    // .... 
-}
-```
+#include <QApplication>
+#include <QWidget>
+#include <QPushButton>
+#include <QEvent>
+#include <QDebug>
 
-另外，你也可以通过重写 event()函数来处理自定义事件：
+/* 初始化自定义的事件类型值 */
+static const int CUSTOM_EVENT_TYPE = QEvent::registerEventType();
 
-```cpp
-bool CustomWidget::event(QEvent *event) {
-    if (event->type() == MyCustomEventType) {
-        CustomEvent *myEvent = static_cast<CustomEvent *>(event);
-        // processing... 
-        return true;
+/* 自定义事件类 */
+class custom_event_t : public QEvent
+{
+public:
+	custom_event_t() : QEvent((QEvent::Type)CUSTOM_EVENT_TYPE) {};
+};
+
+class main_widgt_t : public QWidget
+{
+public:
+    main_widgt_t() : QWidget() {};
+
+    bool event(QEvent *e);
+    void customEvent(QEvent *e);
+};
+
+/* 重载事件处理函数 */
+bool main_widgt_t::event(QEvent *e)
+{
+    if(e->type() == CUSTOM_EVENT_TYPE)
+    {
+        qDebug() << "event() get custom event\n";
     }
-    return QWidget::event(event);
+    return QObject::event(e);
+}
+
+/* 重载自定义事件处理函数 */
+void main_widgt_t::customEvent(QEvent *e)
+{
+    if(e->type() == CUSTOM_EVENT_TYPE)
+    {
+        qDebug() << "customEvent() get custom event\n";
+    }
+}
+
+int main(int argc, char *argv[])
+{
+	QApplication app(argc, argv);
+	main_widgt_t main_w;
+
+    qDebug() << "CUSTOM_EVENT_TYPE: " << CUSTOM_EVENT_TYPE;
+
+	QPushButton button("send custom event");
+	button.setParent(&main_w);
+
+    /* 使用lambda表达式连接button的点击事件 */
+	QObject::connect(&button, &QPushButton::clicked, [&main_w]()
+	{
+        custom_event_t custom_event;
+        /* 给main_w发送自定义事件 */
+        QApplication::sendEvent(&main_w, &custom_event);
+	});
+
+	main_w.show();
+	return app.exec();
 }
 ```
-
-这两种办法都是可行的。
 
 ## 信号和槽
 
