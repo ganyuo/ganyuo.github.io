@@ -781,15 +781,17 @@
 
     <script src="https://unpkg.com/@waline/client@v3/dist/waline.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css"/>
-    <script>
-        Waline.init({
+    <div id="waline"></div>
+    <script type="module">
+        import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+        init({
             el: '#waline',
-            serverURL: 'https://waline-test-11aslqzru-ganyuo-outlookcom.vercel.app',
+            serverURL: 'https://your-domain.vercel.app',
             emoji: [
                 '//unpkg.com/@waline/emojis@1.2.0/qq',
                 '//unpkg.com/@waline/emojis@1.2.0/bilibili',
                 '//https://unpkg.com/@waline/emojis@1.2.0/bmoji'
-            ],
+            ]
         });
     </script>
     <style>
