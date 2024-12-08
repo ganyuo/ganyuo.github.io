@@ -610,9 +610,7 @@
 
 
 
-    <script src="https://unpkg.com/@waline/client@v3/dist/waline.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css"/>
-    <div id="waline"></div>
     <script type="module">
         import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
         init({
@@ -621,15 +619,14 @@
             emoji: [
                 '//unpkg.com/@waline/emojis@1.2.0/qq',
                 '//unpkg.com/@waline/emojis@1.2.0/bilibili',
-                '//https://unpkg.com/@waline/emojis@1.2.0/bmoji'
-            ]
+                '//unpkg.com/@waline/emojis@1.2.0/bmoji',
+            ],
         });
     </script>
     <style>
         /*设置 Waline 的主题色*/
         :root{
-            --waline-bgcolor: #fff0;
-            --waline-bgcolor-light: #fff0;
+            --waline-bg-color: #fff0;
         }
         .wl-panel
         {
