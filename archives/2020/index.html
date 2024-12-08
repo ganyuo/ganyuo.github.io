@@ -1725,6 +1725,42 @@
 
 
 
+    <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css"/>
+    <script type="module">
+        import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+        const waline = init({
+            el: '#waline',
+            serverURL: 'https://waline-ao2gukw9r-ganyuooutlookcoms-projects.vercel.app',
+            emoji: [
+                '//unpkg.com/@waline/emojis@1.2.0/qq',
+                '//unpkg.com/@waline/emojis@1.2.0/bilibili',
+                '//unpkg.com/@waline/emojis@1.2.0/bmoji',
+            ],
+        });
+    </script>
+    <style>
+        /*设置 Waline 的主题色*/
+        :root{
+            --waline-bg-color: #fff0;
+        }
+        .wl-panel
+        {
+            margin: 2em;
+        }
+        .wl-count
+        {
+            padding: 0em 2em 0em 2em;
+        }
+        .wl-power
+        {
+            padding: .5em 2em;
+        }
+        .wl-emoji-popup .wl-tab-wrapper {
+            background: #FFF;
+            max-height: 125px;
+        }
+    </style>
+
 
 
 
