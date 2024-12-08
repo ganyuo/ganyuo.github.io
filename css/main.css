@@ -1284,14 +1284,14 @@ figure.highlight .highlight-tools .copy-notice {
   height: 100%;
   z-index: -100;
   opacity: 0.9;
-  content: url("https://cdn.jsdelivr.net/gh/ganyuo/ganyuo.github.io@V0.0.0/images/backgound_1.jpg");
+  content: url("https://ganyuo.github.io/images/backgound_1.jpg");
 }
 @media (max-width: 991px) {
   .background-image {
     width: 100%;
     height: 100%;
     right: 0px;
-    content: url("https://cdn.jsdelivr.net/gh/ganyuo/ganyuo.github.io@V0.0.0/images/backgound_2.jpg");
+    content: url("https://ganyuo.github.io/images/backgound_2.jpg");
   }
 }
 .post-body {
@@ -1942,7 +1942,7 @@ figure.highlight .highlight-tools .copy-notice {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ffffda;
+  background: #dd2bda;
 }
 .links-of-blogroll {
   font-size: 13px;
