@@ -351,7 +351,7 @@ valine:
 
 waline:
   enable: true
-  serverURL: https://waline-test-11aslqzru-ganyuo-outlookcom.vercel.app
+  serverURL: https://waline-pi-hazel.vercel.app
 
 # Support for youyan comments system.
 # You can get your uid from http://www.uyan.cc
