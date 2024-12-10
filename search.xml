@@ -2247,14 +2247,7 @@
   <entry>
     <title>装的第一台电脑</title>
     <url>/other/assemble_computer/</url>
-    <content><![CDATA[<style>
-    .post-block img{
-        max-width: 400px;
-        max-height: 400px;
-    }
-</style>
-
-<h1 id="先说两句"><a href="#先说两句" class="headerlink" title="先说两句"></a>先说两句</h1><p>&emsp;&emsp;前阵子因为大学用的小米笔记本屏幕坏了，所以买了个2K的显示器，外接给笔记本用。虽然日常用起来不卡，不过笔记本摸起来很烫，风扇经常呼啦呼啦地转，可能是盖起盖子影响了散热，也可能是以笔记本的性能带个2K显示器有点吃力，毕竟是个轻薄本吗。总之，我是迫不得已才剁手买电脑的，绝对不是因为笔记本打游戏太卡了的原因。</p>
+    <content><![CDATA[<h1 id="先说两句"><a href="#先说两句" class="headerlink" title="先说两句"></a>先说两句</h1><p>&emsp;&emsp;前阵子因为大学用的小米笔记本屏幕坏了，所以买了个2K的显示器，外接给笔记本用。虽然日常用起来不卡，不过笔记本摸起来很烫，风扇经常呼啦呼啦地转，可能是盖起盖子影响了散热，也可能是以笔记本的性能带个2K显示器有点吃力，毕竟是个轻薄本吗。总之，我是迫不得已才剁手买电脑的，绝对不是因为笔记本打游戏太卡了的原因。</p>
 <h1 id="配置说明"><a href="#配置说明" class="headerlink" title="配置说明"></a>配置说明</h1><table>
 <thead>
 <tr>
@@ -2589,12 +2582,7 @@
 <h1 id="成果演示"><a href="#成果演示" class="headerlink" title="成果演示"></a>成果演示</h1><center><video src="/images/other/lattice_screen/run_show.mp4" controls="controls" autoplay="autoplay" loop="loop"></video></center>
 
 <p>&emsp;&emsp;虽然点阵屏算是比较简单的一个东西，但是因为是第一次自己画板子，设计电路，感觉还是挺好玩的。<br>&emsp;&emsp;这个点阵屏的硬件设计和代码都已经放到github上了，<a href="https://github.com/ganyuo/lattice_screen" target="_blank" rel="noopener">https://github.com/ganyuo/lattice_screen</a>。</p>
-<style>
-    .post-block img{
-        max-width: 400px;
-        max-height: 400px;
-    }
-</style>]]></content>
+]]></content>
       <categories>
         <category>其他</category>
       </categories>
@@ -2688,12 +2676,6 @@
 <h1 id="车锁"><a href="#车锁" class="headerlink" title="车锁"></a>车锁</h1><p>&emsp;&emsp;这个车锁是比较有意思的，见下图，店长说这个锁防液压剪，价格￥338感觉有点小贵。</p>
 <p><img src="/images/other/new_bicycle_ATX830/lock.jpg" alt=""></p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>&emsp;&emsp;我个人感觉这辆车整体来说还不错，从店里到家一个骑了7公里多的路，没感觉到累，骑起来挺轻松的，自行车和各种配件一共￥3282。可惜天气预报显示这周会一直下雨，没法骑这这辆自行车去上班了，还是要坐公交，去淘宝上买个<del>浴衣</del>雨衣吧。</p>
-<style>
-    .post-block img{
-        max-width: 400px;
-        max-height: 400px;
-    }
-</style>
 ]]></content>
       <categories>
         <category>其他</category>
