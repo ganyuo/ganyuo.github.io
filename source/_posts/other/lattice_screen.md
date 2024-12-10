@@ -371,10 +371,3 @@ while (1)
 
 &emsp;&emsp;虽然点阵屏算是比较简单的一个东西，但是因为是第一次自己画板子，设计电路，感觉还是挺好玩的。
 &emsp;&emsp;这个点阵屏的硬件设计和代码都已经放到github上了，<https://github.com/ganyuo/lattice_screen>。
-
-<style>
-	.post-block img{
-		max-width: 400px;
-		max-height: 400px;
-	}
-</style>
