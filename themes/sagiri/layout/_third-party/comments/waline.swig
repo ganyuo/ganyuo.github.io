@@ -19,21 +19,8 @@
             --waline-bg-color: #fff0;
             --waline-bg-color-light: #fff0;
         }
-        .wl-panel
-        {
-            margin: 2em;
-        }
-        .wl-count
-        {
-            padding: 0em 2em 0em 2em;
-        }
-        .wl-power
-        {
-            padding: .5em 2em;
-        }
-        .wl-emoji-popup .wl-tab-wrapper {
-            background: #FFF;
-            max-height: 125px;
+        #waline {
+            padding: 2em;
         }
     </style>
 {% endif %}

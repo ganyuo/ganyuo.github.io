@@ -766,9 +766,9 @@ images: /images
 
 background:
   # PC端背景图片
-  image_src_1: https://ganyuo.github.io/images/backgound_1.jpg
+  image_src_1: /images/backgound_1.jpg
   # 手机背景图片
-  image_src_2: https://ganyuo.github.io/images/backgound_2.jpg
+  image_src_2: /images/backgound_2.jpg
   image_opacity: 0.9
   element_opacity: 0.85
 
