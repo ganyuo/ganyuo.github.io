@@ -951,9 +951,9 @@ int main(int argc, char *argv[])
 
 ### 样例分析
 
-&emsp;&emsp;首先我们要知道的是，所有继承自`QObject`或者它的子类（如`QWidget`）都可以包含信号槽。我们写的类也要继承自`QObject`（或其子类）。所有包含了信号槽的类都必须在声明的上部含有`Q_OBJECT`宏。
+&emsp;&emsp;首先我们要知道的是，所有继承自`QObject`或者它的子类（如`QWidget`）都可以包含信号槽。我们写的类也要继承自`QObject`（或其子类）。所有包含了信号和槽的类都必须在声明的上部含有`Q_OBJECT`宏。
 
-一个基于`QObject`的信号类：
+下面是一个样例，一个定义了信号的类和一个定义了槽函数的类：
 
 ```cpp
 #ifndef __MY_SIGHNAL_H__
@@ -961,84 +961,79 @@ int main(int argc, char *argv[])
 
 #include <QObject>
 
+/* 一个定义了信号的类 */
 class my_signal : public QObject
 {
     Q_OBJECT
-public:
-    my_signal() : QObject() {};
-    ~my_signal() {};
 
 signals:
+    /* 信号 */
     void signal_fun();
 };
 
 #endif /* __MY_SIGHNAL_H__ */
 ```
 
-&emsp;&emsp;在这个信号类中，我们使用Qt的`signals`关键字定义了一个信号函数`signal_fun()`，这个信号函数不需要开发人员来实现，需要用Qt的moc工具来实现。
-
-&emsp;&emsp;Signal的代码会由 moc 自动生成，开发人员一定不能在自己的C++代码中实现它。反之，槽应该由编程人员来实现，下面提供MyStr::setVaule()的一种可能实现。
-
 ```cpp
-#include"MyStr.h"
-void MyStr::setValue(QString value)
+#ifndef __MY_SLOT_H__
+#define __MY_SLOT_H__
+
+#include <QObject>
+#include <QDebug>
+
+/* 一个定义了槽函数的类 */
+class my_slot : public QObject
 {
-    if(value != m_value)
-    {
-        m_value = value;
-        emit valueChanged(value);
+    Q_OBJECT
+
+public slots:
+    /* 槽函数 */
+    virtual void slot_fun(){
+        qDebug() << "my_slot::slot_fun is called\n";
     }
-}
+};
+
+#endif /* __MY_SLOT_H__ */
 ```
 
-&emsp;&emsp;setValue函数首先比较新参的值与数据成员的值是否是一样的（后面有解释为何这样做），如果不是，则设置好数据成员m_value的值，然后，把信号valueChanged（）发送出去。发送给谁？类并没有写，这并不是类设计者所关心的，也不是类所关心的，它只管把信号发送出去就行。然后，我们再来设置谁来接收这个信号。
+&emsp;&emsp;在这个信号类中，我们使用Qt的`signals`关键字定义了一个信号函数`signal_fun()`，`signal_fun()`的代码会由 Qt 的 moc 工具自动生成，开发人员一定不能在自己的C++代码中实现它。反之，槽应该由开发人员来实现。需要注意的是，必须在 pro 工程文件里，使用`HEADERS`添加定义了信号或槽函数类的头文件，如果只是使用`INCLUDEPATH`添加头文件的路径，Qt 不会调用 moc 生成代码。
+
+&emsp;&emsp;可以使用`QObject::connect()`函数连接信号和槽，该函数指定了信号发送方、信号函数、信号接收方、槽函数等信息，函数的格式如下：
 
 ```cpp
+QObject::connect(
+    QObject* sender,      /* 信号发送方 */
+    SIGNAL(signal_fun()), /* 信号函数 */
+    QObject* receiver,    /* 信号接收方 */
+    SLOT(slot_fun()));    /* 槽函数 */
+```
+
+&emsp;&emsp;最后，我们可以使用 Qt 的`emit`关键字发送信号，下面是一个使用`connect()`和`emit`的简单样例：
+
+```cpp
+#include <QCoreApplication>
+
+#include "my_signal.h" /* 定义了信号的类 */
+#include "my_slot.h"   /* 定义了槽函数的类 */
+
 int main(int argc, char *argv[])
 {
-    MyStr a;
-    MyStr b;
-    QObject::connect(&a,SIGNAL(valueChanged(QString)),&b,SLOT(setValue(QString)));
-    a.setValue("this is A");
-    return 0;
+	QCoreApplication app(argc, argv);
+
+    my_signal sign; /* 信号发送方 */
+    my_slot slot;   /* 信号接收方 */
+
+    /* 连接信号和槽 */
+    QObject::connect(&sign, SIGNAL(signal_fun()), &slot, SLOT(slot_fun()));
+
+    /* 发送信号 */
+    emit sign.signal_fun();
+
+	return app.exec();
 }
 ```
 
-&emsp;&emsp;我们定义了两个类对象a/b，使用 QObject::connect（）函数指定了发送方、信号、接收方、槽等信息，connect函数的格式如下：
-
-```cpp
-QObject::connect(/*发送方*/, SIGNAL(), /*接收方*/, SLOT());
-```
-
-&emsp;&emsp;当我们调用a的成员函数setValue时，该函数除了把a.m_value设置为"this is A"，也把信号valueChanged()发送出去，被b.setValue所接收，从而，把b.m_value设置为"this is A"，同时b.setValue又把valueChanged信号发射出去，然而该信号并没有对象接收，因为我们没有建立以b为发送方的任何连接。此时你应该明白，为何在emit前需要判断value != m_value，因为如果没有此步骤，且恰巧设置了
-
-```cpp
-QObject::connect(&b,SIGNAL(valueChanged(QString)),&a,SLOT(setValue(QString)));
-```
-
-则b的信号被a接收，a又发送信号被b接收，如此进入死循环。
-
-```cpp
-int main(int argc, char *argv[])
-{
-    QApplication app(argc, argv);
- 
-    MyStr  a;
-    MyStr  b;
-    QObject::connect(&a,SIGNAL(valueChanged(QString)),&b,SLOT(setValue(QString)));
-    a.setValue("this is A");
- 
-    QLabel* label = new QLabel;
-    label->setText( b.value());
-    label->show();
-    return app.exec();
-}
-```
-
-&emsp;&emsp;我们使用label输出来看看b是否接收到a的信号，如果是，则b的内容应该是"this is A"，输出在label上，程序运行结果：
-
-
-&emsp;&emsp;这个例子展示了对象之间通信的一种方式。对象间可以一起工作，而不需要知道彼此的任何信息。为了达到通信的目的，只需要将它们连接起来，而这只需要通过 调用 QObject::connect() 函数指定一些简单信息就好。
+&emsp;&emsp;这个例子展示了对象之间通信的一种方式。对象间可以一起工作，而不需要知道彼此的任何信息。为了达到通信的目的，只需要将它们连接起来，而这只需要通过调用`QObject::connect()`函数指定一些简单信息就好。
 
 ### 连接
 
