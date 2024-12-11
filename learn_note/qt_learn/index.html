@@ -94,7 +94,7 @@
 <meta property="og:image" content="http://ganyuo.github.io/images/learn_note/qt_learn/fig_6.png">
 <meta property="og:image" content="http://ganyuo.github.io/images/learn_note/qt_learn/fig_7.png">
 <meta property="article:published_time" content="2023-03-10T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-12-07T10:41:30.661Z">
+<meta property="article:modified_time" content="2024-12-11T13:46:24.872Z">
 <meta property="article:author" content="ganyuo">
 <meta property="article:tag" content="Qt">
 <meta property="article:tag" content="C++">
@@ -469,7 +469,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  11.8k
+                  11.6k
                 </span>
               
 
@@ -813,28 +813,20 @@
 <p>&emsp;&emsp;在QT中，我们有回调技术之外的选择，也即是信号槽机制。所谓的信号与槽，其实都是函数。当特定事件被触发时将发送一个信号，而与该信号建立的连接槽，则可以接收到该信号并做出反应。</p>
 <p>&emsp;&emsp;QT组件预定义了很多信号和槽，而在GUI编程中，我们习惯于继承那些组件，继承后添加我们自己的槽，以便以我们的方式来处理信号。槽和普通的C++成员函数几乎是一样的，它可以是虚函数，可以被重载，可以是共有、私有或是保护的，也同样可以被其他成员函数调用。它的函数参数也可以是任意类型的。唯一不同的是：槽还可以和信号连接在一起。</p>
 <p>&emsp;&emsp;与回调不同，信号槽机制是类型安全的。这体现在信号的函数签名与槽的函数签名必须匹配上，才能够发生信号的传递。实际上，槽的参数个数可以比信号的参数个数少，因为槽能够忽略信号形参中多出来的参数。信号和槽是松耦合的：发出信号的类不关心哪些类将接收它的信号。QT的槽能够接收到信号的参数并调用，信号和槽都可以有任意个数的参数，它们都是类型安全的。</p>
-<h3 id="样例分析"><a href="#样例分析" class="headerlink" title="样例分析"></a>样例分析</h3><p>&emsp;&emsp;首先我们要知道的是，所有继承自<code>QObject</code>或者它的子类（如<code>QWidget</code>）都可以包含信号槽。我们写的类也要继承自<code>QObject</code>（或其子类）。所有包含了信号槽的类都必须在声明的上部含有<code>Q_OBJECT</code>宏。</p>
-<p>一个基于<code>QObject</code>的信号类：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> __MY_SIGHNAL_H__</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __MY_SIGHNAL_H__</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QObject&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">my_signal</span> :</span> <span class="keyword">public</span> QObject</span><br><span class="line">&#123;</span><br><span class="line">    Q_OBJECT</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    my_signal() : QObject() &#123;&#125;;</span><br><span class="line">    ~my_signal() &#123;&#125;;</span><br><span class="line"></span><br><span class="line">signals:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">signal_fun</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">/* __MY_SIGHNAL_H__ */</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="样例分析"><a href="#样例分析" class="headerlink" title="样例分析"></a>样例分析</h3><p>&emsp;&emsp;首先我们要知道的是，所有继承自<code>QObject</code>或者它的子类（如<code>QWidget</code>）都可以包含信号槽。我们写的类也要继承自<code>QObject</code>（或其子类）。所有包含了信号和槽的类都必须在声明的上部含有<code>Q_OBJECT</code>宏。</p>
+<p>下面是一个样例，一个定义了信号的类和一个定义了槽函数的类：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> __MY_SIGHNAL_H__</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __MY_SIGHNAL_H__</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QObject&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 一个定义了信号的类 */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">my_signal</span> :</span> <span class="keyword">public</span> QObject</span><br><span class="line">&#123;</span><br><span class="line">    Q_OBJECT</span><br><span class="line"></span><br><span class="line">signals:</span><br><span class="line">    <span class="comment">/* 信号 */</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">signal_fun</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">/* __MY_SIGHNAL_H__ */</span></span></span><br></pre></td></tr></table></figure>
 
-<p>&emsp;&emsp;在这个信号类中，我们使用Qt的<code>signals</code>关键字定义了一个信号函数<code>signal_fun()</code>，这个信号函数不需要开发人员来实现，需要用Qt的moc工具来实现。</p>
-<p>&emsp;&emsp;Signal的代码会由 moc 自动生成，开发人员一定不能在自己的C++代码中实现它。反之，槽应该由编程人员来实现，下面提供MyStr::setVaule()的一种可能实现。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"MyStr.h"</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MyStr::setValue</span><span class="params">(QString value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(value != m_value)</span><br><span class="line">    &#123;</span><br><span class="line">        m_value = value;</span><br><span class="line">        <span class="function">emit <span class="title">valueChanged</span><span class="params">(value)</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> __MY_SLOT_H__</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __MY_SLOT_H__</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QObject&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QDebug&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 一个定义了槽函数的类 */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">my_slot</span> :</span> <span class="keyword">public</span> QObject</span><br><span class="line">&#123;</span><br><span class="line">    Q_OBJECT</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> slots:</span><br><span class="line">    <span class="comment">/* 槽函数 */</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">slot_fun</span><span class="params">()</span></span>&#123;</span><br><span class="line">        qDebug() &lt;&lt; <span class="string">"my_slot::slot_fun is called\n"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">/* __MY_SLOT_H__ */</span></span></span><br></pre></td></tr></table></figure>
 
-<p>&emsp;&emsp;setValue函数首先比较新参的值与数据成员的值是否是一样的（后面有解释为何这样做），如果不是，则设置好数据成员m_value的值，然后，把信号valueChanged（）发送出去。发送给谁？类并没有写，这并不是类设计者所关心的，也不是类所关心的，它只管把信号发送出去就行。然后，我们再来设置谁来接收这个信号。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    MyStr a;</span><br><span class="line">    MyStr b;</span><br><span class="line">    QObject::connect(&amp;a,SIGNAL(valueChanged(QString)),&amp;b,SLOT(setValue(QString)));</span><br><span class="line">    a.setValue(<span class="string">"this is A"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;在这个信号类中，我们使用Qt的<code>signals</code>关键字定义了一个信号函数<code>signal_fun()</code>，<code>signal_fun()</code>的代码会由 Qt 的 moc 工具自动生成，开发人员一定不能在自己的C++代码中实现它。反之，槽应该由开发人员来实现。需要注意的是，必须在 pro 工程文件里，使用<code>HEADERS</code>添加定义了信号或槽函数类的头文件，如果只是使用<code>INCLUDEPATH</code>添加头文件的路径，Qt 不会调用 moc 生成代码。</p>
+<p>&emsp;&emsp;可以使用<code>QObject::connect()</code>函数连接信号和槽，该函数指定了信号发送方、信号函数、信号接收方、槽函数等信息，函数的格式如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">QObject::connect(</span><br><span class="line">    QObject* sender,      <span class="comment">/* 信号发送方 */</span></span><br><span class="line">    SIGNAL(signal_fun()), <span class="comment">/* 信号函数 */</span></span><br><span class="line">    QObject* receiver,    <span class="comment">/* 信号接收方 */</span></span><br><span class="line">    SLOT(slot_fun()));    <span class="comment">/* 槽函数 */</span></span><br></pre></td></tr></table></figure>
 
-<p>&emsp;&emsp;我们定义了两个类对象a/b，使用 QObject::connect（）函数指定了发送方、信号、接收方、槽等信息，connect函数的格式如下：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">QObject::connect(<span class="comment">/*发送方*/</span>, SIGNAL(), <span class="comment">/*接收方*/</span>, SLOT());</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;最后，我们可以使用 Qt 的<code>emit</code>关键字发送信号，下面是一个使用<code>connect()</code>和<code>emit</code>的简单样例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QCoreApplication&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"my_signal.h"</span> <span class="comment">/* 定义了信号的类 */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"my_slot.h"</span>   <span class="comment">/* 定义了槽函数的类 */</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="function">QCoreApplication <span class="title">app</span><span class="params">(argc, argv)</span></span>;</span><br><span class="line"></span><br><span class="line">    my_signal sign; <span class="comment">/* 信号发送方 */</span></span><br><span class="line">    my_slot slot;   <span class="comment">/* 信号接收方 */</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 连接信号和槽 */</span></span><br><span class="line">    QObject::connect(&amp;sign, SIGNAL(signal_fun()), &amp;slot, SLOT(slot_fun()));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 发送信号 */</span></span><br><span class="line">    emit sign.signal_fun();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> app.exec();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>&emsp;&emsp;当我们调用a的成员函数setValue时，该函数除了把a.m_value设置为”this is A”，也把信号valueChanged()发送出去，被b.setValue所接收，从而，把b.m_value设置为”this is A”，同时b.setValue又把valueChanged信号发射出去，然而该信号并没有对象接收，因为我们没有建立以b为发送方的任何连接。此时你应该明白，为何在emit前需要判断value != m_value，因为如果没有此步骤，且恰巧设置了</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">QObject::connect(&amp;b,SIGNAL(valueChanged(QString)),&amp;a,SLOT(setValue(QString)));</span><br></pre></td></tr></table></figure>
-
-<p>则b的信号被a接收，a又发送信号被b接收，如此进入死循环。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">QApplication <span class="title">app</span><span class="params">(argc, argv)</span></span>;</span><br><span class="line"> </span><br><span class="line">    MyStr  a;</span><br><span class="line">    MyStr  b;</span><br><span class="line">    QObject::connect(&amp;a,SIGNAL(valueChanged(QString)),&amp;b,SLOT(setValue(QString)));</span><br><span class="line">    a.setValue(<span class="string">"this is A"</span>);</span><br><span class="line"> </span><br><span class="line">    QLabel* label = <span class="keyword">new</span> QLabel;</span><br><span class="line">    label-&gt;setText( b.value());</span><br><span class="line">    label-&gt;show();</span><br><span class="line">    <span class="keyword">return</span> app.exec();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;我们使用label输出来看看b是否接收到a的信号，如果是，则b的内容应该是”this is A”，输出在label上，程序运行结果：</p>
-<p>&emsp;&emsp;这个例子展示了对象之间通信的一种方式。对象间可以一起工作，而不需要知道彼此的任何信息。为了达到通信的目的，只需要将它们连接起来，而这只需要通过 调用 QObject::connect() 函数指定一些简单信息就好。</p>
+<p>&emsp;&emsp;这个例子展示了对象之间通信的一种方式。对象间可以一起工作，而不需要知道彼此的任何信息。为了达到通信的目的，只需要将它们连接起来，而这只需要通过调用<code>QObject::connect()</code>函数指定一些简单信息就好。</p>
 <h3 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h3><p>要把信号成功连接到槽，它们的参数必须具有相同的顺序和相同的类型，或者允许信号的参数比槽多，槽会自动忽略掉多出来的参数而进行调用。</p>
 <h4 id="一个信号可以连接多个槽"><a href="#一个信号可以连接多个槽" class="headerlink" title="一个信号可以连接多个槽"></a>一个信号可以连接多个槽</h4><p>&emsp;&emsp;使用QObject::connect可以把一个信号连接到多个槽，而当信号发射时，将按声明联系时的顺序依次调用槽。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">MyStr  a;</span><br><span class="line"> MyStr  b;</span><br><span class="line"> MyStr  c;</span><br><span class="line"><span class="comment">//信号连接到两个槽</span></span><br><span class="line"> QObject::connect(&amp;a,SIGNAL(valueChanged(QString)),&amp;b,SLOT(setValue(QString)));</span><br><span class="line"> QObject::connect(&amp;a,SIGNAL(valueChanged(QString)),&amp;c,SLOT(setValue(QString)));</span><br><span class="line"> a.setValue(<span class="string">"this is A"</span>);</span><br><span class="line"><span class="comment">//依次调用b.setValue()、c.setValue()</span></span><br></pre></td></tr></table></figure>
@@ -959,16 +951,17 @@
 
 
 
-    <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css"/>
-    <script type="module">
+    <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css" />
+    <script  type="module">
         import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+
         const waline = init({
             el: '#waline',
-            serverURL: 'https://waline-ao2gukw9r-ganyuooutlookcoms-projects.vercel.app',
+            serverURL: 'https://waline-pi-hazel.vercel.app',
             emoji: [
                 '//unpkg.com/@waline/emojis@1.2.0/qq',
-                '//unpkg.com/@waline/emojis@1.2.0/bilibili',
                 '//unpkg.com/@waline/emojis@1.2.0/bmoji',
+                '//unpkg.com/@waline/emojis@1.2.0/bilibili',
             ],
         });
     </script>
@@ -976,22 +969,10 @@
         /*设置 Waline 的主题色*/
         :root{
             --waline-bg-color: #fff0;
+            --waline-bg-color-light: #fff0;
         }
-        .wl-panel
-        {
-            margin: 2em;
-        }
-        .wl-count
-        {
-            padding: 0em 2em 0em 2em;
-        }
-        .wl-power
-        {
-            padding: .5em 2em;
-        }
-        .wl-emoji-popup .wl-tab-wrapper {
-            background: #FFF;
-            max-height: 125px;
+        #waline {
+            padding: 2em;
         }
     </style>
 
@@ -1166,7 +1147,7 @@
       </div>
     </footer>
 
-	<img class="background-image" src="https://ganyuo.github.io/images/backgound_1.jpg" />
+	<img class="background-image" src="/images/backgound_1.jpg" />
 
     
       <div class="back-to-top">

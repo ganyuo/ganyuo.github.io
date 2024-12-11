@@ -95,7 +95,7 @@
 <meta property="og:image" content="http://ganyuo.github.io/images/other/new_bicycle_ATX830/IMG_2885.JPG">
 <meta property="og:image" content="http://ganyuo.github.io/images/other/new_bicycle_ATX830/lock.jpg">
 <meta property="article:published_time" content="2020-09-15T13:00:00.000Z">
-<meta property="article:modified_time" content="2023-09-13T13:29:30.166Z">
+<meta property="article:modified_time" content="2024-12-10T11:50:06.037Z">
 <meta property="article:author" content="ganyuo">
 <meta property="article:tag" content="自行车">
 <meta property="article:tag" content="骑行">
@@ -576,12 +576,6 @@
 <h1 id="车锁"><a href="#车锁" class="headerlink" title="车锁"></a>车锁</h1><p>&emsp;&emsp;这个车锁是比较有意思的，见下图，店长说这个锁防液压剪，价格￥338感觉有点小贵。</p>
 <p><img src="/images/other/new_bicycle_ATX830/lock.jpg" alt=""></p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>&emsp;&emsp;我个人感觉这辆车整体来说还不错，从店里到家一个骑了7公里多的路，没感觉到累，骑起来挺轻松的，自行车和各种配件一共￥3282。可惜天气预报显示这周会一直下雨，没法骑这这辆自行车去上班了，还是要坐公交，去淘宝上买个<del>浴衣</del>雨衣吧。</p>
-<style>
-    .post-block img{
-        max-width: 400px;
-        max-height: 400px;
-    }
-</style>
 
       
     </div>
@@ -697,16 +691,17 @@
 
 
 
-    <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css"/>
-    <script type="module">
+    <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css" />
+    <script  type="module">
         import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+
         const waline = init({
             el: '#waline',
-            serverURL: 'https://waline-ao2gukw9r-ganyuooutlookcoms-projects.vercel.app',
+            serverURL: 'https://waline-pi-hazel.vercel.app',
             emoji: [
                 '//unpkg.com/@waline/emojis@1.2.0/qq',
-                '//unpkg.com/@waline/emojis@1.2.0/bilibili',
                 '//unpkg.com/@waline/emojis@1.2.0/bmoji',
+                '//unpkg.com/@waline/emojis@1.2.0/bilibili',
             ],
         });
     </script>
@@ -714,22 +709,10 @@
         /*设置 Waline 的主题色*/
         :root{
             --waline-bg-color: #fff0;
+            --waline-bg-color-light: #fff0;
         }
-        .wl-panel
-        {
-            margin: 2em;
-        }
-        .wl-count
-        {
-            padding: 0em 2em 0em 2em;
-        }
-        .wl-power
-        {
-            padding: .5em 2em;
-        }
-        .wl-emoji-popup .wl-tab-wrapper {
-            background: #FFF;
-            max-height: 125px;
+        #waline {
+            padding: 2em;
         }
     </style>
 
@@ -904,7 +887,7 @@
       </div>
     </footer>
 
-	<img class="background-image" src="https://ganyuo.github.io/images/backgound_1.jpg" />
+	<img class="background-image" src="/images/backgound_1.jpg" />
 
     
       <div class="back-to-top">
