@@ -975,7 +975,7 @@ signals:
 #endif /* __MY_SIGHNAL_H__ */
 ```
 
-&emsp;&emsp;在这个信号类中，我们使用Qt的`signals`关键字定义了一个信号函数`signal_fun()`，这个信号函数不需要开发人员来实现，需要用Qt的moc工具来实现。
+&emsp;&emsp;在这个信号类中，我们使用Qt的`signals`保留字定义了一个信号函数`signal_fun()`，这个信号函数不需要开发人员来实现，需要用Qt的 moc (元对象编译器)工具来实现。
 
 &emsp;&emsp;Signal的代码会由 moc 自动生成，开发人员一定不能在自己的C++代码中实现它。反之，槽应该由编程人员来实现，下面提供MyStr::setVaule()的一种可能实现。
 
