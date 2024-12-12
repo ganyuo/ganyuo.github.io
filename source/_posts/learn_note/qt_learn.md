@@ -1046,57 +1046,71 @@ int main(int argc, char *argv[])
 
 #### 一个信号可以连接多个槽
 
-&emsp;&emsp;使用QObject::connect可以把一个信号连接到多个槽，而当信号发射时，将按声明联系时的顺序依次调用槽。
+&emsp;&emsp;使用`QObject::connect`可以把一个信号连接到多个槽，而当信号发射时，将按声明联系时的顺序依次调用槽。
 
 ```cpp
-MyStr  a;
- MyStr  b;
- MyStr  c;
-//信号连接到两个槽
- QObject::connect(&a,SIGNAL(valueChanged(QString)),&b,SLOT(setValue(QString)));
- QObject::connect(&a,SIGNAL(valueChanged(QString)),&c,SLOT(setValue(QString)));
- a.setValue("this is A");
-//依次调用b.setValue()、c.setValue()
+    my_signal sign;
+    my_slot slot_1, slot_2;
+
+    /* 信号连接到两个槽 */
+    QObject::connect(&sign, SIGNAL(signal_fun(const char *, int)), 
+                     &slot_1, SLOT(slot_fun(const char *)));
+    QObject::connect(&sign, SIGNAL(signal_fun(const char *, int)),
+                     &slot_2, SLOT(slot_fun(const char *)));
+
+    /* 发送信号 */
+    emit sign.signal_fun("hello word", 1);
+    /* 依次调用 slot_1.slot_fun()、slot_2.slot_fun() */
 ```
 
 #### 多个信号可以连接同一个槽
 
-&emsp;&emsp;同样的，可以让多个信号连接到同一个槽上 ，而且其中的每一个信号的发送，都会调用了那个槽。
+&emsp;&emsp;同样的，可以让多个信号连接到同一个槽上，而且其中的任意一个信号的发送，都会调用了那个槽。
 
 ```cpp
-MyStr  a;
- MyStr  b;
- MyStr  c;
-//两个信号连接到同一个槽
- QObject::connect(&a,SIGNAL(valueChanged(QString)),&c,SLOT(setValue(QString)));
- QObject::connect(&b,SIGNAL(valueChanged(QString)),&c,SLOT(setValue(QString)));
-//下面的操作皆会调用到槽c.setValue()
- a.setValue("this is A");
-b.setValue("this is B");
+    my_signal sign_1, sign_2;
+    my_slot slot;
+
+    /* 两个信号连接到同一个槽上 */
+    QObject::connect(&sign_1, SIGNAL(signal_fun(const char *, int)),
+                     &slot, SLOT(slot_fun(const char *)));
+    QObject::connect(&sign_2, SIGNAL(signal_fun(const char *, int)),
+                     &slot, SLOT(slot_fun(const char *)));
+
+    /* 发送信号，两个信号都会触发槽函数slot.slot_fun()的调用 */
+    emit sign_1.signal_fun("hello word 1", 1);
+    emit sign_2.signal_fun("hello word 2", 1);
 ```
 
 #### 一个信号可以和另外一个信号相连接
 
-&emsp;&emsp;当发射第一个信号的时候，也会把第二个信号一个发送出去。
+&emsp;&emsp;当发送第一个信号的时候，也会把第二个信号发送出去。
 
 ```cpp
-MyStr  a;
- MyStr  b;
- MyStr  c;
-//两个信号相连接
- QObject::connect(&a,SIGNAL(valueChanged(QString)),&b,SIGNAL(valueChanged(QString)));
-//再建立b与c的连接
- QObject::connect(&b,SIGNAL(valueChanged(QString)),&c,SLOT(setValue(QString)));
-//下面的操作同时发送了信号a.valueChanged与b.valueChanged
- a.setValue("this is A");
-//从而信号b.valueChanged被槽c.setValue所接收
+    my_signal sign_1, sign_2;
+    my_slot slot;
+
+    /* 两个信息号相连 */
+    QObject::connect(&sign_1, SIGNAL(signal_fun(const char *, int)),
+                     &sign_2, SIGNAL(signal_fun(const char *, int)));
+    /* 两个信号连接到同一个槽上 */
+    QObject::connect(&sign_1, SIGNAL(signal_fun(const char *, int)),
+                     &slot, SLOT(slot_fun(const char *)));
+    QObject::connect(&sign_2, SIGNAL(signal_fun(const char *, int)),
+                     &slot, SLOT(slot_fun(const char *)));
+
+    /* 发送信号1，信号2也会发送出去 */
+    emit sign_1.signal_fun("hello word 1", 1);
+    /* 发送信号2，信号1不会被发送出去 */
+    emit sign_2.signal_fun("hello word 2", 1);
 ```
 
 #### 连接可以被移除
 
 ```cpp
-//移除b 与 c之间的连接
-  QObject::disconnect(&b,SIGNAL(valueChanged(QString)),&c,SLOT(setValue(QString)));
+/* 移除sign.signal_fun()与slot.slot_fun()之间的连接 */
+QObject::disconnect(&sign, SIGNAL(signal_fun(const char *, int)),
+                    &slot, SLOT(slot_fun(const char *)));
 ```
 
-&emsp;&emsp;实际上当对象被delete时，其关联的所有链接都会失效，QT会自动移除和这个对象的所有链接。
+&emsp;&emsp;实际上当对象被delete时，其关联的所有连接都会失效，QT会自动移除和这个对象的所有连接。
