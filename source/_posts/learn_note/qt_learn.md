@@ -966,9 +966,20 @@ class my_signal : public QObject
 {
     Q_OBJECT
 
+private:
+    int _id = 0;
+
+public:
+    my_signal(int id_) : QObject(), _id(id_) {};
+
+    int get_id()
+    {
+        return _id;
+    }
+
 signals:
     /* 信号 */
-    void signal_fun();
+    void signal_fun(const char *str, int num = 0);
 };
 
 #endif /* __MY_SIGHNAL_H__ */
@@ -981,22 +992,39 @@ signals:
 #include <QObject>
 #include <QDebug>
 
+#include "my_signal.h"
+
 /* 一个定义了槽函数的类 */
 class my_slot : public QObject
 {
     Q_OBJECT
 
+private:
+    int _id = 0;
+
+public:
+    my_slot(int id_) : QObject(), _id(id_) {};
+
+    int get_id()
+    {
+        return _id;
+    }
+
 public slots:
     /* 槽函数 */
-    virtual void slot_fun(){
-        qDebug() << "my_slot::slot_fun is called\n";
+    virtual void slot_fun(const char *str)
+    {
+		my_signal *sign = static_cast<my_signal *>(sender());
+        qDebug() << "my_slot: " << get_id()
+                 << " get my_sign: " << sign->get_id()
+                 << " str: " << str;
     }
 };
 
 #endif /* __MY_SLOT_H__ */
 ```
 
-&emsp;&emsp;在这个信号类中，我们使用Qt的`signals`关键字定义了一个信号函数`signal_fun()`，`signal_fun()`的代码会由 Qt 的 moc 工具自动生成，开发人员一定不能在自己的C++代码中实现它。反之，槽应该由开发人员来实现。需要注意的是，必须在 pro 工程文件里，使用`HEADERS`添加定义了信号或槽函数类的头文件，如果只是使用`INCLUDEPATH`添加头文件的路径，Qt 不会调用 moc 生成代码。
+&emsp;&emsp;在这个信号类中，我们使用Qt的`signals`保留字定义了一个信号函数`signal_fun()`，`signal_fun()`的代码会由 Qt 的 moc 工具自动生成，开发人员一定不能在自己的C++代码中实现它。反之，槽应该由开发人员来实现，在槽函数里可以使用`sender()`来获取信号的发送方。需要注意的是，必须在 pro 工程文件里，使用`HEADERS`添加定义了信号或槽函数类的头文件，如果只是使用`INCLUDEPATH`添加头文件的路径，Qt 不会调用 moc 生成代码。
 
 &emsp;&emsp;可以使用`QObject::connect()`函数连接信号和槽，该函数指定了信号发送方、信号函数、信号接收方、槽函数等信息，函数的格式如下：
 
@@ -1020,20 +1048,22 @@ int main(int argc, char *argv[])
 {
 	QCoreApplication app(argc, argv);
 
-    my_signal sign; /* 信号发送方 */
-    my_slot slot;   /* 信号接收方 */
+
+    my_signal sign(1); /* 信号发送方 */
+    my_slot slot(1);   /* 信号接收方 */
 
     /* 连接信号和槽 */
-    QObject::connect(&sign, SIGNAL(signal_fun()), &slot, SLOT(slot_fun()));
+    QObject::connect(&sign, SIGNAL(signal_fun(const char *, int)),
+                     &slot, SLOT(slot_fun(const char *)));
 
     /* 发送信号 */
-    emit sign.signal_fun();
+    emit sign.signal_fun("hello word 1", 1);
 
 	return app.exec();
 }
 ```
 
-&emsp;&emsp;这个例子展示了对象之间通信的一种方式。对象间可以一起工作，而不需要知道彼此的任何信息。为了达到通信的目的，只需要将它们连接起来，而这只需要通过调用`QObject::connect()`函数指定一些简单信息就好。
+&emsp;&emsp;上面的例子中，信号函数有两个参数，而槽函数只有一个参数，信息函数的第二个参数会被槽函数忽略。这个例子展示了对象之间通信的一种方式。对象间可以一起工作，而不需要知道彼此的任何信息。为了达到通信的目的，只需要将它们连接起来，而这只需要通过调用`QObject::connect()`函数指定一些简单信息就好。
 
 ### 连接
 
@@ -1041,57 +1071,71 @@ int main(int argc, char *argv[])
 
 #### 一个信号可以连接多个槽
 
-&emsp;&emsp;使用QObject::connect可以把一个信号连接到多个槽，而当信号发射时，将按声明联系时的顺序依次调用槽。
+&emsp;&emsp;使用`QObject::connect`可以把一个信号连接到多个槽，而当信号发射时，将按声明联系时的顺序依次调用槽。
 
 ```cpp
-MyStr  a;
- MyStr  b;
- MyStr  c;
-//信号连接到两个槽
- QObject::connect(&a,SIGNAL(valueChanged(QString)),&b,SLOT(setValue(QString)));
- QObject::connect(&a,SIGNAL(valueChanged(QString)),&c,SLOT(setValue(QString)));
- a.setValue("this is A");
-//依次调用b.setValue()、c.setValue()
+    my_signal sign;
+    my_slot slot_1, slot_2;
+
+    /* 信号连接到两个槽 */
+    QObject::connect(&sign, SIGNAL(signal_fun(const char *, int)), 
+                     &slot_1, SLOT(slot_fun(const char *)));
+    QObject::connect(&sign, SIGNAL(signal_fun(const char *, int)),
+                     &slot_2, SLOT(slot_fun(const char *)));
+
+    /* 发送信号 */
+    emit sign.signal_fun("hello word", 1);
+    /* 依次调用 slot_1.slot_fun()、slot_2.slot_fun() */
 ```
 
 #### 多个信号可以连接同一个槽
 
-&emsp;&emsp;同样的，可以让多个信号连接到同一个槽上 ，而且其中的每一个信号的发送，都会调用了那个槽。
+&emsp;&emsp;同样的，可以让多个信号连接到同一个槽上，而且其中的任意一个信号的发送，都会调用了那个槽。
 
 ```cpp
-MyStr  a;
- MyStr  b;
- MyStr  c;
-//两个信号连接到同一个槽
- QObject::connect(&a,SIGNAL(valueChanged(QString)),&c,SLOT(setValue(QString)));
- QObject::connect(&b,SIGNAL(valueChanged(QString)),&c,SLOT(setValue(QString)));
-//下面的操作皆会调用到槽c.setValue()
- a.setValue("this is A");
-b.setValue("this is B");
+    my_signal sign_1, sign_2;
+    my_slot slot;
+
+    /* 两个信号连接到同一个槽上 */
+    QObject::connect(&sign_1, SIGNAL(signal_fun(const char *, int)),
+                     &slot, SLOT(slot_fun(const char *)));
+    QObject::connect(&sign_2, SIGNAL(signal_fun(const char *, int)),
+                     &slot, SLOT(slot_fun(const char *)));
+
+    /* 发送信号，两个信号都会触发槽函数slot.slot_fun()的调用 */
+    emit sign_1.signal_fun("hello word 1", 1);
+    emit sign_2.signal_fun("hello word 2", 1);
 ```
 
 #### 一个信号可以和另外一个信号相连接
 
-&emsp;&emsp;当发射第一个信号的时候，也会把第二个信号一个发送出去。
+&emsp;&emsp;当发送第一个信号的时候，也会把第二个信号发送出去。
 
 ```cpp
-MyStr  a;
- MyStr  b;
- MyStr  c;
-//两个信号相连接
- QObject::connect(&a,SIGNAL(valueChanged(QString)),&b,SIGNAL(valueChanged(QString)));
-//再建立b与c的连接
- QObject::connect(&b,SIGNAL(valueChanged(QString)),&c,SLOT(setValue(QString)));
-//下面的操作同时发送了信号a.valueChanged与b.valueChanged
- a.setValue("this is A");
-//从而信号b.valueChanged被槽c.setValue所接收
+    my_signal sign_1, sign_2;
+    my_slot slot;
+
+    /* 两个信息号相连 */
+    QObject::connect(&sign_1, SIGNAL(signal_fun(const char *, int)),
+                     &sign_2, SIGNAL(signal_fun(const char *, int)));
+    /* 两个信号连接到同一个槽上 */
+    QObject::connect(&sign_1, SIGNAL(signal_fun(const char *, int)),
+                     &slot, SLOT(slot_fun(const char *)));
+    QObject::connect(&sign_2, SIGNAL(signal_fun(const char *, int)),
+                     &slot, SLOT(slot_fun(const char *)));
+
+    /* 发送信号1，信号2也会发送出去 */
+    emit sign_1.signal_fun("hello word 1", 1);
+    /* 发送信号2，信号1不会被发送出去 */
+    emit sign_2.signal_fun("hello word 2", 1);
 ```
 
 #### 连接可以被移除
 
 ```cpp
-//移除b 与 c之间的连接
-  QObject::disconnect(&b,SIGNAL(valueChanged(QString)),&c,SLOT(setValue(QString)));
+/* 移除sign.signal_fun()与slot.slot_fun()之间的连接 */
+QObject::disconnect(&sign, SIGNAL(signal_fun(const char *, int)),
+                    &slot, SLOT(slot_fun(const char *)));
 ```
 
-&emsp;&emsp;实际上当对象被delete时，其关联的所有链接都会失效，QT会自动移除和这个对象的所有链接。
+&emsp;&emsp;实际上当对象被delete时，其关联的所有连接都会失效，QT会自动移除和这个对象的所有连接。
