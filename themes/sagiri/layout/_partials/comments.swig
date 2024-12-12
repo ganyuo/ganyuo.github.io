@@ -6,6 +6,7 @@
            data-title="{{ page.title }}" data-url="{{ page.permalink }}">
       </div>
     </div>
+    {% include '../_third-party/comments/duoshuo.swig' %}
 
   {% elseif theme.facebook_sdk.enable and theme.facebook_comments_plugin.enable %}
     <div class="comments" id="comments">
@@ -31,26 +32,31 @@
         </div>
       </div>
     </div>
+    {% include '../_third-party/comments/disqus.swig' %}
 
   {% elseif theme.hypercomments_id %}
     <div class="comments" id="comments">
       <div id="hypercomments_widget"></div>
     </div>
+    {% include '../_third-party/comments/hypercomments.swig' %}
 
   {% elseif theme.youyan_uid %}
     <div class="comments" id="comments">
       <div id="uyan_frame"></div>
     </div>
+    {% include '../_third-party/comments/youyan.swig' %}
 
   {% elseif theme.livere_uid %}
     <div class="comments" id="comments">
       <div id="lv-container" data-id="city" data-uid="{{ theme.livere_uid }}"></div>
     </div>
+    {% include '../_third-party/comments/livere.swig' %}
 
   {% elseif theme.changyan.appid and theme.changyan.appkey %}
     <div class="comments" id="comments">
       <div id="SOHUCS"></div>
     </div>
+    {% include '../_third-party/comments/changyan.swig' %}
 
   {% elseif theme.gitment.enable %}
     <div class="comments" id="comments">
@@ -61,17 +67,19 @@
         <div id="gitment-container"></div>
       {% endif %}
     </div>
+    {% include '../_third-party/comments/gitment.swig' %}
 
   {% elseif theme.valine.enable and theme.valine.appid and theme.valine.appkey %}
     <div class="comments" id="comments">
       <div id="vcomments"></div>
     </div>
+    {% include '../_third-party/comments/valine.swig' %}
 
   {% elseif theme.waline.enable and theme.waline.serverURL %}
     <div class="comments" id="comments">
       <div id="waline"></div>
     </div>
+    {% include '../_third-party/comments/waline.swig' %}
   {% endif %}
 
 {% endif %}
-{% include '../_third-party/comments/index.swig' %}
