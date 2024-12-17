@@ -425,6 +425,8 @@ int main(int argc, char *argv[])
 }
 ```
 
+## 对话框
+
 ## 画板
 
 &emsp;&emsp;抄了大佬的这篇[博客](https://zhuanlan.zhihu.com/p/638570663)。
@@ -514,6 +516,13 @@ int main(int argc, char *argv[])
 
 &emsp;&emsp;这只是一个简单的示例，你可以根据需要使用其他绘图函数和属性来绘制更复杂的图形和效果。
 
+## 主窗口
+
+### 菜单栏
+
+### 工具栏
+
+### 状态栏
 
 ## 事件
 
