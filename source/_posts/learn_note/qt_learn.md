@@ -429,7 +429,7 @@ int main(int argc, char *argv[])
 
 &emsp;&emsp;抄了大佬的这篇[博客](https://www.cnblogs.com/happinesspills/p/16542209.html)。
 
-&emsp;&emsp;主窗口`QMainWindow`是一个为用户提供主窗口程序的类，包含一个菜单栏（menu bar）、多个工具栏(tool bars)、多个停靠部件(dock widgets)、一个状态栏(status bar)及一个中心区域(central widget)，主窗口是许多应用程序的基础，如文本编辑器，图片编辑器等。
+&emsp;&emsp;主窗口`QMainWindow`是一个为用户提供主窗口程序的类，包含一个菜单栏（menu bar）、多个工具栏(tool bars)、多个浮动窗口(dock widgets)、一个状态栏(status bar)及一个中心区域(central widget)，主窗口是许多应用程序的基础，如文本编辑器，图片编辑器等。
 
 下面是一个使用`QMainWindow`的样例：
 
@@ -442,10 +442,12 @@ int main(int argc, char *argv[])
 #include <QObject>
 #include <QToolBar>
 #include <QStatusBar>
+#include <QDockWidget>
 #include <QLabel>
 #include <QGridLayout>
 #include <QLineEdit>
 #include <QSystemTrayIcon>
+#include <QVBoxLayout>
 
 int main(int argc, char *argv[])
 {
@@ -479,8 +481,14 @@ int main(int argc, char *argv[])
     QLabel *status_label = new QLabel("main window running...");
     status_bar->addWidget(status_label);
 
+    /* 浮动窗口 */
+    QDockWidget dock_widget("浮动窗口", &main_win); /* 创建浮动窗口 */
+    dock_widget.setMinimumWidth(100); /* 设置最小宽度 */
+    /* 将浮动窗口放在主窗口的左边 */
+    main_win.addDockWidget(Qt::LeftDockWidgetArea, &dock_widget);
+
     /* 中心区域，别的控件占用了之后，剩下的区域都是CentralWidget */
-    QWidget central_widge;
+    QWidget central_widget;
 	QGridLayout central_layout;
 	central_layout.setRowStretch(0, 1);
 	central_layout.setColumnStretch(0, 1);
@@ -490,8 +498,8 @@ int main(int argc, char *argv[])
 	central_layout.addWidget(new QLineEdit(), 2, 2);
 	central_layout.setRowStretch(3, 1);
 	central_layout.setColumnStretch(3, 1);
-	central_widge.setLayout(&central_layout);
-    main_win.setCentralWidget(&central_widge); /* 设置主窗口的中心区域 */
+	central_widget.setLayout(&central_layout);
+    main_win.setCentralWidget(&central_widget); /* 设置主窗口的中心区域 */
 
     main_win.show();
 
@@ -505,6 +513,10 @@ int main(int argc, char *argv[])
     return 0;
 }
 ```
+
+运行结果如下图：
+
+![](/images/learn_note/qt_learn/fig_8.png)
 
 ### 菜单栏
 
@@ -532,15 +544,101 @@ int main(int argc, char *argv[])
 
 &emsp;&emsp;一个`QMainWindow`的程序最多只有一个状态栏。`QMainWindow`中可以有多个的部件都使用add…名字的函数，而只有一个的部件，就直接使用获取部件的函数，如menuBar。同理状态栏也提供了一个获取状态栏的函数`statusBar()`，没有就自动创建一个并返回状态栏的指针，状态栏可以使用`addWidget()`接口来添加内容。
 
+### 浮动窗口
+
+&emsp;&emsp;即`QDockWidget`，也称为铆接部件，可以有多个。主窗口可以使用`addDockWidget()`成员函数添加浮动窗口。
+
 ### 中心区域
 
-&emsp;&emsp;别的控件占用了之后，剩下的区域都是中心区域区域，中心区域只有一个，使用`setCentralWidget()`函数设置中心区域。
+&emsp;&emsp;除了以上几个部件占用的区域外，剩下的区域都是中心区域，中心区域只有一个，使用`setCentralWidget()`函数设置中心区域。
 
 ### 系统托盘图标
 
 &emsp;&emsp;系统托盘图标并不是`QMainWindow`里的内容，Qt 中使用`QSystemTrayIcon`类来创建系统托盘图标，可以使用`QSystemTrayIcon`的`setIcon()`成员函数设置图标，使用`setContextMenu()`设置鼠标右键菜单。
 
 ## 对话框
+
+&emsp;&emsp;抄了大佬的这篇[博客](https://blog.csdn.net/m0_56069910/article/details/141726782)。
+
+&emsp;&emsp;对话框是GUI程序中不可或缺的组成部分。⼀些不适合在主窗⼝实现的功能组件可以设置在对话框中。对话框通常是⼀个顶层窗口，出现在程序最上层，⽤于实现短期任务或者简洁的用户交互。对话框主要可以分为模态对话框和⾮模态对话框。
+
+&emsp;&emsp;Qt中的对话框类为`QDialog`，是`QWidget`的子类，`QWidget`的各种属性方法，在`QDialog`也同样适用。
+
+### 模态对话框
+
+&emsp;&emsp;模态对话框的特点是：显示后无法与父窗口进行交互，是⼀种阻塞式的对话框。在 Qt 中使用`QDialog::exec()`函数调用。模态对话框适用于必须依赖用户选择的场合，⽐如消息显示，文件选择，打印设置等。
+
+```cpp
+QDialog model_dialog;
+model_dialog.setWindowTitle("模态对话框");
+model_dialog.exec(); /* 阻塞显示对话框 */
+```
+
+### 非模态对话框
+
+&emsp;&emsp;非模态对话框的特点是：显示后独立存在，可以同时与父窗口进行交互，是⼀种非阻塞式对话框，使用`QDialog::show()`函数调用。⾮模态对话框⼀般在堆上创建，这是因为如果创建在栈上时，当函数运行结束后，弹出的⾮模态对话框会被释放。⾮模态对话框适用于特殊功能设置的场合，⽐如查找操作，属性设置等。 
+
+&emsp;&emsp;Qt 可以通过设置`Qt:WA_DeleteOnClose`属性，实现在对话框在关闭的时候被`delete`掉，避免内存泄漏。
+
+```cpp
+QDialog *modaless_dialog = new QDialog();
+modaless_dialog->setWindowTitle("非模态对话框");
+/* 关闭窗口的时候触发delete操作，防止内存泄漏 */
+modaless_dialog->setAttribute(Qt::WA_DeleteOnClose);
+modaless_dialog->show(); /* 非阻塞显示对话框 */
+```
+
+### Qt常用的对话框
+
+&emsp;&emsp;Qt 提供了多种可复复用的对话框类型，即Qt标准对话框。Qt标准对话框全部继承于`QDialog`类。常用标准对话框如下：
+
+- `QMessageBox`：消息对话框
+- `QFileDialog`：文件对话框
+- `QColorDialog`：颜色对话框
+- `QFontDialog`：字体对话框
+- `QInputDialog`：输入对话框
+
+#### 消息对话框
+
+&emsp;&emsp;消息对话框主要用于为用户提示重要消息，强制用户进行选择操作。`QMessageBox`提供了多种静态方法来快速显示不同类型的消息框：
+
+- information：显示一个信息消息框
+    ```cpp
+    QMessageBox::information(&main_win, "信息消息框", "假装这是一条信息消息");
+    ```
+- warning：显示一个警告消息框
+    ```cpp
+    QMessageBox::critical(&main_win, "信息消息框", "假装这是一条警告消息");
+    ```
+- critical：显示一个严重错误消息框
+    ```cpp
+    ```
+- question：显示一个问题消息框，允许用户做出选择
+    ```cpp
+    ```
+
+#### 文件对话框
+
+&emsp;&emsp;文件对话框`QFiledialog`是一个模态对话框，主要用于让用户可以浏览文件系统、并选择文件或目录。
+
+- 打开一个文件，返回文件路径
+    ```cpp
+    ```
+- 打开多个文件，返回文件路径列表
+    ```cpp
+    ```
+- 打开目录，返回目录路径
+    ```cpp
+    ```
+- 保存文件，返回文件路径
+    ```cpp
+    ```
+
+#### 颜色对话框
+
+#### 字体对话框
+
+#### 输入对话框
 
 ## 画板
 
