@@ -425,6 +425,121 @@ int main(int argc, char *argv[])
 }
 ```
 
+## 主窗口
+
+&emsp;&emsp;抄了大佬的这篇[博客](https://www.cnblogs.com/happinesspills/p/16542209.html)。
+
+&emsp;&emsp;主窗口`QMainWindow`是一个为用户提供主窗口程序的类，包含一个菜单栏（menu bar）、多个工具栏(tool bars)、多个停靠部件(dock widgets)、一个状态栏(status bar)及一个中心区域(central widget)，主窗口是许多应用程序的基础，如文本编辑器，图片编辑器等。
+
+下面是一个使用`QMainWindow`的样例：
+
+```cpp
+#include <QApplication>
+#include <QMainWindow>
+#include <QMenuBar>
+#include <QMenu>
+#include <QAction>
+#include <QObject>
+#include <QToolBar>
+#include <QStatusBar>
+#include <QLabel>
+#include <QGridLayout>
+#include <QLineEdit>
+#include <QSystemTrayIcon>
+
+int main(int argc, char *argv[])
+{
+    QApplication app(argc, argv);
+
+    QMainWindow main_win;
+    main_win.resize(600, 400);
+
+    /* 菜单栏 */
+    QMenuBar *meun_bar = main_win.menuBar(); /* 获取主窗口的菜单栏 */
+    QMenu *file_menu = meun_bar->addMenu("&file"); /* 在菜单栏里添加一个file菜单 */
+    QMenu *edit_menu = meun_bar->addMenu("&edit"); /* 再添加一个edit菜单 */
+    QAction *open_action = file_menu->addAction("&open"); /* 向file菜单里添加Action */
+    QAction *save_action = file_menu->addAction("&save");
+    file_menu->addSeparator();  /* 向file菜单里添加分割线 */
+    QAction *exit_action = file_menu->addAction("&exit");
+    /* 将exit Action的触发信号，连接到主窗口的关闭槽函数，实现点击exit后关闭主窗口 */
+    QObject::connect(exit_action, SIGNAL(triggered(bool)), &main_win, SLOT(close()));
+    exit_action->setToolTip("close window");
+
+    /* 工具栏 */
+    QToolBar *tool_bar = main_win.addToolBar("tool_bar"); /* 向主窗口添加工具栏 */
+    tool_bar->addAction(open_action); /* 向工具栏中添加Action */
+    tool_bar->addAction(save_action);
+    tool_bar->addAction(exit_action);
+    tool_bar->setAllowedAreas(Qt::AllToolBarAreas); /* 设置可停靠区域 */
+    tool_bar->setFloatable(true); /* 设置是否可以浮动 */
+
+    /* 状态栏 */
+    QStatusBar *status_bar = main_win.statusBar();  /* 获取主窗口的状态栏 */
+    QLabel *status_label = new QLabel("main window running...");
+    status_bar->addWidget(status_label);
+
+    /* 中心区域，别的控件占用了之后，剩下的区域都是CentralWidget */
+    QWidget central_widge;
+	QGridLayout central_layout;
+	central_layout.setRowStretch(0, 1);
+	central_layout.setColumnStretch(0, 1);
+	central_layout.addWidget(new QLabel("用户名："), 1, 1);
+	central_layout.addWidget(new QLineEdit(), 1, 2);
+	central_layout.addWidget(new QLabel("密码："), 2, 1);
+	central_layout.addWidget(new QLineEdit(), 2, 2);
+	central_layout.setRowStretch(3, 1);
+	central_layout.setColumnStretch(3, 1);
+	central_widge.setLayout(&central_layout);
+    main_win.setCentralWidget(&central_widge); /* 设置主窗口的中心区域 */
+
+    main_win.show();
+
+    /* 系统托盘图标 */
+    QSystemTrayIcon tray_icon;
+    tray_icon.setIcon(QIcon("image/滑稽.png")); /* 设置图标图片 */
+    tray_icon.setContextMenu(file_menu);  /* 设置菜单 */
+    tray_icon.show();
+
+    app.exec();
+    return 0;
+}
+```
+
+### 菜单栏
+
+&emsp;&emsp;一个主窗口最多只有一个菜单栏。通过`QMainWindow`类的`menuBar()`函数可以获取主窗口菜单栏指针，如果当前窗口没有菜单栏，该函数会自动创建一个。
+
+&emsp;&emsp;Qt 并没有专门的菜单项类，只是使用一个`QAction`类，抽象出公共的动作。当我们把`QAction`对象添加到菜单，就显示成一个菜单项，添加到工具栏，就显示成一个工具按钮。用户可以通过点击菜单项、点击工具栏按钮、点击快捷键来激活这个动作。
+
+### 工具栏
+
+&emsp;&emsp;主窗口可以有多个工具栏，通常采用一个菜单对应一个工具栏的的方式，也可根据需要进行工具栏的划分。
+
+&emsp;&emsp;调用`QMainWindowd`对象的成员函数`addToolBar()`会创建一个新的工具栏，并且返回该工具栏的指针。通过`QToolBar`类的`addAction()`函数可以添加插入属于工具栏的项，工具栏上添加项也是用`QAction`。
+
+&emsp;&emsp;工具栏是一个可移动的窗口，它的可停靠区域由`QToolBar`的`allowAreas`决定，包括以下可用值：
+
+- `Qt::LeftToolBarArea`：停靠在左侧
+- `Qt::RightToolBarArea`：停靠在右侧
+- `Qt::TopToolBarArea`：停靠在顶部
+- `Qt::BottomToolBarArea`：停靠在底部
+- `Qt::AllToolBarAreas`：以上四个位置都可停靠
+
+使用`setAllowedAreas()`函数指定停靠区域，使用`setFloatable()`函数可以设置工具栏是否可以浮动。
+
+### 状态栏
+
+&emsp;&emsp;一个`QMainWindow`的程序最多只有一个状态栏。`QMainWindow`中可以有多个的部件都使用add…名字的函数，而只有一个的部件，就直接使用获取部件的函数，如menuBar。同理状态栏也提供了一个获取状态栏的函数`statusBar()`，没有就自动创建一个并返回状态栏的指针，状态栏可以使用`addWidget()`接口来添加内容。
+
+### 中心区域
+
+&emsp;&emsp;别的控件占用了之后，剩下的区域都是中心区域区域，中心区域只有一个，使用`setCentralWidget()`函数设置中心区域。
+
+### 系统托盘图标
+
+&emsp;&emsp;系统托盘图标并不是`QMainWindow`里的内容，Qt 中使用`QSystemTrayIcon`类来创建系统托盘图标，可以使用`QSystemTrayIcon`的`setIcon()`成员函数设置图标，使用`setContextMenu()`设置鼠标右键菜单。
+
 ## 对话框
 
 ## 画板
@@ -516,13 +631,6 @@ int main(int argc, char *argv[])
 
 &emsp;&emsp;这只是一个简单的示例，你可以根据需要使用其他绘图函数和属性来绘制更复杂的图形和效果。
 
-## 主窗口
-
-### 菜单栏
-
-### 工具栏
-
-### 状态栏
 
 ## 事件
 
