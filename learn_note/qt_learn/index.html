@@ -95,7 +95,7 @@
 <meta property="og:image" content="http://ganyuo.github.io/images/learn_note/qt_learn/fig_8.png">
 <meta property="og:image" content="http://ganyuo.github.io/images/learn_note/qt_learn/fig_7.png">
 <meta property="article:published_time" content="2023-03-10T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-12-20T03:32:07.334Z">
+<meta property="article:modified_time" content="2024-12-20T05:42:51.294Z">
 <meta property="article:author" content="ganyuo">
 <meta property="article:tag" content="Qt">
 <meta property="article:tag" content="C++">
@@ -649,7 +649,7 @@
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">QWidget widget;</span><br><span class="line">QPushButton button;</span><br><span class="line">button.setText(<span class="string">"Button"</span>);</span><br><span class="line">button.setParent(&amp;widget);</span><br><span class="line"><span class="comment">/* 设置button相对父窗口的坐标ax,ay，以及button的宽度aw和高度ah */</span></span><br><span class="line">button.setGeometry(<span class="number">30</span>, <span class="number">30</span>, <span class="number">200</span>, <span class="number">100</span>);</span><br></pre></td></tr></table></figure>
 
 <p>&emsp;&emsp;上面的例子中，<code>setGeometry()</code>有4个参数，前两个参数是<code>button</code>相对父窗口的坐标ax，ay，后面两个是<code>button</code>的宽度和高度aw，ah。</p>
-<h2 id="layout"><a href="#layout" class="headerlink" title="layout"></a>layout</h2><p>&emsp;&emsp;当一个窗口里控件很多时，使用<code>setGeometry()</code>来设置很麻烦，而且无法随着窗口的大小变化而调整。使用layout(布局)就可以很方便的解决这个问题，他们负责一组控件的几何管理。上面<a href="../../../../../downloads/qt_learn.md#输入框-QLineEdit">输入框-QLineEdit</a>里的样例代码，使用的<code>QVBoxLayout</code>就是一种layout，可以将控件在垂直方向上排列，使得<code>name_input</code>输入框在<code>password_input</code>输入框上面，如果不使用layout，则两个输入框会重叠在一起。(以下内容大部分抄的大佬的这篇<a href="https://blog.csdn.net/leacock1991/article/details/118947828" target="_blank" rel="noopener">博客</a>)</p>
+<h2 id="layout"><a href="#layout" class="headerlink" title="layout"></a>layout</h2><p>&emsp;&emsp;当一个窗口里控件很多时，使用<code>setGeometry()</code>来设置很麻烦，而且无法随着窗口的大小变化而调整。使用layout(布局)就可以很方便的解决这个问题，他们负责一组控件的几何管理。上面<a href="#输入框-QLineEdit">输入框-QLineEdit</a>里的样例代码，使用的<code>QVBoxLayout</code>就是一种layout，可以将控件在垂直方向上排列，使得<code>name_input</code>输入框在<code>password_input</code>输入框上面，如果不使用layout，则两个输入框会重叠在一起。(以下内容大部分抄的大佬的这篇<a href="https://blog.csdn.net/leacock1991/article/details/118947828" target="_blank" rel="noopener">博客</a>)</p>
 <h3 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h3><p>&emsp;&emsp;Qt布局系统提供了一种简单而强大的方法，可以在控件内自动排列子控件，以确保它们充分利用可用空间。Qt包含一组布局管理类，用于描述控件在应用程序用户界面中的布局方式。当控件的可用空间发生变化时，这些layout会自动定位和调整控件的大小，确保它们的排列一致并且用户界面作为一个整体仍然可用。</p>
 <p>&emsp;&emsp;所有<code>QWidget</code>子类都可以使用layout来管理它们的子类。<code>QWidget::setLayout()</code>函数可以为一个控件设置layout。 当以这种方式在窗口上设置layout时，它负责以下任务：</p>
 <ul>
@@ -682,7 +682,7 @@
 <h3 id="为layout添加控件"><a href="#为layout添加控件" class="headerlink" title="为layout添加控件"></a>为layout添加控件</h3><p>&emsp;&emsp;将控件添加到一个layout时，布局过程如下：</p>
 <ol>
 <li>所有控件最初将根据它们的<code>QWidget::sizePolicy()</code>和<code>QWidget::sizeHint()</code>分配一定数量的空间。</li>
-<li>如果任何控件设置了拉伸系数，并且其值大于零，那么它们将按其拉伸因子的比例分配空间（如下<a href="../../../../../downloads/qt_learn.md#伸展因素">伸展因素</a>所述）。</li>
+<li>如果任何控件设置了拉伸系数，并且其值大于零，那么它们将按其拉伸因子的比例分配空间（如下<a href="#伸展因素">伸展因素</a>所述）。</li>
 <li>如果任何控件的拉伸系数设置为零，它们只会在没有其他控件需要空间的情况下获得更多空间。其中，空间首先分配给具有扩展大小策略的控件。</li>
 <li>任何控件被分配的空间的大小如果小于它们的最小大小（如果未指定最小尺寸，则为最小尺寸提示），它们就会被按它们所需要的最小大小分配空间。（如果控件的伸展因素是它们的决定因素，它们不必有最小大小或者最小大小的提示。）</li>
 <li>任何控件被分配的空间的大小如果大于它们的最大大小，它们就会被按它们所需要的最大大小分配空间。（如果控件的伸展因素是它们的决定因素，它们不必有最大大小。）</li>
@@ -768,7 +768,7 @@
 <ul>
 <li>浮点数输入对话框  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> ret = QInputDialog::getDouble(<span class="literal">nullptr</span>, <span class="string">"输入对话框"</span>, <span class="string">"输入浮点数"</span>);</span><br></pre></td></tr></table></figure></li>
 <li>整数输入对话框  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> ret = QInputDialog::getInt(<span class="literal">nullptr</span>, <span class="string">"输入对话框"</span>, <span class="string">"输入整数"</span>);</span><br></pre></td></tr></table></figure></li>
-<li>选项列表输入对话框  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">QString ret = QInputDialog::getItem(<span class="literal">nullptr</span>, <span class="string">"输入对话框"</span>, <span class="string">"选择选项"</span>, </span><br><span class="line">                                        &#123;<span class="string">"选项_1"</span>, <span class="string">"选项_2"</span>, <span class="string">"选项_3"</span>&#125;);</span><br></pre></td></tr></table></figure>
+<li>选项列表输入对话框  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">QString ret = QInputDialog::getItem(<span class="literal">nullptr</span>, <span class="string">"输入对话框"</span>, <span class="string">"选择选项"</span>, </span><br><span class="line">                                    &#123;<span class="string">"选项_1"</span>, <span class="string">"选项_2"</span>, <span class="string">"选项_3"</span>&#125;);</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
