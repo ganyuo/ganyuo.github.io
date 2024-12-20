@@ -604,41 +604,82 @@ modaless_dialog->show(); /* 非阻塞显示对话框 */
 
 - information：显示一个信息消息框
     ```cpp
-    QMessageBox::information(&main_win, "信息消息框", "假装这是一条信息消息");
+    QMessageBox::information(nullptr, "信息消息框", "假装这是一条信息消息");
     ```
 - warning：显示一个警告消息框
     ```cpp
-    QMessageBox::critical(&main_win, "信息消息框", "假装这是一条警告消息");
+    QMessageBox::warning(nullptr, "警告消息框", "假装这是一条警告消息");
     ```
 - critical：显示一个严重错误消息框
     ```cpp
+    QMessageBox::critical(nullptr, "错误消息框", "假装这是一条错误消息");
     ```
 - question：显示一个问题消息框，允许用户做出选择
     ```cpp
+    int ret = QMessageBox::question(nullptr, "问题消息框", "假装这是一个问题");
+    if (ret == QMessageBox::Yes) {
+        qDebug() << "return yes";
+    }
+    else {
+        qDebug() << "return no";
+    }
     ```
 
 #### 文件对话框
 
 &emsp;&emsp;文件对话框`QFiledialog`是一个模态对话框，主要用于让用户可以浏览文件系统、并选择文件或目录。
 
-- 打开一个文件，返回文件路径
+- 打开一个文件，返回文件的绝对路径
     ```cpp
+    QString file_path = QFileDialog::getOpenFileName();
     ```
-- 打开多个文件，返回文件路径列表
+- 打开多个文件，返回文件的绝对路径列表
     ```cpp
+    QStringList file_path_list = QFileDialog::getOpenFileNames();
     ```
-- 打开目录，返回目录路径
+- 打开目录，返回目录的绝对路径
     ```cpp
+    QString dir_path = QFileDialog::getExistingDirectory();
     ```
-- 保存文件，返回文件路径
+- 保存文件，返回文件的绝对路径
     ```cpp
+    QString file_path = QFileDialog::getSaveFileName();
     ```
 
 #### 颜色对话框
 
+&emsp;&emsp;颜色对话框`QColorDialog`是一个模态对话框，用于让用户选择颜色。
+
+```cpp
+QColor color = QColorDialog::getColor();
+```
+
 #### 字体对话框
 
+&emsp;&emsp;字体对话框`QFontDialog`也是一个模态对话框，用于让用户选择字体的样式、大小、粗细等属性。
+
+```cpp
+bool flag = false;
+QFont font = QFontDialog::getFont(&flag);
+```
+
 #### 输入对话框
+
+&emsp;&emsp;输入对话框`QInputDialog`也是一个模态对话框，主要用于让用户输入文本、数字或选择列表中的一个选项。
+
+- 浮点数输入对话框
+    ```cpp
+    double ret = QInputDialog::getDouble(nullptr, "输入对话框", "输入浮点数");
+    ```
+- 整数输入对话框
+    ```cpp
+    int ret = QInputDialog::getInt(nullptr, "输入对话框", "输入整数");
+    ```
+- 选项列表输入对话框
+    ```cpp
+    QString ret = QInputDialog::getItem(nullptr, "输入对话框", "选择选项", 
+                                            {"选项_1", "选项_2", "选项_3"});
+    ```
 
 ## 画板
 
