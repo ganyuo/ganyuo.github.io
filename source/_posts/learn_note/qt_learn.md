@@ -299,7 +299,7 @@ int main(int argc, char *argv[])
 
 ## layout
 
-&emsp;&emsp;当一个窗口里控件很多时，使用`setGeometry()`来设置很麻烦，而且无法随着窗口的大小变化而调整。使用layout(布局)就可以很方便的解决这个问题，他们负责一组控件的几何管理。上面[输入框-QLineEdit](../../../../../downloads/qt_learn.md#输入框-QLineEdit)里的样例代码，使用的`QVBoxLayout`就是一种layout，可以将控件在垂直方向上排列，使得`name_input`输入框在`password_input`输入框上面，如果不使用layout，则两个输入框会重叠在一起。(以下内容大部分抄的大佬的这篇[博客](https://blog.csdn.net/leacock1991/article/details/118947828))
+&emsp;&emsp;当一个窗口里控件很多时，使用`setGeometry()`来设置很麻烦，而且无法随着窗口的大小变化而调整。使用layout(布局)就可以很方便的解决这个问题，他们负责一组控件的几何管理。上面[输入框-QLineEdit](#输入框-QLineEdit)里的样例代码，使用的`QVBoxLayout`就是一种layout，可以将控件在垂直方向上排列，使得`name_input`输入框在`password_input`输入框上面，如果不使用layout，则两个输入框会重叠在一起。(以下内容大部分抄的大佬的这篇[博客](https://blog.csdn.net/leacock1991/article/details/118947828))
 
 ### 简述
 
@@ -341,7 +341,7 @@ int main(int argc, char *argv[])
 &emsp;&emsp;将控件添加到一个layout时，布局过程如下：
 
 1. 所有控件最初将根据它们的`QWidget::sizePolicy()`和`QWidget::sizeHint()`分配一定数量的空间。
-2. 如果任何控件设置了拉伸系数，并且其值大于零，那么它们将按其拉伸因子的比例分配空间（如下[伸展因素](../../../../../downloads/qt_learn.md#伸展因素)所述）。
+2. 如果任何控件设置了拉伸系数，并且其值大于零，那么它们将按其拉伸因子的比例分配空间（如下[伸展因素](#伸展因素)所述）。
 3. 如果任何控件的拉伸系数设置为零，它们只会在没有其他控件需要空间的情况下获得更多空间。其中，空间首先分配给具有扩展大小策略的控件。
 4. 任何控件被分配的空间的大小如果小于它们的最小大小（如果未指定最小尺寸，则为最小尺寸提示），它们就会被按它们所需要的最小大小分配空间。（如果控件的伸展因素是它们的决定因素，它们不必有最小大小或者最小大小的提示。）
 5. 任何控件被分配的空间的大小如果大于它们的最大大小，它们就会被按它们所需要的最大大小分配空间。（如果控件的伸展因素是它们的决定因素，它们不必有最大大小。）
@@ -678,7 +678,7 @@ QFont font = QFontDialog::getFont(&flag);
 - 选项列表输入对话框
     ```cpp
     QString ret = QInputDialog::getItem(nullptr, "输入对话框", "选择选项", 
-                                            {"选项_1", "选项_2", "选项_3"});
+                                        {"选项_1", "选项_2", "选项_3"});
     ```
 
 ## 画板
