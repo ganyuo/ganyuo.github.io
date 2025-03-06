@@ -8,5 +8,7 @@ node_modules/
 public/
 qiniu/
 .deploy*/
+
+.vscode
 themes/*
 !themes/sagiri/
