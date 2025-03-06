@@ -63,17 +63,23 @@ mathjax: true
 目标边界框右下角坐标：$p_b = (x_b, y_b)$
 
 输出的特征映射中坐标为$(x_i, y_i)$的像素i输出为
+
 $$
-\hat{t_i} = \{ \hat{s}, \hat{dx^t}, \hat{dy^t}, \hat{dx^b}, \hat{dy^b} \}_i
+\begin{align}
+	\hat{t_i} = \{ \hat{s}, \hat{dx^t}, \hat{dy^t}, \hat{dx^b}, \hat{dy^b} \}_i
+\end{align}
 $$
 
 * $\hat{s}$：像素i是一个目标的置信度。
 * $\hat{dx^t}, \hat{dy^t}, \hat{dx^b}, \hat{dy^b}$：像素i离上下左右四个边界框的距离。
+
 $$
-\hat{dx^t} = x_i - x_t \\\\
-\hat{dy^t} = y_i - y_t \\\\
-\hat{dx^b} = x_i - x_b \\\\
-\hat{dy^b} = y_i - y_b \\\\
+\begin{align}
+	\hat{dx^t} = x_i - x_t \\
+	\hat{dy^t} = y_i - y_t \\
+	\hat{dx^b} = x_i - x_b \\
+	\hat{dy^b} = y_i - y_b
+\end{align}
 $$
 
 最后将输出map的每个像素转化为一个边界框，对分数超过阈值的边界框进行非最大抑制。
@@ -98,9 +104,12 @@ $$
 ## Multi-Task Training（多任务训练）
 &emsp;&emsp;网络包含两个训练任务，一个是训练分类分数，一个是训练边界框。
 &emsp;&emsp;训练使用的损失函数都是$L2$损失函数，不用其他的函数是因为简单的$L2$损失函数的训练效果还不错。
+
 $$
-L_{cls}(\hat{y}, y^\*) = ||\hat{y} - y^\*||^2 \\\\
-L_{loc}(\hat{d}, d^\*) = \sum_{i\in\{tx,ty,bx,by\}}||\hat{d_i} - d_i^\*||^2
+\begin{align}
+	L_{cls}(\hat{y}, y^*) = ||\hat{y} - y^*||^2 \\
+	L_{loc}(\hat{d}, d^*) = \sum_{i\in\{tx,ty,bx,by\}}||\hat{d_i} - d_i^*||^2
+\end{align}
 $$
 
 ### Balance Sampling（平衡样本）
@@ -115,7 +124,7 @@ $$
 ![](/images/paper/dense_box/eq_4.png)
 
 $M(\hat{t_i})$表示负样本的损失掩码。
-$\[y^*>0\]$表示边界框的损失值只考虑负样本。
+$[y^*>0]$表示边界框的损失值只考虑负样本。
 $\lambda_{loc}$是两个损失值的平衡因子，在这里设为3。
 
 &emsp;&emsp;**其他细节**：

@@ -3,7 +3,6 @@ title: 'Qt 学习笔记'
 date: 2023-03-11
 categories: 学习笔记
 tags: [Qt, C++]
-mathjax: false
 ---
 
 # 先说两句

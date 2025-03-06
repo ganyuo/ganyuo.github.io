@@ -96,9 +96,10 @@ $\alpha$和$\beta$是各个loss的平衡常数，$\alpha = 0.5$，$\beta = 2$。
 
 ## Evaluation（评估）
 &emsp;&emsp;评估的数据库是FVC 2004和NIST SD27。用$(l_p, o_p)$表示预测的细节点坐标和方向，$(l_{gt}, o_{gt})$表示ground truth细节点。如果预测的细节点满足以下条件，说明预测正确。
+
 $$
 \begin{cases}
-	\parallel l_p - l_{gt} \parallel_2 \leq D \\\\
+	\parallel l_p - l_{gt} \parallel_2 \leq D \\
 	\parallel o_p - o_{gt} \parallel_1 \leq O
 \end{cases}
 $$
@@ -116,7 +117,7 @@ $$
 &emsp;&emsp;图7是细节点提取的效果图。
 ![](/images/paper/minutiae_net/figure_7.png "图7 细节点提取的效果图")
 
-&emsp;&emsp;在某些情况下，提议的框架会遗漏了真细节点，或者提取了伪细节点。由于脊线的不连续，导致一些细节点检测错误(图像a)，或者由于细节点的位置靠近指纹边缘而漏检(图像c)。对于NIST SD27数据集的潜在指纹，该方法对严重的背景噪声(图像exiang指纹质量(图像g)比较敏感。对于FVC 2004数据集和NIST SD27数据集的滚动指纹，得到了接近ground truth的结果。
+&emsp;&emsp;在某些情况下，提议的框架会遗漏了真细节点，或者提取了伪细节点。由于脊线的不连续，导致一些细节点检测错误(图像a)，或者由于细节点的位置靠近指纹边缘而漏检(图像c)。对于NIST SD27数据集的潜在指纹，该方法对严重的背景噪声图像提取指纹质量(图像g)比较敏感。对于FVC 2004数据集和NIST SD27数据集的滚动指纹，得到了接近ground truth的结果。
 &emsp;&emsp;NIST SD27每张图片的运行时间约为1.5秒，FVC 2004每张图片的运行时间约为1.2秒。
 
 
