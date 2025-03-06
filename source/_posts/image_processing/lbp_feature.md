@@ -98,10 +98,10 @@ void origin_LBP_feature(cv::InputArray src, cv::OutputArray dst)
 &emsp;&emsp;圆形LBP特征以像素点为圆心，$R$为半径，提取半径上$P$个采样点，根据 [原始的LBP](#原始的LBP) 中像素值比较方法，进行像素值大小的比较，得到该点的LBP特征值。其中提取采样点的方法如下：
 
 $$
-\begin{align}
+\begin{aligned}
 	x_t = x_d + R\cos(\frac{2\pi p}{P}) \\
 	y_t = y_d + R\cos(\frac{2\pi p}{P})
-\end{align}
+\end{aligned}
 $$
 
 &emsp;&emsp;$(x_t, y_t)$为某个采样点，$(x_d, y_d)$为邻域中心点，$p$为第p个采样点，$P$为采样点的个数。得到采样点的坐标可能为小数，改进后的LBP采用双线性插值法进行计算该点的像素值，计算公式如下：

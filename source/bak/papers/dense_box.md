@@ -65,21 +65,21 @@ mathjax: true
 输出的特征映射中坐标为$(x_i, y_i)$的像素i输出为
 
 $$
-\begin{align}
+\begin{aligned}
 	\hat{t_i} = \{ \hat{s}, \hat{dx^t}, \hat{dy^t}, \hat{dx^b}, \hat{dy^b} \}_i
-\end{align}
+\end{aligned}
 $$
 
 * $\hat{s}$：像素i是一个目标的置信度。
 * $\hat{dx^t}, \hat{dy^t}, \hat{dx^b}, \hat{dy^b}$：像素i离上下左右四个边界框的距离。
 
 $$
-\begin{align}
+\begin{aligned}
 	\hat{dx^t} = x_i - x_t \\
 	\hat{dy^t} = y_i - y_t \\
 	\hat{dx^b} = x_i - x_b \\
 	\hat{dy^b} = y_i - y_b
-\end{align}
+\end{aligned}
 $$
 
 最后将输出map的每个像素转化为一个边界框，对分数超过阈值的边界框进行非最大抑制。
@@ -106,10 +106,10 @@ $$
 &emsp;&emsp;训练使用的损失函数都是$L2$损失函数，不用其他的函数是因为简单的$L2$损失函数的训练效果还不错。
 
 $$
-\begin{align}
+\begin{aligned}
 	L_{cls}(\hat{y}, y^*) = ||\hat{y} - y^*||^2 \\
 	L_{loc}(\hat{d}, d^*) = \sum_{i\in\{tx,ty,bx,by\}}||\hat{d_i} - d_i^*||^2
-\end{align}
+\end{aligned}
 $$
 
 ### Balance Sampling（平衡样本）

@@ -130,12 +130,12 @@ $$H[a_if_i(x, y) + a_jf_j(x, y)] = a_iH[f_i(x, y)] + a_jH[f_j(x, y)] = a_ig_i(x,
 &emsp;&emsp;图像间的算术操作是在相应的像素对之间执行的，属于阵列操作，4种算术操作（即像素间加减乘除）表示为：
 
 $$
-\begin{align}
+\begin{aligned}
 	s(x, y) = f(x, y) + g(x, y) \\
 	d(x, y) = f(x, y) - g(x, y) \\
 	p(x, y) = f(x, y) \times g(x, y) \\
 	v(x, y) = f(x, y) \div g(x, y)
-\end{align}
+\end{aligned}
 $$
 
 &emsp;&emsp;上式中$f$和$g$是两张大小相同的图像，计算得到的$s$、$d$、$p$和$v$也是和$f$、$g$大小相同的图像。
@@ -173,10 +173,10 @@ $$
 
 &emsp;&emsp;根据这个变换函数可以列出以下两个方程，这个两个方程就是变换函数的模型。
 $$
-\begin{align}
+\begin{aligned}
 	x = t_{11}v + t_{21}w + t_{31} \\
 	y = t_{12}v + t_{22}w + t_{32}
-\end{align}
+\end{aligned}
 $$
 
 &emsp;&emsp;然后取原图像上的三个点$(v_1, w_1)$、$(v_2, w_2)$、$(v_3, w_3)$，假设它们在目标图像上对应点的坐标分别是$(x_1, y_1)$、$(x_2, y_2)$、$(x_3, y_3)$，将这六个点的坐标值代入变换函数模型中，可以的到两个三元一次方程组：
