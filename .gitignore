@@ -8,9 +8,9 @@ node_modules/
 public/
 qiniu/
 .deploy*/
+yarn.lock
 
 .vscode
 themes/*
 !themes/sagiri/
-themes/sagiri/yarn.lock
-themes/sagiri/source/js/*.js.map
+themes/sagiri/source/js/sagiri.min.js.map
