@@ -12,3 +12,5 @@ qiniu/
 .vscode
 themes/*
 !themes/sagiri/
+themes/sagiri/yarn.lock
+themes/sagiri/source/js/*.js.map
