@@ -386,5 +386,26 @@ ___
 ___
 
 ## 数学公式
-可以参考这个大佬的链接<http://blog.lisp4fun.com/2017/11/01/formula>
-<br/>
+
+行内数学公式可以用`$`字符来指定，比如`$y=a*x+b$`显示为 $y=a*x+b$ ，需要占用整行的公式需要用两个`$$`来指定，比如：
+
+```
+
+$$
+\begin{aligned}
+	L_{loc}(\hat{d}, d^*) = 
+    \sum_{i\in\{tx,ty,bx,by\}}||\hat{d_i} - d_i^*||^2
+\end{aligned}
+$$
+```
+
+显示为：
+
+$$
+\begin{aligned}
+	L_{loc}(\hat{d}, d^*) = 
+    \sum_{i\in\{tx,ty,bx,by\}}||\hat{d_i} - d_i^*||^2
+\end{aligned}
+$$
+
+本博客使用KaTex来渲染数学公式，支持的字符可以参考:[https://katex.org/docs/supported.html](https://katex.org/docs/supported.html)

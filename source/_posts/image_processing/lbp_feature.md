@@ -107,12 +107,15 @@ $$
 &emsp;&emsp;$(x_t, y_t)$为某个采样点，$(x_d, y_d)$为邻域中心点，$p$为第p个采样点，$P$为采样点的个数。得到采样点的坐标可能为小数，改进后的LBP采用双线性插值法进行计算该点的像素值，计算公式如下：
 
 $$
-f(x, y) \approx \left[\begin{matrix}
+f(x, y) \approx
+\left[\begin{matrix}
 	1 - (x - \lfloor x \rfloor) & x - \lfloor x \rfloor
-\end{matrix} \right] \left[\begin{matrix}
+\end{matrix} \right]
+\left[\begin{matrix}
 	f(\lfloor x \rfloor, \lfloor y \rfloor) & f(\lfloor x \rfloor, \lfloor y \rfloor + 1) \\
 	f(\lfloor x \rfloor + 1, \lfloor y \rfloor) & f(\lfloor x \rfloor + 1, \lfloor y \rfloor + 1)
-\end{matrix} \right] \left[\begin{matrix}
+\end{matrix} \right]
+\left[\begin{matrix}
 	1 - (y - \lfloor y \rfloor) \\
 	y - \lfloor y \rfloor
 \end{matrix} \right]
