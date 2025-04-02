@@ -850,7 +850,7 @@ post_title_num : true
 # 看板娘
 live2d:
   enable: true
-  model: https://ganyuo.github.io/images/live2d_model/nepnep/index.json # 模型的地址
+  model: /images/live2d_model/nepnep/index.json # 模型的地址
   width: 300 # 控制模型的尺寸比例
   height: 380 # 需要根据不同模型来调整
 
