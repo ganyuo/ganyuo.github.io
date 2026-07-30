@@ -19,7 +19,7 @@ comment: true
 
 ![](./max7219_module.avif)
 
-&emsp;&emsp;感觉比我想像的要简单一点，就一个芯片、一个点阵屏、一个电容和一个电阻。去找商家要了一下资料（[下载链接](/documnets/other/lattice_screen/MAX7219点阵模块资料.rar)），后来才知道这个芯片叫MAX7219。扫了一眼MAX7219的芯片手册，没怎么看懂🙃，结合资料里的样例代码才勉强看懂了一点点。
+&emsp;&emsp;感觉比我想像的要简单一点，就一个芯片、一个点阵屏、一个电容和一个电阻。去找商家要了一下资料（[下载链接](/docs/lattice-screen/MAX7219_doc.rar)），后来才知道这个芯片叫MAX7219。扫了一眼MAX7219的芯片手册，没怎么看懂🙃，结合资料里的样例代码才勉强看懂了一点点。
 
 ## 硬件方面
 
@@ -375,8 +375,10 @@ while (1)
 
 # 成果演示
 
-<center><video src="./run_show.mp4" controls="controls" autoplay="autoplay" loop="loop"></video></center>
+<center><video src="/docs/lattice-screen/run_show.mp4" controls="controls" autoplay="autoplay" loop="loop"></video></center>
 
 &emsp;&emsp;虽然点阵屏算是比较简单的一个东西，但是因为是第一次自己画板子，设计电路，感觉还是挺好玩的。
 
-&emsp;&emsp;这个点阵屏的硬件设计和代码都已经放到github上了，<https://github.com/ganyuo/lattice_screen>。
+&emsp;&emsp;这个点阵屏的硬件设计和代码都已经放到github上了。
+
+::github{repo="ganyuo/lattice_screen"}
