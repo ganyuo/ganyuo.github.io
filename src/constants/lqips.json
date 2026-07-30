@@ -14,9 +14,6 @@
   "src:assets/images/MobileWallpaper/m3.avif": "c3a6b4dac2cad2c0c9",
   "src:assets/images/MobileWallpaper/m2.avif": "f1e0ded8c2c6bbb0bc",
   "src:assets/images/MobileWallpaper/m1.avif": "cccce0cbc0d59294c0",
-  "public:assets/images/sponsor/wechat.png": "d5d5d5dad9d7dbd8cf",
-  "public:assets/images/sponsor/alipay.png": "8ebbde91bedf93c0e0",
-  "public:assets/images/ad/ad1.webp": "a1b8b68a8e918c8f93",
   "src:content/posts/images/vitepress.avif": "3d3d43e1e1e7ebe0da",
   "src:content/posts/images/right-grid2.avif": "cbcdcddddcd9d8d7db",
   "src:content/posts/images/obsidian.avif": "3a4145dce3e6e8ded8",
@@ -33,5 +30,11 @@
   "src:content/posts/images/1.avif": "b5b0b3bcb6bbe0e0df",
   "src:content/posts/guide/cover.avif": "c8bca9dde6d2babfb5",
   "src:assets/images/logo/firefly-light.png": "000000000000000000",
-  "src:assets/images/logo/firefly-dark.png": "ffffffffffffffffff"
+  "src:assets/images/logo/firefly-dark.png": "ffffffffffffffffff",
+  "src:assets/images/firefly.png": "72d3af9ee699aced93",
+  "src:assets/images/cover.avif": "9f7f794f3a3c986f70",
+  "src:assets/images/DesktopWallpaper/dw2.avif": "3f5a9b6574a9999fdf",
+  "src:assets/images/DesktopWallpaper/dw1.avif": "eec9bdd6afa3cf857b",
+  "public:assets/images/sponsor/wechat.avif": "919293959697939594",
+  "public:assets/images/sponsor/alipay.avif": "8b8b8b969696999999"
 }
