@@ -5,5 +5,5 @@ pinned: false
 description: mpv播放器配置弹幕插件，提升看番体验
 tags: [mpv, 软件配置, 日常折腾]
 category: 日常折腾
-draft: false
+draft: true
 ---
