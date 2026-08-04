@@ -12,7 +12,7 @@ export const siteConfig: SiteConfig = {
 	subtitle: "ganyuo的个人博客",
 
 	// 站点 URL
-	site_url: "https://ganyuo.github.io",
+	site_url: "https://www.ganyuo.top",
 
 	// 站点描述
 	description:
@@ -56,7 +56,7 @@ export const siteConfig: SiteConfig = {
 	favicon: [
 		{
 			// 图标文件路径
-			src: "/favicon/favicon.ico",
+			src: "/favicon/firefly-192.png",
 			// 可选，指定主题 'light' | 'dark'
 			// theme: "light",
 			// 可选，图标大小
