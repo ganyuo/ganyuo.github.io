@@ -12,7 +12,7 @@ export const siteConfig: SiteConfig = {
 	subtitle: "ganyuo的个人博客",
 
 	// 站点 URL
-	site_url: "https://www.ganyuo.top",
+	site_url: "https://www.ganyuo.cc",
 
 	// 站点描述
 	description:
