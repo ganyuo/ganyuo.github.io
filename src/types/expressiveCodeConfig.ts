@@ -11,6 +11,17 @@ export type ExpressiveCodeConfig = {
 	pluginLanguageBadge?: PluginLanguageBadgeConfig;
 	/** 语言Logo插件配置 */
 	pluginLanguageLogo?: PluginLanguageLogoConfig;
+	/**
+	 * Shiki 语法高亮配置
+	 * @see https://expressive-code.com/key-features/syntax-highlighting/
+	 */
+	shiki?: {
+		/**
+		 * 语言别名映射，将自定义/未内置语言映射到 Shiki 内置语言
+		 * 例如 { "conf": "ini" }，值必须是 Shiki 内置语言
+		 */
+		langAlias?: Record<string, string>;
+	};
 };
 
 export type PluginLanguageBadgeConfig = {

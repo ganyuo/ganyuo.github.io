@@ -29,4 +29,13 @@ export const expressiveCodeConfig: ExpressiveCodeConfig = {
 		// 是否启用语言徽章插件
 		enable: false,
 	},
+
+	// Shiki 语法高亮配置
+	shiki: {
+		// 将自定义/未内置语言映射到 Shiki 内置语言，避免"language could not be found"告警
+		langAlias: {
+			// .conf 配置（key=value）与 ini 语法一致，映射后即可正常高亮
+			conf: "ini",
+		},
+	},
 };
