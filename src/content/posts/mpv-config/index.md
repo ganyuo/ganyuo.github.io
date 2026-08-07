@@ -324,3 +324,5 @@ autoload_local_danmaku=yes
 > 本文档由 mpv + uosc + uosc_danmaku 合集教程整理，遇到问题请直接查官方仓库 Issue / Discussion：
 > - uosc: https://github.com/tomasklaen/uosc
 > - uosc_danmaku: https://github.com/Tony15246/uosc_danmaku
+
+*本文档最后更新时间：2026-08。插件配置项较多，如与最新版本文档有出入，请以各项目 GitHub 仓库的最新 README 为准。*

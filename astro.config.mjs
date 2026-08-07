@@ -51,6 +51,7 @@ import { remarkMermaid } from "./src/plugins/remark-mermaid.js";
 import { remarkPlantuml } from "./src/plugins/remark-plantuml.js";
 import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
 import { remarkWikiLink } from "./src/plugins/remark-wiki-link.js";
+import { dynamicImages } from "./src/integrations/dynamic-images";
 import { collectUsedFontCssVars } from "./src/utils/fontHelper";
 
 if (process.env.NODE_ENV === "development") {
@@ -115,6 +116,7 @@ export default defineConfig({
 	},
 
 	integrations: [
+		dynamicImages(),
 		swup({
 			theme: false,
 			animationClass: "transition-swup-", // see https://swup.js.org/options/#animationselector

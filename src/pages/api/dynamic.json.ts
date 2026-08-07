@@ -1,5 +1,6 @@
 import { getCollection } from "astro:content";
 import { createMarkdownProcessor } from "@astrojs/markdown-remark";
+import { resolveDynamicImageUrl } from "@/utils/dynamic-images";
 import {
 	dynamicSearchText,
 	dynamicSlug,
@@ -13,11 +14,16 @@ export async function GET(): Promise<Response> {
 	const dynamics = sortDynamics(await getCollection("dynamic"));
 	const data = await Promise.all(
 		dynamics.map(async (entry) => {
+			const filePath = entry.filePath || `src/content/dynamic/${entry.id}`;
 			const images: Array<{ alt: string; src: string; title?: string }> = [];
 			const markdown = (entry.body || "").replace(
 				markdownImagePattern,
 				(_match, alt: string, src: string, title?: string) => {
-					images.push({ alt, src, ...(title ? { title } : {}) });
+					images.push({
+						alt,
+						src: resolveDynamicImageUrl(filePath, src),
+						...(title ? { title } : {}),
+					});
 					return "";
 				},
 			);

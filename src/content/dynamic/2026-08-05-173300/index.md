@@ -6,4 +6,4 @@ location: 江西
 
 今天去看了电影《八仙》，感觉不错，推荐去看
 
-![](/assets/images/dynamic/2026-08-05-173300/001_baxian.avif)
+![](./001_baxian.avif)
