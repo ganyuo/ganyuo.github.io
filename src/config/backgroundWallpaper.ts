@@ -43,18 +43,25 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 		// 桌面背景图片（支持单张或多张随机）
 		// desktop: "assets/images/DesktopWallpaper/d1.avif",
 		desktop: [
-			"assets/images/DesktopWallpaper/dw1.avif",
-			"assets/images/DesktopWallpaper/dw2.avif",
+			"/assets/images/DesktopWallpaper/dw1.avif",
+			"/assets/images/DesktopWallpaper/dw2.avif",
+			"/assets/images/DesktopWallpaper/dw3.avif",
+			"/assets/images/DesktopWallpaper/dw4.avif",
+			"/assets/images/DesktopWallpaper/dw5.avif",
+			"/assets/images/DesktopWallpaper/dw6.avif",
+			"/assets/images/DesktopWallpaper/dw7.avif",
 		],
 		// 移动背景图片（支持单张或多张随机）
 		// mobile: "assets/images/MobileWallpaper/m1.avif",
 		mobile: [
-			"assets/images/MobileWallpaper/m1.avif",
-			"assets/images/MobileWallpaper/m2.avif",
-			"assets/images/MobileWallpaper/m3.avif",
-			"assets/images/MobileWallpaper/m4.avif",
-			"assets/images/MobileWallpaper/m5.avif",
-			"assets/images/MobileWallpaper/m6.avif",
+			"/assets/images/MobileWallpaper/mw1.avif",
+			"/assets/images/MobileWallpaper/mw2.avif",
+			"/assets/images/MobileWallpaper/mw3.avif",
+			"/assets/images/MobileWallpaper/mw4.avif",
+			"/assets/images/MobileWallpaper/mw5.avif",
+			"/assets/images/MobileWallpaper/mw6.avif",
+			"/assets/images/MobileWallpaper/mw7.avif",
+			"/assets/images/MobileWallpaper/mw8.avif",
 		],
 		// 背景视频播放地址
 		// 支持单个视频路径（字符串）或多个视频循环（数组）

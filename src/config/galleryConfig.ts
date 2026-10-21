@@ -18,7 +18,7 @@ export const galleryConfig: GalleryConfig = {
 		{
 			id: "wallpaper",
 			name: "站点壁纸",
-			description: "站点壁纸，后续开放",
+			description: "站点壁纸，为了网页加载速度，图片体积都经过了压缩优化，会有一定的画质损失。",
 			location: "网络",
 			date: "2026-07-30",
 			tags: ["壁纸"],
